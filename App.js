@@ -1,21 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+//    /* Psalm 127:1-2 */
+//    As YHWH die huis nie bou nie, tevergeefs werk die wat daaraan bou;
+//    as YHWH die stad nie bewaar nie, tevergeefs waak die wagter.
+//    Tevergeefs dat julle vroeg opstaan, laat opbly, brood van smarte eet —
+//    net so goed gee Hy dit aan sy beminde in die slaap!
 
-export default function App() {
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./src/store";
+
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import MainStackNavigator from "./src/routing/MainStackNavigator";
+
+export default App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      
+        <MainStackNavigator />
+     
+    </Provider>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};
