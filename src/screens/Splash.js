@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   StatusBar,
@@ -34,6 +33,7 @@ const Splash = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={() => navigate()}>
       <View style={styles.page}>
+      
         <ImageBackground
           style={styles.image}
           source={require("../../assets/background.jpg")}
@@ -42,9 +42,9 @@ const Splash = ({ navigation }) => {
             <Header />
           </View>
           <View style={styles.footer}>
-            <View style={styles.updates}>
+           
               <Text>checking for updates...</Text>
-            </View>
+            
             <Footer
               title="Stay On Track"
               subTitle="checking for updates....."

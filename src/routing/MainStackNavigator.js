@@ -2,23 +2,27 @@ import * as React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StatusBar } from 'react-native';
+import { StatusBar } from "react-native";
+import UnitsNavigator from "./UnitsNavigator";
+import SensorValuesNavigator from "./SensorValuesNavigator";
 import Splash from "../screens/Splash";
 import AppCheck from "../screens/AppCheck";
 
 import SignIn from "../screens/SignIn";
 
-//import AppLoading from '../screens/AppLoading'
-import UnitList from "../screens/UnitList";
-import UnitsSelected from "../screens/UnitsSelected";
+
 import SensorValues from "../screens/SensorValues";
 //import WheelsDiagram from '../screens/AppStack/WheelsDiagramScreen'
 
 import colors from "../styles/colors";
-import UnitsNavigator from "./UnitsNavigator";
 
 const Stack = createStackNavigator();
-
+const screenNames = {
+  splash: "Splash",
+  signIn: "SignIn",
+  unitsNavigator: "UnitsNavigator",
+  sensorValuesNavigator: "SensorValuesNavigator",
+};
 
 //{
 //  gestureEnabled: true,
@@ -34,20 +38,17 @@ const Stack = createStackNavigator();
 
 function MainStackNavigator() {
   return (
-   
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Splash"
-        screenOptions={
-          {
-            headerShown: false,
-          }
-        }
-
-        
+        initialRouteName={screenNames.splash}
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: true,
+          gestureDirection: "horizontal",
+        }}
       >
         <Stack.Screen
-          name="Splash"
+          name={screenNames.splash}
           component={Splash}
           options={{
             title: "Stay On Track",
@@ -61,31 +62,36 @@ function MainStackNavigator() {
           }}
         />
         <Stack.Screen
-          name="SignIn"
+          name={screenNames.signIn}
           component={SignIn}
           options={{
             title: "Sign In",
           }}
         />
-
         <Stack.Screen
-          name="UnitsNavigator"
+          name= { screenNames.unitsNavigator }
           component={UnitsNavigator}
           options={{
             title: "Units",
           }}
         />
-        <Stack.Screen
-          name="SensorValues"
-          component={SensorValues}
-          options={({ route }) => ({
-            title: route.params.item.nm,
-          })}
-        />
+
       </Stack.Navigator>
     </NavigationContainer>
-    
   );
 }
+
+//<Stack.Screen
+//name="SensorValues"
+//screenOptions={{
+//  headerShown: true,
+//}}
+//component={SensorValues}
+//options={({ route }) => ({
+//  title: route.params.item.nm,
+//})}
+///>
+
+
 
 export default MainStackNavigator;

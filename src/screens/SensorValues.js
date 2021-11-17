@@ -49,6 +49,7 @@ const SensorValues = ({ navigation, route }) => {
   const axe = (sv) => {
     return sv.map((s, axe, tyre) => {
       return (
+        
         <MetricsContainer key={s[axe][tyre].tyreName}>
           <TextBox style={styles.tyreName}>{s[axe][tyre].tyreName}</TextBox>
           <PressureBox>{s[axe][tyre]}</PressureBox>
