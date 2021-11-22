@@ -13,7 +13,7 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"; //person-add person-remove
 
 import { listUnits, addSelectedUnit, removeSelectedUnit } from "../actions/unitActions";
-import { storeData } from '../utilities/userSelectedUnitsHandler';
+import { storeData } from '../utilities/localData';
 
 import colors from "../styles/colors";
 

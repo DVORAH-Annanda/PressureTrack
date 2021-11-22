@@ -6,7 +6,7 @@ import {removeSelectedUnit } from "../actions/unitActions";
 
 import colors from "../styles/colors";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { storeData } from '../utilities/userSelectedUnitsHandler';
+import { storeData } from '../utilities/localData';
 
 const UnitsSelected = ({ navigation }) => {
   

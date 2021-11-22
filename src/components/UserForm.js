@@ -16,7 +16,7 @@ const UserForm = ({ submitHandler }) => {
         try{
             
         const { url } = navState
-        const eId = await authenticationHandler.getToken(url)
+        const eId = await authenticationHandler.getUserInfo(url)
         if (eId != null) {
             authenticationHandler.storeToken(eId)
             submitHandler()

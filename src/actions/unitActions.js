@@ -14,7 +14,7 @@ import {
   REMOVE_SELECTED_UNIT,
 } from "../constants/unitConstants";
 import authenticationHandler from "../utilities/authenticationHandler";
-import { getLocalStorageData } from "../utilities/userSelectedUnitsHandler";
+import { getLocalStorageData } from "../utilities/localData";
 
 export const listUnits = () => async (dispatch) => {
   dispatch({

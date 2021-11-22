@@ -9,18 +9,11 @@ import SensorValues from "../screens/SensorValues";
 
 import { listUserUnits } from "../actions/unitActions";
 
-//import { getLocalStorageData } from "../utilities/userSelectedUnitsHandler";
-
 import colors from "../styles/colors";
 
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function clearAllLocalStorgeData() {
-  console.log("clearAllLocalStorgeData");
-  AsyncStorage.getAllKeys()
-    .then((keys) => AsyncStorage.multiRemove(keys))
-    .then(() => alert("success"));
-}
+
 
 function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object;

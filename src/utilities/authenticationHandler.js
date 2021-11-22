@@ -1,31 +1,51 @@
 import {authorize, refresh} from 'expo-app-auth';
+import { getLocalStorageData, storeData, clearAllLocalStorageData } from './localData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AuthenticationHandler {
 
-  async getToken(url) {
-    if (url.includes("access_token=")) {
-      let tokenIndex = url.indexOf("access_token=");
+  async getLocalUserInfo() {
+    try {
+      const data = await getLocalStorageData("userInfo");
+      if (isObjectEmpty(data)) {
+        return [];
+      } else {
+        return JSON.parse(data);
+      }
+    } catch (error) {
+      return error.message;
+    }
+  };
+
+  async getUserInfo(url) {
+    if (url.includes("svc_error=0")) {
+      //if (url.includes("access_token=")) {
   
-      let urlParams = url.split("&");
+      let urlParams = url.split("&");      
       let token = urlParams[1].replace("access_token=", "");
-      if (token) {
-        // Save token for native requests & move to the next screen
-        //setAccessToken(token);
-        
-        console.log("token: " + token);
+      let userInfo = [];
+      let user ={};
+      let data = await getLocalStorageData("userInfo");
+      let localUser = JSON.parse(data);
+      console.log(`localUser!! ${JSON.stringify(localUser)}`)
+      user.userName = urlParams[2].replace("user_name=", "");
+      let localUserName = localUser[0].userName;
+      if(localUserName.trim() !== user.userName.trim())
+      {
+        clearAllLocalStorageData();
+      }
+      console.log(`userName!!! ${localUserName}`);
+      if (token) {      
+
         const wialonurl = 'https://hst-api.wialon.com/wialon/ajax.html';
         const wialonapi = wialonurl + '?svc=token/login&params={"token":"' + token + '"}'
   
         let response = await fetch(wialonapi);
         let result = await response.json();
-        //console.log(JSON.stringify(result));
-        //let sessionId = "";
-        //if (result.eid !== "")
-          //sessionId = result.eid;
-          
-
-        console.log("sessionID: " + result.eid);
+        user.eId = result.eid;
+        userInfo.push(user);
+        storeData('userInfo', JSON.stringify(userInfo));  
+        console.log(`usrinfo!! ${JSON.stringify(userInfo)}`)
         return result.eid;
       }
       
