@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -36,7 +37,19 @@ const screenNames = {
 //  headerTintColor: colors.primary,
 //}
 
+
+
+//const dispatch = useDispatch();
+//useEffect(() => {
+//  dispatch(detailsUser());
+//}, []);
+
 function MainStackNavigator() {
+
+  const userDetails = useSelector((state) => state.userDetails);
+const { userInfo } = userDetails;
+console.log(`MAIN STACK userinfo ${JSON.stringify(userInfo)}`);
+
   return (
     <NavigationContainer>
       <Stack.Navigator

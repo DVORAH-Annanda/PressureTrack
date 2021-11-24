@@ -17,9 +17,11 @@ const storeData = async (key, value) => {
 const getLocalStorageData = async (key) => {
   try {
     const data = await AsyncStorage.getItem(key);
+    if(data){
     console.log("getLocalStorageData js storedSelectedUnits no parse" + data)
     console.log("getLocalStorageData js storedSelectedUnits " + JSON.parse(data))
     return data;
+  } else { return []}
   } catch (error) {
     console.log(error);
   }

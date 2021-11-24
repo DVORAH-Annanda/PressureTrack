@@ -5,8 +5,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {removeSelectedUnit } from "../actions/unitActions";
 
 import colors from "../styles/colors";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { storeData } from '../utilities/localData';
+import { storeData } from '../utilities/localStoreData';
 
 const UnitsSelected = ({ navigation }) => {
   

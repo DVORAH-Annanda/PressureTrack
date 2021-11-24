@@ -6,18 +6,11 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserForm from "../components/UserForm";
 import colors from "../styles/colors";
-import { color } from "react-native-reanimated";
-//import { useReduxDispatch } from '../../redux'
-//import { attemptLogin } from '../../redux/ducks/user'
-//import { signIn } from '../actions/userActions';
 
 //import LoadingBox from '../components/LoadingBox';
 //import MessageBox from '../components/MessageBox';
 
 const SignIn = ({ navigation }) => {
-  const [eid, setEid] = useState("");
-
-  const dispatch = useDispatch();
 
   //const userSignIn = useSelector((state) => state.userSignIn);
   //const { userInfo, loading, error } = userSignIn;
@@ -25,9 +18,22 @@ const SignIn = ({ navigation }) => {
   //{loading && <LoadingBox></LoadingBox>}
   //{error && <MessageBox variant='danger'>{ error }</MessageBox>}
 
+
+
+  const dispatch = useDispatch();
+  //const submitHandler = (e) => {
+  //  e.preventDefault();
+  //  dispatch(signin(email, password));
+  //};
+
   const handleSubmit = () => {
     navigation.navigate("UnitsNavigator");
   };
+  //useEffect(() => {
+  //  if (userInfo) {
+  //    //props.history.push(redirect);
+  //  }
+  //}, [userInfo]);
 
   return (
     <View style={styles.page}>

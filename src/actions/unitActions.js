@@ -14,7 +14,7 @@ import {
   REMOVE_SELECTED_UNIT,
 } from "../constants/unitConstants";
 import authenticationHandler from "../utilities/authenticationHandler";
-import { getLocalStorageData } from "../utilities/localData";
+import { getLocalStorageData } from "../utilities/localStoreData";
 
 export const listUnits = () => async (dispatch) => {
   dispatch({
@@ -32,7 +32,7 @@ export const listUnits = () => async (dispatch) => {
         payload: data.items,
       });
     }
-  } catch (err) {
+  } catch (error) {
     dispatch({
       type: UNIT_LIST_FAIL,
       payload: error.message,
@@ -57,7 +57,7 @@ export const listUserUnits = () => async (dispatch) => {
         payload: JSON.parse(data),
       });
     }
-  } catch (err) {
+  } catch (error) {
     dispatch({
       type: USER_UNIT_LIST_FAIL,
       payload: error.message,

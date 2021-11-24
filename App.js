@@ -6,17 +6,24 @@
 
 import React from "react";
 import { Provider } from "react-redux";
-import store from "./src/store";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./src/store";
 
 import { SafeAreaProvider} from "react-native-safe-area-context";
 import MainStackNavigator from "./src/routing/MainStackNavigator";
 
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
+
 export default App = () => {
   return (
     <Provider store={store}>
+      <PersistGate persistor={persistor}>
       <SafeAreaProvider>
         <MainStackNavigator />
         </SafeAreaProvider>
+        </PersistGate>
     </Provider>
   );
 };

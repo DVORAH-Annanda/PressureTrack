@@ -24,7 +24,7 @@ const Splash = ({ navigation }) => {
     useCallback(() => {
       const navigationTimer = setTimeout(() => {
         navigate();
-      }, 14500);
+      }, 4500);
 
       return () => clearTimeout(navigationTimer);
     }, [navigate])

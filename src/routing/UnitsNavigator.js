@@ -11,16 +11,6 @@ import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
 
-//import AsyncStorage from "@react-native-async-storage/async-storage";
-
-
-
-function isObjectEmpty(obj) {
-  return Object.keys(obj).length === 0 && obj.constructor === Object;
-} //move to utils
-
-
-
 const UnitListTabs = createBottomTabNavigator();
 
 const UnitsNavigator = () => {
@@ -52,7 +42,7 @@ const UnitsNavigator = () => {
     <UnitListTabs.Navigator
       screenOptions={tabBarOptions}
       initialRouteName={
-        !loading && selectedUnits.length > 0 ? "UnitList" : "UnitsSelected"
+        selectedUnits.length > 0 ? "UnitsSelected"  : "UnitList"
       }
     >
       <UnitListTabs.Screen
