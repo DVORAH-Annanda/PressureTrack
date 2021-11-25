@@ -6,9 +6,10 @@ import {
   unitListReducer,
   unitSensorValuesReducer,
 } from './reducers/unitReducers';
-import { getLocalStorageData } from './utilities/localStoreData';
+import { getLocalStorageData, clearAllLocalStorageData } from './utilities/localStoreData';
 import { isObjectEmpty } from './utilities/general';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const getUserInfo = async () => {
   try {
@@ -27,15 +28,17 @@ const getUserInfo = async () => {
 //const temp = getUserInfo();
 //console.log(`temp ${JSON.stringify(temp)}`)
 
-const initialState = {  //moet waarskynlik uit! ook in createStore
+//const initialState = {  //moet waarskynlik uit! ook in createStore
   //userSignIn: {
   //  userInfo: null,
   //}
   //***sien beefree vir onthou van units en userinfo @@@await
-  userSignIn: {
-    userInfo: getUserInfo() ? console.log(`GETUSERINFO!! ${JSON.stringify(getUserInfo())}`) : [],
-  },
-};
+//  userSignIn: {
+//    userInfo: getUserInfo() ? console.log(`GETUSERINFO!! ${JSON.stringify(getUserInfo())}`) : [],
+//  },
+//};
+
+//clearAllLocalStorageData();
 
 const persistConfig = {
   key: 'root',
@@ -49,14 +52,15 @@ const reducer = combineReducers({
   unitSensorValues: unitSensorValuesReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer)
+//const persistedReducer = persistReducer(persistConfig, reducer)
 
 const store = createStore(
-  persistedReducer,
+  reducer,
+  //persistedReducer,
   //initialState,
   compose(applyMiddleware(thunk))
 );
 
-export const persistor  = persistStore(store)
+//export const persistor  = persistStore(store)
 
 export default store;

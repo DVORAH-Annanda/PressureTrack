@@ -4,36 +4,32 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, StyleSheet, StatusBar } from "react-native";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
+import { signIn } from "../actions/userActions";
 import UserForm from "../components/UserForm";
+
 import colors from "../styles/colors";
+
+import { clearAllLocalStorageData } from "../utilities/localStoreData";
 
 //import LoadingBox from '../components/LoadingBox';
 //import MessageBox from '../components/MessageBox';
 
 const SignIn = ({ navigation }) => {
 
-  //const userSignIn = useSelector((state) => state.userSignIn);
-  //const { userInfo, loading, error } = userSignIn;
-
-  //{loading && <LoadingBox></LoadingBox>}
-  //{error && <MessageBox variant='danger'>{ error }</MessageBox>}
+  const [user, setUser] = useState([]);
 
 
 
-  const dispatch = useDispatch();
-  //const submitHandler = (e) => {
-  //  e.preventDefault();
-  //  dispatch(signin(email, password));
-  //};
 
-  const handleSubmit = () => {
-    navigation.navigate("UnitsNavigator");
+
+  const dispatch = useDispatch(); 
+  const handleSubmit = (userInfo) => {
+    console.log(`+++userInfo!! ${JSON.stringify(userInfo)}`);
+    navigation.navigate("UnitsNavigator");   
+    setUser(userInfo);   
+    dispatch(signIn(userInfo));
   };
-  //useEffect(() => {
-  //  if (userInfo) {
-  //    //props.history.push(redirect);
-  //  }
-  //}, [userInfo]);
 
   return (
     <View style={styles.page}>
@@ -44,9 +40,7 @@ const SignIn = ({ navigation }) => {
         <UserForm submitHandler={handleSubmit} />
       </View>
       <View style={styles.footer}>
-        <Footer
-          title={"Stay On Track"}
-        />
+        <Footer title={"Stay On Track"} />
       </View>
     </View>
   );
@@ -55,7 +49,7 @@ const SignIn = ({ navigation }) => {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,    
+    marginTop: StatusBar.currentHeight,
     backgroundColor: colors.white,
     flexDirection: "column",
   },

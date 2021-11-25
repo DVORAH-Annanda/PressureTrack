@@ -8,15 +8,36 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
 } from '../constants/userConstants';
-import { getLocalStorageData } from "./utilities/localStoreData";
-import { isObjectEmpty } from "./utilities/general";
+import {
+  getLocalStorageData,
+  storeData,
+  clearAllLocalStorageData,
+} from "../utilities/localStoreData";
+import { isObjectEmpty } from "../utilities/general";
 
-export const signIn = (email, password) => async (dispatch) => {
-  dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
+import authenticationHandler from "../utilities/authenticationHandler";
+
+        //const { url } = navState;
+      //const eId = await authenticationHandler.getUserInfo(url);
+      //if (eId != null) {
+      //  authenticationHandler.storeToken(eId);
+      //  submitHandler();
+      //}
+
+      export const setLogin = (isLoggedIn) => async (dispatch) => {
+        dispatch({ type: USER_SIGNIN_SUCCESS, payload: isLoggedIn });
+    };   
+
+export const signIn = (userInfo) => async (dispatch) => {
+  
+  //dispatch({ type: USER_SIGNIN_REQUEST });
   try {
-    const { data } = await Axios.post('/api/users/signin', { email, password });
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    
+    //const data = await authenticationHandler.getSignInUserInfo(url);
+    console.log(`kom ons hier uit? `)
+    dispatch({ type: USER_SIGNIN_SUCCESS, payload: userInfo });
+    //console.log(`kom ons hier uit? ${JSON.stringify(data)}`)
+    //storeData("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,
@@ -25,7 +46,7 @@ export const signIn = (email, password) => async (dispatch) => {
   }
 };
 
-export const signout = () => (dispatch) => {
+export const signOut = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_SIGNOUT });
   //document.location.href = '/signin';  ***navigate to splash screen

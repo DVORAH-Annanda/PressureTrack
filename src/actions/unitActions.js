@@ -16,12 +16,15 @@ import {
 import authenticationHandler from "../utilities/authenticationHandler";
 import { getLocalStorageData } from "../utilities/localStoreData";
 
-export const listUnits = () => async (dispatch) => {
+export const listUnits = () => async (dispatch, getState) => {
+  console.log(`userInfo%%% `)
   dispatch({
     type: UNIT_LIST_REQUEST,
   });
+  const { userInfo } = getState().reducer;
+  console.log(`userInfo%%% ${JSON.stringify(userInfo)}`)
   try {
-    const eidStored = await authenticationHandler.getStoredToken();
+    const eidStored = {}; //await authenticationHandler.getStoredToken();
     if (!isObjectEmpty(eidStored)) {
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +

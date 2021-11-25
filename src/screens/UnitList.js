@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   SafeAreaView,
@@ -20,13 +20,25 @@ import colors from "../styles/colors";
 const UnitList = ({ navigation }) => {
   
   //const logoutHandler = () => dispatch(setLogout())
+  //const [eId, seteId] = useState([]);
+  //const userSignIn = useSelector((state) => state.userSignIn);
+  //const { userInfo } = userSignIn;
+  //console.log(`userInfo&& ${JSON.stringify(userInfo)}`);
+  //if(userInfo && userInfo.length > 0){
+  //  seteId(userInfo[0].eId)
+  //  console.log(`userInfo&& eid ${JSON.stringify(eId)}`);
+  //}
+  //console.log(`userInfo&& ${JSON.stringify(userInfo)}`)
+  
+
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listUnits());
-  }, []);
+      dispatch(listUnits());
+   
+  }, [dispatch, listUnits]); 
 
 const addToSelectedUnits = unit => dispatch(addSelectedUnit(unit));
 

@@ -8,11 +8,10 @@ import {
 import { isObjectEmpty } from "./general";
 
 class AuthenticationHandler {
-  
   async getlocalStoreUserInfo() {
     //clearAllLocalStorageData();
     try {
-      const data = await getLocalStorageData("userInfo");
+      //const data = await getLocalStorageData("userInfo");
       if (isObjectEmpty(data)) {
         return [];
       } else {
@@ -21,6 +20,37 @@ class AuthenticationHandler {
     } catch (error) {
       return error.message;
     }
+  }
+
+  async getSignInUserInfo(url) {
+    let userInfo = [];
+    console.log(`usrinfo se url!! ${url}`);
+    //if (url.includes("svc_error=0")) {
+    const user = {};
+    const urlParams = url.split("&");
+    const token = urlParams[1].replace("access_token=", "");
+    //console.log(`token!! ${(token)}`);
+    user.userName = urlParams[2].replace("user_name=", "");
+    //console.log(`user.userName!! ${(user.userName)}`);
+    const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
+    //console.log(`wialonurl!! ${wialonUrl}`);
+    const wialonUrl =
+      wialonApi + '?svc=token/login&params={"token":"' + token + '"}';
+    console.log(`wialonurl!! ${wialonUrl}`);
+    const response = await fetch(wialonUrl);
+    const result = await response.json();
+    user.eId = result.eid;
+    console.log(`user.eId!! ${user.eId}`);
+    userInfo.push(user);
+    //storeData("userInfo", JSON.stringify(userInfo));
+    //console.log(`usrinfo!! ${JSON.stringify(userInfo)}`);
+    //return result.eid;
+
+    //Alert.alert("Authorization failed!");
+
+    //}
+    console.log(`usrinfo to return!! ${JSON.stringify(userInfo)}`);
+    return userInfo;
   }
 
   async getUserInfo(url) {
@@ -35,23 +65,19 @@ class AuthenticationHandler {
       user.userName = urlParams[2].replace("user_name=", "");
       let data = await getLocalStorageData("userInfo");
       if (!isObjectEmpty(data)) {
-        if (data.length === 0){
+        if (data.length === 0) {
           //clearAllLocalStorageData();
         } else {
-        let localStoreUser = JSON.parse(data);
-        console.log(`localStoreUser!! ${JSON.stringify(localStoreUser)}`);
-        user.userName = urlParams[2].replace("user_name=", "");
-        let localStoreUserName = localStoreUser[0].userName;
-        if (localStoreUserName.trim() !== user.userName.trim()) {
-          clearAllLocalStorageData();
+          let localStoreUser = JSON.parse(data);
+          console.log(`localStoreUser!! ${JSON.stringify(localStoreUser)}`);
+          user.userName = urlParams[2].replace("user_name=", "");
+          let localStoreUserName = localStoreUser[0].userName;
+          if (localStoreUserName.trim() !== user.userName.trim()) {
+            clearAllLocalStorageData();
+          }
+          console.log(`userName!!! ${localStoreUserName}`);
         }
-        console.log(`userName!!! ${localStoreUserName}`);
       }
-      }
-
-      
-
-      
       if (token) {
         const wialonurl = "https://hst-api.wialon.com/wialon/ajax.html";
         const wialonapi =
@@ -61,7 +87,7 @@ class AuthenticationHandler {
         let result = await response.json();
         user.eId = result.eid;
         userInfo.push(user);
-        storeData("userInfo", JSON.stringify(userInfo));
+        //storeData("userInfo", JSON.stringify(userInfo));
         console.log(`usrinfo!! ${JSON.stringify(userInfo)}`);
         return result.eid;
       }

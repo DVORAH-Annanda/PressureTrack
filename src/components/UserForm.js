@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   SafeAreaView,
@@ -6,6 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { WebView, WebViewNavigation } from "react-native-webview";
+import { signIn } from "../actions/userActions";
+import { setLogin } from "../actions/userActions";
 //import { selectIsSubmitting, selectLoginMessage } from '../../redux/ducks/user'
 
 import colors from "../styles/colors";
@@ -13,16 +17,14 @@ import colors from "../styles/colors";
 import authenticationHandler from "../utilities/authenticationHandler";
 
 const UserForm = ({ submitHandler }) => {
-  //const isLoading = useReduxSelector(selectIsSubmitting)
-  //const loginMessage = useReduxSelector(selectLoginMessage)
-
   const handleWebViewNavigationStateChange = async (navState) => {
     try {
       const { url } = navState;
-      const eId = await authenticationHandler.getUserInfo(url);
-      if (eId != null) {
-        authenticationHandler.storeToken(eId);
-        submitHandler();
+
+      if (url.includes("svc_error=0")) {
+        const userInfo = await authenticationHandler.getSignInUserInfo(url);
+
+        submitHandler(userInfo);
       }
     } catch (error) {
       console.error(error);
