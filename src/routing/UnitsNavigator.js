@@ -6,6 +6,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import UnitList from "../screens/UnitList";
 import UnitsSelected from "../screens/UnitsSelected";
 import SensorValues from "../screens/SensorValues";
+import SignOut from '../screens/SignOut'
 
 import { listUserUnits } from "../actions/unitActions";
 
@@ -26,7 +27,6 @@ const UnitsNavigator = () => {
     ],
   };
 
-
   const dispatch = useDispatch();
   //const logoutHandler = () => dispatch(setLogout())
   const userUnitList = useSelector((state) => state.unitList);
@@ -35,7 +35,7 @@ const UnitsNavigator = () => {
 
   useEffect(() => {
     dispatch(listUserUnits());
-  }, []);
+  }, [dispatch, listUserUnits]);
 
 
   return (
@@ -67,6 +67,14 @@ const UnitsNavigator = () => {
             <UnitListTabs.Screen
       name='SensorValues'
         component={SensorValues}
+        options={{
+          title: "",
+          tabBarButton: props => null}}
+
+      />
+                  <UnitListTabs.Screen
+      name='LogOut'
+        component={SignOut}
         options={{
           title: "",
           tabBarButton: props => null}}

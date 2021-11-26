@@ -34,10 +34,10 @@ export const signIn = (userInfo) => async (dispatch) => {
   try {
     
     //const data = await authenticationHandler.getSignInUserInfo(url);
-    console.log(`kom ons hier uit? `)
+    console.log(`signIn ACTION kom ons hier uit? `)
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: userInfo });
-    //console.log(`kom ons hier uit? ${JSON.stringify(data)}`)
-    //storeData("userInfo", JSON.stringify(data));
+    console.log(`signIn ACTION kom ons hier uit? ${JSON.stringify(userInfo)}`)
+    //storeData("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,

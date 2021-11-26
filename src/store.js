@@ -19,24 +19,27 @@ const getUserInfo = async () => {
       //const temp2 = JSON.parse(data);
       //console.log(`temp2 ${JSON.stringify(temp2)}`);
       return JSON.parse(data);
+    } else {
+      return [];
     }
   } catch (error) {
-    //return error.message;
+    return [];
   }
 };
 
 //const temp = getUserInfo();
 //console.log(`temp ${JSON.stringify(temp)}`)
 
-//const initialState = {  //moet waarskynlik uit! ook in createStore
-  //userSignIn: {
-  //  userInfo: null,
-  //}
-  //***sien beefree vir onthou van units en userinfo @@@await
-//  userSignIn: {
-//    userInfo: getUserInfo() ? console.log(`GETUSERINFO!! ${JSON.stringify(getUserInfo())}`) : [],
-//  },
-//};
+const initialState = {  //moet waarskynlik uit! ook in createStore
+//userSignIn: {
+//  userInfo: null,
+//}
+//***sien beefree vir onthou van units en userinfo @@@await
+  userSignIn: {
+    userInfo: getUserInfo() ? console.log(`$$GETUSERINFO!! ${JSON.stringify(getUserInfo())}`) : [],
+  },
+};
+//kry ook "listUserUnits"!!
 
 //clearAllLocalStorageData();
 
@@ -58,7 +61,8 @@ const store = createStore(
   reducer,
   //persistedReducer,
   //initialState,
-  compose(applyMiddleware(thunk))
+  //compose(applyMiddleware(thunk)),
+  applyMiddleware(thunk)
 );
 
 //export const persistor  = persistStore(store)

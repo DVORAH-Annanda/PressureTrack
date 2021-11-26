@@ -19,16 +19,13 @@ const SignIn = ({ navigation }) => {
 
   const [user, setUser] = useState([]);
 
-
-
-
-
   const dispatch = useDispatch(); 
   const handleSubmit = (userInfo) => {
-    console.log(`+++userInfo!! ${JSON.stringify(userInfo)}`);
-    navigation.navigate("UnitsNavigator");   
     setUser(userInfo);   
     dispatch(signIn(userInfo));
+    console.log(`+++userInfo!! ${JSON.stringify(userInfo)}`);
+    navigation.navigate("UnitsNavigator");   
+
   };
 
   return (

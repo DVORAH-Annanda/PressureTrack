@@ -44,7 +44,7 @@ const SensorValues = ({ navigation, route }) => {
 
   useEffect(() => {
     dispatch(unitSensorValues(id));
-  }, [dispatch, id]);
+  }, [dispatch, unitSensorValues, id]);
 
   const axe = (sv) => {
     return sv.map((s, axe, tyre) => {

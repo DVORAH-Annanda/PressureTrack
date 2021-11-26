@@ -17,18 +17,21 @@ import authenticationHandler from "../utilities/authenticationHandler";
 import { getLocalStorageData } from "../utilities/localStoreData";
 
 export const listUnits = () => async (dispatch, getState) => {
-  console.log(`userInfo%%% `)
+  console.log(`listUnits userInfo%%% `)
   dispatch({
     type: UNIT_LIST_REQUEST,
   });
-  const { userInfo } = getState().reducer;
-  console.log(`userInfo%%% ${JSON.stringify(userInfo)}`)
+  const {
+    userSignIn: { userInfo },
+  } = getState();
+  
+  console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo)}`)
   try {
-    const eidStored = {}; //await authenticationHandler.getStoredToken();
-    if (!isObjectEmpty(eidStored)) {
+    //const eidStored = {}; //await authenticationHandler.getStoredToken();
+    if (!isObjectEmpty(userInfo[0].eId)) {
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
-        eidStored;
+        userInfo[0].eId;
       const { data } = await Axios.get(fetchurl);
       dispatch({
         type: UNIT_LIST_SUCCESS,
@@ -82,11 +85,14 @@ export const removeSelectedUnit = (unit) => (dispatch) => {
   });
 };
 
-export const unitSensorValues = (unitId) => async (dispatch) => {
+export const unitSensorValues = (unitId) => async (dispatch, getState) => {
   dispatch({ type: UNIT_SENSORVALUES_REQUEST, payload: unitId });
   try {
-    const eidStored = await authenticationHandler.getStoredToken();
-    if (!isObjectEmpty(eidStored)) {
+    const {
+      userSignIn: { userInfo },
+    } = getState();
+    console.log(`unitSensorValues userInfo%%% ${JSON.stringify(userInfo)}`)
+    if (!isObjectEmpty(userInfo[0].eId)) {
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
       const fetchurl =
@@ -97,7 +103,7 @@ export const unitSensorValues = (unitId) => async (dispatch) => {
         ',"timeTo":' +
         timeTo +
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
-        eidStored;
+        userInfo[0].eId;
       const { data } = await Axios.get(fetchurl);
 
       console.log("Wialon URL " + fetchurl);

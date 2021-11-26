@@ -20,6 +20,7 @@ import colors from "../styles/colors";
 const UnitList = ({ navigation }) => {
   
   //const logoutHandler = () => dispatch(setLogout())
+  
   //const [eId, seteId] = useState([]);
   //const userSignIn = useSelector((state) => state.userSignIn);
   //const { userInfo } = userSignIn;
@@ -43,12 +44,6 @@ const UnitList = ({ navigation }) => {
 const addToSelectedUnits = unit => dispatch(addSelectedUnit(unit));
 
 const handleAddSelectedUnit = async (unit) => {
-  //let storedSelectedUnits = await getLocalStorageData('selectedUnits');  
-  //storedSelectedUnits = JSON.parse(storedSelectedUnits);
-  //if (!storedSelectedUnits) {
-  //  console.log("unitList-NOTstoredSelectedUnits!!! " + (storedSelectedUnits));
-  //  storedSelectedUnits = [];
-  //}
   addToSelectedUnits(unit);
 
   selectedUnits.push(unit);

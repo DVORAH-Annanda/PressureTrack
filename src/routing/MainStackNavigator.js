@@ -41,7 +41,7 @@ const MainRoutes = {
 function MainStackNavigator() {
 
   //clearAllLocalStorageData();
-  //const userSignIn = useSelector((state) => state.userSignIn);
+  const userSignIn = useSelector((state) => state.userSignIn);
   //const { userInfo } = userSignIn;
   const userInfo = false;
   //console.log(`MAIN STACK isSignedIn ${JSON.stringify(userInfo)}`);
