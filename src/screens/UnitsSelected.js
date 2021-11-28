@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {removeSelectedUnit } from "../actions/unitActions";
+import { signIn } from "../actions/userActions";
+import {
+  listUnits,
+  removeSelectedUnit,
+} from "../actions/unitActions";
 
 import colors from "../styles/colors";
 import { storeData } from '../utilities/localStoreData';
 
 const UnitsSelected = ({ navigation }) => {
+
+  const userSignIn = useSelector((state) => state.userSignIn);
+  const { userInfo } = userSignIn;
   
   const unitList = useSelector((state) => state.unitList);
-  const { selectedUnits } = unitList;
+  const { selectedUnits } = unitList;            
+  
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(signIn(userInfo));
+  }, [dispatch, signIn]);
 
   console.log("UnitsSelected-unitList!!! " + JSON.stringify(unitList))
   console.log("UnitsSelected-selectedUnits!!! " + JSON.stringify(selectedUnits))
- 
-
-  const dispatch = useDispatch();
 
   const removeFromSelectedUnits = (unit) => dispatch(removeSelectedUnit(unit));
   const handleRemoveSelectedUnit = (unit) => {

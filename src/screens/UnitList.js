@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   SafeAreaView,
@@ -11,16 +11,19 @@ import {
   ColorPropType,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"; //person-add person-remove
-
-import { listUnits, addSelectedUnit, removeSelectedUnit } from "../actions/unitActions";
-import { storeData } from '../utilities/localStoreData';
+import { signIn } from "../actions/userActions";
+import {
+  listUnits,
+  addSelectedUnit,
+  removeSelectedUnit,
+} from "../actions/unitActions";
+import { storeData, removeStoredData } from "../utilities/localStoreData";
 
 import colors from "../styles/colors";
 
 const UnitList = ({ navigation }) => {
-  
   //const logoutHandler = () => dispatch(setLogout())
-  
+
   //const [eId, seteId] = useState([]);
   //const userSignIn = useSelector((state) => state.userSignIn);
   //const { userInfo } = userSignIn;
@@ -30,38 +33,52 @@ const UnitList = ({ navigation }) => {
   //  console.log(`userInfo&& eid ${JSON.stringify(eId)}`);
   //}
   //console.log(`userInfo&& ${JSON.stringify(userInfo)}`)
-  
+
+  const userSignIn = useSelector((state) => state.userSignIn);
+  const { userInfo } = userSignIn;
 
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
 
   const dispatch = useDispatch();
+  //if(!loading && !units){
+  //  const userInfoRemoved = removeStoredData("userInfo");
+  //  if(userInfoRemoved){
+  //    dispatch(signIn([]));
+  //  useCallback(
+  //    () => navigation.navigate("SignIn"),
+  //    [navigation]
+  //  );
+  //  console.log("haloooo")
+  //  }
+  //}
+
+  
   useEffect(() => {
-      dispatch(listUnits());
-   
-  }, [dispatch, listUnits]); 
+    dispatch(signIn(userInfo));
+    dispatch(listUnits());
+  }, [dispatch, signIn, listUnits]);
 
-const addToSelectedUnits = unit => dispatch(addSelectedUnit(unit));
+  const addToSelectedUnits = (unit) => dispatch(addSelectedUnit(unit));
 
-const handleAddSelectedUnit = async (unit) => {
-  addToSelectedUnits(unit);
+  const handleAddSelectedUnit = async (unit) => {
+    addToSelectedUnits(unit);
 
-  selectedUnits.push(unit);
-  storeData('selectedUnits', JSON.stringify(selectedUnits));  
-};
+    selectedUnits.push(unit);
+    storeData("selectedUnits", JSON.stringify(selectedUnits));
+  };
 
-const removeFromSelectedUnits = unit => dispatch(removeSelectedUnit(unit));
-const handleRemoveSelectedUnit = unit => {
-  removeFromSelectedUnits(unit);
-};
+  const removeFromSelectedUnits = (unit) => dispatch(removeSelectedUnit(unit));
+  const handleRemoveSelectedUnit = (unit) => {
+    removeFromSelectedUnits(unit);
+  };
 
-const exists = unit => {
-  if (selectedUnits.filter(item => item.id === unit.id).length > 0) {
-    return true;
-  }
-  return false;
-};
-
+  const exists = (unit) => {
+    if (selectedUnits.filter((item) => item.id === unit.id).length > 0) {
+      return true;
+    }
+    return false;
+  };
 
   const renderItem = ({ item }) => {
     console.log("name: " + item.nm + " id: " + item.id);
@@ -71,42 +88,46 @@ const exists = unit => {
         onPress={() => navigation.navigate("SensorValues", { item: item })}
       >
         <View style={styles.listItem}>
-          <Text style={{ marginLeft: 10,}} >{item.nm}</Text>
-        
-        <TouchableOpacity
-                      onPress={() => exists(item) ? handleRemoveSelectedUnit(item) : handleAddSelectedUnit(item)}
-                      
-                      style={{  
-                        marginRight: 10,                    
-                        padding: 1.5,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 25,
-                        width: 25,
-                        
-                      }}>
-                      <MaterialIcons
-                        color = {exists(item) ? colors.primary : colors.gray }
-                        size={exists(item) ? 24 : 18}
-                        name={exists(item) ? 'person' : 'person-add'}
-                      />
-                    </TouchableOpacity>
-                    </View>
+          <Text style={{ marginLeft: 10 }}>{item.nm}</Text>
+
+          <TouchableOpacity
+            onPress={() =>
+              exists(item)
+                ? handleRemoveSelectedUnit(item)
+                : handleAddSelectedUnit(item)
+            }
+            style={{
+              marginRight: 10,
+              padding: 1.5,
+              alignItems: "center",
+              justifyContent: "center",
+              height: 25,
+              width: 25,
+            }}
+          >
+            <MaterialIcons
+              color={exists(item) ? colors.primary : colors.gray}
+              size={exists(item) ? 24 : 18}
+              name={exists(item) ? "person" : "person-add"}
+            />
+          </TouchableOpacity>
+        </View>
       </TouchableOpacity>
     );
   };
 
   return (
-      <View>
-        {loading && <Text>loading...</Text>}
-        {units && (
-          <FlatList
-            data={units}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        )}
-      </View>
+    <View>
+      {loading && <Text>loading...</Text>}
+      {units ? console.log(`render unitlist ${JSON.stringify(units)}`) : console.log(`render unitlist NOT ${JSON.stringify(units)}`) }
+      {units && (
+        <FlatList
+          data={units}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      )}
+    </View>
   );
 };
 
@@ -120,12 +141,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   listItem: {
-    flexDirection: 'row',
-    marginVertical: 2.5,    
+    flexDirection: "row",
+    marginVertical: 2.5,
     padding: 10,
     backgroundColor: colors.lightGray,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

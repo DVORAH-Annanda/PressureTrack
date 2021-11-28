@@ -29,10 +29,12 @@ export const listUnits = () => async (dispatch, getState) => {
   try {
     //const eidStored = {}; //await authenticationHandler.getStoredToken();
     if (!isObjectEmpty(userInfo[0].eId)) {
+      console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo[0].eId)}`)
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
         userInfo[0].eId;
       const { data } = await Axios.get(fetchurl);
+      console.log(`listUnits userInfo%%% before data ${JSON.stringify(data.items)}`)
       dispatch({
         type: UNIT_LIST_SUCCESS,
         payload: data.items,

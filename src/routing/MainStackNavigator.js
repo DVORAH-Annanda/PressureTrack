@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useDispatch, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -8,6 +8,7 @@ import Splash from "../screens/Splash";
 import AppCheck from "../screens/AppCheck";
 
 import SignIn from "../screens/SignIn";
+
 
 import {clearAllLocalStorageData} from "../utilities/localStoreData";
 
@@ -42,8 +43,14 @@ function MainStackNavigator() {
 
   //clearAllLocalStorageData();
   const userSignIn = useSelector((state) => state.userSignIn);
-  //const { userInfo } = userSignIn;
-  const userInfo = false;
+  const { userInfo } = userSignIn;
+  //signIn(userInfo);
+
+  console.log(`userInfo ${JSON.stringify(userInfo)}`)
+  //const dispatch = useDispatch();
+  
+      //dispatch(signIn(userInfo));
+  //const userInfo = false;
   //console.log(`MAIN STACK isSignedIn ${JSON.stringify(userInfo)}`);
 
   return (

@@ -19,14 +19,14 @@ enableScreens();
 export default App = () => {
   return (
     <Provider store={store}>
-      
+      <PersistGate persistor={persistor}>
       <SafeAreaProvider>
         <MainStackNavigator />
         </SafeAreaProvider>
-        
+        </PersistGate>
     </Provider>
   );
 };
 
-//<PersistGate persistor={persistor}></PersistGate>
-//</PersistGate>
+//
+//

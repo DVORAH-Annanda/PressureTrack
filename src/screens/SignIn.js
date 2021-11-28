@@ -23,9 +23,7 @@ const SignIn = ({ navigation }) => {
   const handleSubmit = (userInfo) => {
     setUser(userInfo);   
     dispatch(signIn(userInfo));
-    console.log(`+++userInfo!! ${JSON.stringify(userInfo)}`);
     navigation.navigate("UnitsNavigator");   
-
   };
 
   return (

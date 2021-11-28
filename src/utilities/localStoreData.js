@@ -14,14 +14,26 @@ const storeData = async (key, value) => {
   }
 };
 
+const removeStoredData = async (key) => {
+  try {
+    console.log(`remove item`)
+      await AsyncStorage.removeItem(key);
+      console.log(`remove item ${key}`)
+      return true;
+  }
+  catch(exception) {
+      return false;
+  }
+}
+
 const getLocalStorageData = async (key) => {
   try {
     const data = await AsyncStorage.getItem(key);
     if(data){
     console.log("getLocalStorageData js storedSelectedUnits no parse" + data)
-    console.log("getLocalStorageData js storedSelectedUnits " + JSON.parse(data))
+    console.log("getLocalStorageData js storedSelectedUnits PARSE " + JSON.parse(data))
     return data;
-  } else { return []}
+  } //else { return []}
   } catch (error) {
     console.log(error);
   }
@@ -34,5 +46,5 @@ const getLocalStorageData = async (key) => {
     .then((keys) => AsyncStorage.multiRemove(keys));
 }
 
-export { storeData, getLocalStorageData, clearAllLocalStorageData };
+export { storeData, removeStoredData, getLocalStorageData, clearAllLocalStorageData };
 

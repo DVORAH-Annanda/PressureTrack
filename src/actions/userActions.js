@@ -37,7 +37,7 @@ export const signIn = (userInfo) => async (dispatch) => {
     console.log(`signIn ACTION kom ons hier uit? `)
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: userInfo });
     console.log(`signIn ACTION kom ons hier uit? ${JSON.stringify(userInfo)}`)
-    //storeData("userInfo", JSON.stringify(userInfo));
+    storeData("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,

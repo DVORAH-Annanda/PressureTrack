@@ -42,7 +42,8 @@ const UnitsNavigator = () => {
     <UnitListTabs.Navigator
       screenOptions={tabBarOptions}
       initialRouteName={
-        selectedUnits.length > 0 ? "UnitsSelected"  : "UnitList"
+        "UnitList"
+        //selectedUnits > 0 ? "UnitsSelected"  : "UnitList"
       }
     >
       <UnitListTabs.Screen
