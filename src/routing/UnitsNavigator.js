@@ -10,6 +10,7 @@ import SignOut from '../screens/SignOut'
 
 import { listUserUnits } from "../actions/unitActions";
 
+
 import colors from "../styles/colors";
 
 const UnitListTabs = createBottomTabNavigator();
@@ -28,10 +29,13 @@ const UnitsNavigator = () => {
   };
 
   const dispatch = useDispatch();
+
   //const logoutHandler = () => dispatch(setLogout())
   const userUnitList = useSelector((state) => state.unitList);
   //const { loading, error, units, selectedUnits } = unitList;
   const { loading, error, selectedUnits } = userUnitList;
+
+
 
   useEffect(() => {
     dispatch(listUserUnits());
@@ -56,10 +60,10 @@ const UnitsNavigator = () => {
         }}
       />
       <UnitListTabs.Screen
-        name="UnitsSelected"
+        name="Units Selected"
         component={UnitsSelected}
         options={{
-          title: "User's Selected Units",
+          //title: "User's Selected Units",
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person" color={color} size={36} />
           ),
@@ -69,16 +73,47 @@ const UnitsNavigator = () => {
       name='SensorValues'
         component={SensorValues}
         options={{
-          title: "",
+          //title: "",
           tabBarButton: props => null}}
 
       />
                   <UnitListTabs.Screen
-      name='LogOut'
+      name='Sign Out'
         component={SignOut}
+
         options={{
-          title: "",
-          tabBarButton: props => null}}
+          //title: "",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="logout" color={color} size={36} />
+          ),
+          navigationOptions: ({ navigation }) => ({
+            tabBarOnPress: () => {
+              Alert.alert(
+                "Sign Out",
+                "Are you sure you want to sign out?",
+                [
+                  {
+                    text: "No",
+                    style: "cancel"
+                  },
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                      //console.log("logout");
+                      //AsyncStorage.setItem("token", null);
+                      navigation.navigate("SignIn");
+                    }
+                  }
+                ],
+                { cancelable: false }
+              );
+            }
+          })
+        
+        }
+        
+        }
+          
 
       />
     </UnitListTabs.Navigator>

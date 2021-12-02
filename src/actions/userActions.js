@@ -11,6 +11,7 @@ import {
 import {
   getLocalStorageData,
   storeData,
+  removeStoredData,
   clearAllLocalStorageData,
 } from "../utilities/localStoreData";
 import { isObjectEmpty } from "../utilities/general";
@@ -47,9 +48,11 @@ export const signIn = (userInfo) => async (dispatch) => {
 };
 
 export const signOut = () => (dispatch) => {
-  localStorage.removeItem('userInfo');
+  console.log(`probeer sign ou in acton`)
+  removeStoredData('userInfo');
+  removeStoredData('selectedUnits');
+  removeStoredData('persist:root');
   dispatch({ type: USER_SIGNOUT });
-  //document.location.href = '/signin';  ***navigate to splash screen
 };
 
 export const detailsUser = () => async (dispatch, getState) => {  

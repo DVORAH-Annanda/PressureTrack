@@ -47,8 +47,9 @@ const getUserInfo = async () => {
 //clearAllLocalStorageData();
 
 const persistConfig = {
-  key: 'userInfo.userName',
+  key: 'root',
   storage: AsyncStorage,
+  whitelist: ['userInfo', 'selectedUnits']
 }
 
 const reducer = combineReducers({

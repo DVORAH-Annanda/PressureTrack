@@ -52,6 +52,7 @@ export const unitSensorValuesReducer = (
   state = { loading: true, sensorValues: [] },
   action
 ) => {
+  console.log(`unitSensorValuesReducer!@!`)
   switch (action.type) {
     case UNIT_SENSORVALUES_REQUEST:
       return { loading: true };

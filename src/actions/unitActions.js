@@ -17,24 +17,23 @@ import authenticationHandler from "../utilities/authenticationHandler";
 import { getLocalStorageData } from "../utilities/localStoreData";
 
 export const listUnits = () => async (dispatch, getState) => {
-  console.log(`listUnits userInfo%%% `)
+  console.log(`listUnits userInfo%%% `);
   dispatch({
     type: UNIT_LIST_REQUEST,
   });
   const {
     userSignIn: { userInfo },
   } = getState();
-  
-  console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo)}`)
+
+  console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo)}`);
   try {
     //const eidStored = {}; //await authenticationHandler.getStoredToken();
     if (!isObjectEmpty(userInfo[0].eId)) {
-      console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo[0].eId)}`)
+      console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo[0].eId)}`);
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
         userInfo[0].eId;
       const { data } = await Axios.get(fetchurl);
-      console.log(`listUnits userInfo%%% before data ${JSON.stringify(data.items)}`)
       dispatch({
         type: UNIT_LIST_SUCCESS,
         payload: data.items,
@@ -47,6 +46,18 @@ export const listUnits = () => async (dispatch, getState) => {
     });
   }
 };
+
+async function getNotifications(url) {
+  return await Axios.get(url)
+    .then((response) => {
+      console.log("HALLO!!")
+      return response.data.items;
+    })
+    .catch((error) => {
+      console.log(`Get Notifications - API ERROR ${error}`)
+      return "Get Notifications - API ERROR";
+    });
+}
 
 export const listUserUnits = () => async (dispatch) => {
   dispatch({
@@ -93,8 +104,16 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
     const {
       userSignIn: { userInfo },
     } = getState();
-    console.log(`unitSensorValues userInfo%%% ${JSON.stringify(userInfo)}`)
+    console.log(`unitSensorValues userInfo%%% ${JSON.stringify(userInfo)}`);
     if (!isObjectEmpty(userInfo[0].eId)) {
+      const notificationsUrl =
+        `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"notifications","propValueMask":"*","sortType":"notifications","propType":"propitemname"},"force":1,"flags":1025,"from":0,"to":1}&sid=` +
+        userInfo[0].eId;
+
+      console.log(`notificationsUrl ${notificationsUrl}`);
+
+      const notifications = await getNotifications(notificationsUrl);
+
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
       const fetchurl =
@@ -106,14 +125,28 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         timeTo +
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
         userInfo[0].eId;
-      const { data } = await Axios.get(fetchurl);
-
-      console.log("Wialon URL " + fetchurl);
+      const { data } = await Axios.get(fetchurl);      
 
       let sensorValues = [];
-      if (data && !isObjectEmpty(data)) {
+      if (data && !isObjectEmpty(data) && notifications && !isObjectEmpty(notifications)) {
         let e6SensorValues = getE6SensorValues(data);
-        sensorValues = getWheels(getAxles(e6SensorValues), e6SensorValues);
+        sensorValues = getWheels(
+          getAxles(unitId, notifications, e6SensorValues),
+          e6SensorValues
+        );
+      } else {
+        if (!data) {
+          console.log(`NO DATA`);
+        }
+        if (isObjectEmpty(data)) {
+          console.log(`DATA IS EMPTY`);
+        }
+        if (!notifications ) {
+          console.log(`NO NOTIFICATIONS`);
+        }
+        if (isObjectEmpty(notifications)) {
+          console.log(`NOTIFICATIONS IS EMPTY`);
+        }
       }
 
       console.log(
@@ -136,14 +169,6 @@ function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object;
 } //move to utils
 
-//function isEmptyObj(obj) {
-//    for (var key in obj) {
-//        if (obj.hasOwnProperty(key))
-//            return false;
-//    }
-//    return true;
-//}
-
 function getE6SensorValues(sensorValues) {
   let e6SensorValues = {};
 
@@ -163,14 +188,20 @@ function getE6SensorValues(sensorValues) {
   return e6SensorValues;
 }
 
-function getAxles(e6SensorValues) {
+function getAxles(unitId, notifications, e6SensorValues) {
   let axles = [];
   for (let property in e6SensorValues) {
     let axleNo = property.substring(1, 2);
     if (!axleIdExists(axles, parseInt(axleNo))) {
       let axle = {};
+      let axleMetrics = getAxleMetrics(unitId, notifications, axleNo);
       axle.axleId = parseInt(axleNo);
+      axleMetrics.minPressureValue ? axle.minPressureValue = axleMetrics.minPressureValue : axle.minPressureValue = 1.0;
+      axleMetrics.maxPressureValue ? axle.maxPressureValue = axleMetrics.maxPressureValue : axle.maxPressureValue = 12.0;
+      axleMetrics.maxTemperatureValue ? axle.maxTemperatureValue = axleMetrics.maxTemperatureValue : axle.maxTemperatureValue = 85;
+      axleMetrics.minVoltageValue ? axle.minVoltageValue = axleMetrics.minVoltageValue : axle.minVoltageValue = 3.1;
       axles.push(axle);
+      console.log(`AXLES js ${JSON.stringify(axles)}`);
     }
   }
   axles.sort((a, b) => (a.axleId > b.axleId ? 1 : -1));
@@ -184,6 +215,54 @@ function axleIdExists(axles, axleId) {
       return true;
     }
   }
+}
+
+function getAxleMetrics(unitId, notifications, axleNo) {
+
+  let axleMetrics = {};
+  let pressureMetric = false;
+  let temperatureMetric = false;
+  let voltageMetric = false;
+
+console.log(`dvorah ${JSON.stringify(notifications)} unitid ${unitId} axleNo ${axleNo}`);
+
+//notifications = [{"userName":"10002","eId":"317a8ca4d3cd4564974cca1476437fa4"}];
+
+let keyNames = Object.keys(notifications[0].unf);
+console.log(`keyNames ${JSON.stringify(keyNames)}`);
+// const k = "1";
+// const temp = notifications[0].unf[k].un[0];
+// console.log(`UNITid & data[0].unf[key].un[0] & ${temp}`);
+
+
+for (let key = 0; key < keyNames.length; key++) {
+  if (pressureMetric && 
+      temperatureMetric &&
+      voltageMetric) break;
+
+  if (notifications[0].unf[keyNames[key]].un[0] === unitId) {
+      if (axleNo === notifications[0].unf[keyNames[key]].n.slice(-10).slice(0, 1)) {
+          const metric = notifications[0].unf[keyNames[key]].n.slice(-11).slice(0, 1);
+          switch (metric) {
+              case 'P':
+                  axleMetrics.minPressureValue = parseFloat(notifications[0].unf[keyNames[key]].trg_p.lower_bound);
+                  axleMetrics.maxPressureValue = parseFloat(notifications[0].unf[keyNames[key]].trg_p.upper_bound);
+                  pressureMetric = true;
+                  break;
+              case 'T':
+                  axleMetrics.maxTemperatureValue = parseFloat(notifications[0].unf[keyNames[key]].trg_p.upper_bound);
+                  temperatureMetric = true;
+                  break;
+              case 'V':
+                  axleMetrics.minVoltageValue = parseFloat(notifications[0].unf[keyNames[key]].trg_p.lower_bound);
+                  voltageMetric = true;
+                  break;
+          }
+      }
+  }
+}
+console.log(`axleMetrics ${JSON.stringify(axleMetrics)}`);
+  return axleMetrics;
 }
 
 function getWheels(unitSensorValues, e6SensorValues) {
@@ -201,6 +280,10 @@ function getWheels(unitSensorValues, e6SensorValues) {
           } else {
             wheel.wheelName = "A" + axleNo + "-" + "T" + wheelNo;
           }
+          wheel.minPressureValue = unitSensorValues[i].minPressureValue;
+          wheel.maxPressureValue = unitSensorValues[i].maxPressureValue;
+          wheel.maxTemperatureValue = unitSensorValues[i].maxTemperatureValue;
+          wheel.minVoltageValue = unitSensorValues[i].minVoltageValue;
           wheels.push(wheel);
         }
       }
@@ -232,16 +315,13 @@ function getWheelsSensorMetrics(unitSensorValues, e6SensorValues, wheels) {
             (e6SensorValues[property] * 0.0689475729).toFixed(2)
           );
         }
-        wheels[w].minPressureValue = 4.5;
-        wheels[w].maxPressureValue = 9.5;
+
         if (property.includes("temp")) {
           wheels[w].temperatureValue = e6SensorValues[property];
         }
-        wheels[w].maxTemperatureValue = 85;
         if (property.includes("volt")) {
           wheels[w].voltageValue = e6SensorValues[property];
         }
-        wheels[w].minVoltageValue = 3.1;
       }
     }
   }

@@ -17,6 +17,10 @@ import {
       case USER_SIGNIN_FAIL:
         return { loading: false, error: action.payload };
       case USER_SIGNOUT:
+          // for all keys defined in your persistConfig(s)
+          //storage.removeItem('persist:root')
+          
+        
         return {};
       default:
         return state;

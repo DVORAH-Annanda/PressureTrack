@@ -4,8 +4,8 @@ import {StyleSheet, View, Text} from 'react-native'
 import colors from '../styles/colors'
 
 const PressureBox = (props) => {
-    console.log(JSON.stringify(props.children.pressureValue))
-    console.log(JSON.stringify(props.children.minPressureValue))
+    console.log(`PressureBox pressureValue ${JSON.stringify(props.children.pressureValue)}`)
+    console.log(`PressureBox MINpressureValue ${JSON.stringify(props.children.minPressureValue)}`)
     return (
         <View style={styles.container(props)} >
             <Text style={styles.valueBox}>{props.children.pressureValue} bar</Text>

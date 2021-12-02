@@ -53,7 +53,6 @@ const UnitList = ({ navigation }) => {
   //  }
   //}
 
-  
   useEffect(() => {
     dispatch(signIn(userInfo));
     dispatch(listUnits());

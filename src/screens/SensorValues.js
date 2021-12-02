@@ -42,7 +42,13 @@ const SensorValues = ({ navigation, route }) => {
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, sensorValues } = sensorValueProps;
 
+  if(!loading){
+
+    console.log(`sensorValues screen ${JSON.stringify(sensorValues)} what is loading ${loading}`)
+  }
+
   useEffect(() => {
+    console.log(`sensorValues screen useEffect unit id ${id}`)
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
