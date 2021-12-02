@@ -54,7 +54,7 @@ const UnitsSelected = ({ navigation }) => {
               return (               
                 <TouchableOpacity
                 activeOpacity={0.45}
-                onPress={() => navigation.navigate("SensorValues", { item: item })}
+                onPress={() => navigation.navigate("SensorValues", { title: item.nm, item: item })}
               >
 
                     <View style={styles.listItem}>

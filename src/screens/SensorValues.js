@@ -26,7 +26,7 @@ import AxleContainer from "../components/AxleContainer";
 
 const SensorValues = ({ navigation, route }) => {
   //const { route } = props;
-  const { item } = route.params;
+  const { title, item } = route.params;
   const { id, nm } = item;
 
   const dispatch = useDispatch();
@@ -52,17 +52,17 @@ const SensorValues = ({ navigation, route }) => {
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
-  const axe = (sv) => {
-    return sv.map((s, axe, tyre) => {
-      return (
+  // const axe = (sv) => {
+  //   return sv.map((s, axe, tyre) => {
+  //     return (
         
-        <MetricsContainer key={s[axe][tyre].tyreName}>
-          <TextBox style={styles.tyreName}>{s[axe][tyre].tyreName}</TextBox>
-          <PressureBox>{s[axe][tyre]}</PressureBox>
-        </MetricsContainer>
-      );
-    });
-  };
+  //       <MetricsContainer key={s[axe][tyre].tyreName}>
+  //         <TextBox style={styles.tyreName}>{s[axe][tyre].tyreName}</TextBox>
+  //         <PressureBox>{s[axe][tyre]}</PressureBox>
+  //       </MetricsContainer>
+  //     );
+  //   });
+  // };
 
   return (
       <View style={styles.page}>

@@ -6,17 +6,15 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import UnitList from "../screens/UnitList";
 import UnitsSelected from "../screens/UnitsSelected";
 import SensorValues from "../screens/SensorValues";
-import SignOut from '../screens/SignOut'
+import SignOut from "../screens/SignOut";
 
 import { listUserUnits } from "../actions/unitActions";
-
 
 import colors from "../styles/colors";
 
 const UnitListTabs = createBottomTabNavigator();
 
 const UnitsNavigator = () => {
-
   const tabBarOptions = {
     tabBarShowLabel: true,
     tabBarActiveTintColor: colors.primary,
@@ -35,12 +33,9 @@ const UnitsNavigator = () => {
   //const { loading, error, units, selectedUnits } = unitList;
   const { loading, error, selectedUnits } = userUnitList;
 
-
-
   useEffect(() => {
     dispatch(listUserUnits());
   }, [dispatch, listUserUnits]);
-
 
   return (
     <UnitListTabs.Navigator
@@ -69,18 +64,17 @@ const UnitsNavigator = () => {
           ),
         }}
       />
-            <UnitListTabs.Screen
-      name='SensorValues'
+      <UnitListTabs.Screen
+        name="SensorValues"
         component={SensorValues}
-        options={{
-          //title: "",
-          tabBarButton: props => null}}
+        // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
 
+        options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
+        tabBarButton: (props) => null})}
       />
-                  <UnitListTabs.Screen
-      name='Sign Out'
+      <UnitListTabs.Screen
+        name="Sign Out"
         component={SignOut}
-
         options={{
           //title: "",
           tabBarIcon: ({ color, size }) => (
@@ -94,7 +88,7 @@ const UnitsNavigator = () => {
                 [
                   {
                     text: "No",
-                    style: "cancel"
+                    style: "cancel",
                   },
                   {
                     text: "Yes",
@@ -102,19 +96,14 @@ const UnitsNavigator = () => {
                       //console.log("logout");
                       //AsyncStorage.setItem("token", null);
                       navigation.navigate("SignIn");
-                    }
-                  }
+                    },
+                  },
                 ],
                 { cancelable: false }
               );
-            }
-          })
-        
-        }
-        
-        }
-          
-
+            },
+          }),
+        }}
       />
     </UnitListTabs.Navigator>
   );
@@ -124,6 +113,5 @@ const UnitsNavigator = () => {
 //  title: route.params.item.nm,
 //})}
 //options={{tabBarButton: props => null}}
-
 
 export default UnitsNavigator;

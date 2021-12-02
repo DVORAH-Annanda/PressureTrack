@@ -21,7 +21,7 @@ import { storeData, removeStoredData } from "../utilities/localStoreData";
 
 import colors from "../styles/colors";
 
-const UnitList = ({ navigation }) => {
+const UnitList = ({ navigation, route }) => {
   //const logoutHandler = () => dispatch(setLogout())
 
   //const [eId, seteId] = useState([]);
@@ -78,13 +78,13 @@ const UnitList = ({ navigation }) => {
     }
     return false;
   };
-
+//onPress={() => navigation.navigate("SensorValues", { item: item })}, 
   const renderItem = ({ item }) => {
     console.log("name: " + item.nm + " id: " + item.id);
     return (
       <TouchableOpacity
         activeOpacity={0.45}
-        onPress={() => navigation.navigate("SensorValues", { item: item })}
+        onPress={() => navigation.navigate("SensorValues", { title: item.nm, item: item })}
       >
         <View style={styles.listItem}>
           <Text style={{ marginLeft: 10 }}>{item.nm}</Text>
@@ -116,9 +116,8 @@ const UnitList = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={styles.page} >
       {loading && <Text>loading...</Text>}
-      {units ? console.log(`render unitlist ${JSON.stringify(units)}`) : console.log(`render unitlist NOT ${JSON.stringify(units)}`) }
       {units && (
         <FlatList
           data={units}
