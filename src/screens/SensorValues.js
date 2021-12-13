@@ -14,10 +14,11 @@ import { unitSensorValues } from "../actions/unitActions";
 //import { setLogout } from '../../redux/ducks/user'
 
 import colors from "../styles/colors";
-
+import WheelContainer from "../components/WheelContainer";
 import MetricsContainer from "../components/MetricsContainer";
 import TextBox from "../components/TextBox";
 import PressureBox from "../components/PressureBox";
+import NoSignalBox from "../components/NoSignalBox";
 import TemperatureBox from "../components/TemperatureBox";
 import VoltageBox from "../components/VoltageBox";
 import AxleContainer from "../components/AxleContainer";
@@ -42,49 +43,59 @@ const SensorValues = ({ navigation, route }) => {
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, sensorValues } = sensorValueProps;
 
-  if(!loading){
-
-    console.log(`sensorValues screen ${JSON.stringify(sensorValues)} what is loading ${loading}`)
+  if (!loading) {
+    console.log(
+      `sensorValues screen ${JSON.stringify(
+        sensorValues
+      )} what is loading ${loading}`
+    );
   }
 
   useEffect(() => {
-    console.log(`sensorValues screen useEffect unit id ${id}`)
+    console.log(`sensorValues screen useEffect unit id ${id}`);
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
   return (
-      <View style={styles.page}>
-        {loading ? (
-          <Text>loading...</Text>
-        ) : (
-          //<View>
-          //  <Text>{sensorValues[0].name}</Text>
-          //
-          //</View>
+    <View style={styles.page}>
+      {loading ? (
+        <Text>loading...</Text>
+      ) : (
+        //<View>
+        //  <Text>{sensorValues[0].name}</Text>
+        //
+        //</View>
 
-          <ScrollView>
-            {sensorValues.map((axle) => {
-              return (
-                <AxleContainer style={styles.axle} key={axle.axleId}>
-                  {axle.wheels.map((wheel) => {
-                    return (
-                      <MetricsContainer style={styles.wheel}  key={wheel.wheelId}>
-                        <TextBox style={styles.tyreName}>
-                          {wheel.wheelName}
-                        </TextBox>
-
+        <ScrollView>
+          {sensorValues.map((axle) => {
+            return (
+              <AxleContainer style={styles.axle} key={axle.axleId}>
+                {axle.wheels.map((wheel) => {
+                  return (
+                    <WheelContainer style={styles.wheel} key={wheel.wheelId}>
+                      <TextBox style={styles.tyreName}>
+                        {wheel.wheelName}
+                      </TextBox>
+                      {console.log(`PRESSUREVALUE ${wheel.pressureValue}`)}
+                      {wheel.pressureValue == null ? (
+                        <NoSignalBox>{wheel}</NoSignalBox>
+                      ) : (
+                        
+                        <MetricsContainer>
                         <PressureBox>{wheel}</PressureBox>
                         <TemperatureBox>{wheel}</TemperatureBox>
                       </MetricsContainer>
-                    );
-                  })}
-                </AxleContainer>
-              );
-            })}
-          </ScrollView>
-        )}
-        <View></View>
-      </View>
+                      )}
+                    </WheelContainer>
+                  );
+                })}
+              </AxleContainer>
+            );
+          })}
+        </ScrollView>
+      )}
+      <View></View>
+    </View>
   );
 };
 
@@ -104,16 +115,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  axle: {    
+  axle: {
     margin: 2.5,
     padding: 2.5,
     flexDirection: "row",
   },
-  wheel: {    
+  wheel: {
     minWidth: 75,
   },
   tyreName: {
-    backgroundColor: colors.tyreNameBg,
+    backgroundColor: colors.tyreNameGreen,
     alignItems: "center",
     justifyContent: "center",
   },
