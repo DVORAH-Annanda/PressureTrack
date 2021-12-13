@@ -16,8 +16,7 @@ const PressureBox = (props) => {
 //<Text>{props.children.pressureValue}</Text>
 
 const styles = StyleSheet.create({
-container: props  => ({
-    
+container: props  => ({    
     width: '100%',
     height: 25,
     borderWidth: 1,

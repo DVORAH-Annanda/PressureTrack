@@ -13,11 +13,11 @@ const TemperatureBox = (props) => {
 
 const styles = StyleSheet.create({
     container: props  => ({
-        width: 85,
+        width: '100%',
         height: 25,
         borderWidth: 1,
-        borderColor: '#eee',
-        padding: 5,
+        borderColor: colors.lightGray,
+        padding: 1.5,
         backgroundColor: props.children.temperatureValue > props.children.maxTemperatureValue ? 'orange' : 'green',
         alignItems: 'center',
         justifyContent: 'center',

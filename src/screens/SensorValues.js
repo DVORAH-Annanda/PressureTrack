@@ -52,18 +52,6 @@ const SensorValues = ({ navigation, route }) => {
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
-  // const axe = (sv) => {
-  //   return sv.map((s, axe, tyre) => {
-  //     return (
-        
-  //       <MetricsContainer key={s[axe][tyre].tyreName}>
-  //         <TextBox style={styles.tyreName}>{s[axe][tyre].tyreName}</TextBox>
-  //         <PressureBox>{s[axe][tyre]}</PressureBox>
-  //       </MetricsContainer>
-  //     );
-  //   });
-  // };
-
   return (
       <View style={styles.page}>
         {loading ? (
@@ -77,17 +65,16 @@ const SensorValues = ({ navigation, route }) => {
           <ScrollView>
             {sensorValues.map((axle) => {
               return (
-                <AxleContainer key={axle.axleId}>
+                <AxleContainer style={styles.axle} key={axle.axleId}>
                   {axle.wheels.map((wheel) => {
                     return (
-                      <MetricsContainer key={wheel.wheelId}>
+                      <MetricsContainer style={styles.wheel}  key={wheel.wheelId}>
                         <TextBox style={styles.tyreName}>
                           {wheel.wheelName}
                         </TextBox>
-                        <TextBox style={styles.sensorId}>
-                          {wheel.sensorId}
-                        </TextBox>
+
                         <PressureBox>{wheel}</PressureBox>
+                        <TemperatureBox>{wheel}</TemperatureBox>
                       </MetricsContainer>
                     );
                   })}
@@ -111,14 +98,19 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     marginTop: StatusBar.currentHeight,
+    marginLeft: 2.5,
+    marginRight: 5,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-  axle: {
-    width: 185,
-    height: 85,
+  axle: {    
+    margin: 2.5,
+    padding: 2.5,
     flexDirection: "row",
+  },
+  wheel: {    
+    minWidth: 75,
   },
   tyreName: {
     backgroundColor: colors.tyreNameBg,

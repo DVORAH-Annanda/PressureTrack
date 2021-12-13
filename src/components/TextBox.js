@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         height: 18,
         borderWidth: 1,
         borderColor: colors.lightGray,
-        padding: 1,
+        padding: 1.5,
         textAlignVertical: 'center',
         textAlign: 'center',
     }),

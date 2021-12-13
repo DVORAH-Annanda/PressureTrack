@@ -50,7 +50,6 @@ export const listUnits = () => async (dispatch, getState) => {
 async function getNotifications(url) {
   return await Axios.get(url)
     .then((response) => {
-      console.log("HALLO!!")
       return response.data.items;
     })
     .catch((error) => {
@@ -104,7 +103,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
     const {
       userSignIn: { userInfo },
     } = getState();
-    console.log(`unitSensorValues userInfo%%% ${JSON.stringify(userInfo)}`);
+    console.log(`unit ID ${unitId}`);
     if (!isObjectEmpty(userInfo[0].eId)) {
       const notificationsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"notifications","propValueMask":"*","sortType":"notifications","propType":"propitemname"},"force":1,"flags":1025,"from":0,"to":1}&sid=` +
@@ -114,9 +113,21 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
 
       const notifications = await getNotifications(notificationsUrl);
 
+      //const getSensorsUrl =
+      //`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"unit_sensors","propValueMask":"*","sortType":"unit_sensors","propType":"propitemname"},"force":1,"flags":4097,"from":0,"to":1}&sid=` +
+      //userInfo[0].eId;
+
+      //const getSensorsUrl =
+      ///`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"unit_sensors","propValueMask":"*","sortType":"unit_sensors","propType":"propitemname"},"force":1,"flags":4097,"from":0,"to":1}&sid=` +
+      //userInfo[0].eId;
+
+      const getSensorsUrl = `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=` + userInfo[0].eId;
+
+    console.log(`getSensorsUrl ${getSensorsUrl}`);
+
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
-      const fetchurl =
+      const getSensorsValuesUrl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=messages/load_interval&params={"itemId":' +
         unitId +
         ',"timeFrom":' +
@@ -125,7 +136,9 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         timeTo +
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
         userInfo[0].eId;
-      const { data } = await Axios.get(fetchurl);      
+      const { data } = await Axios.get(getSensorsValuesUrl);    
+      
+      console.log(`e6SensorValues ${getSensorsValuesUrl}`);
 
       let sensorValues = [];
       if (data && !isObjectEmpty(data) && notifications && !isObjectEmpty(notifications)) {
