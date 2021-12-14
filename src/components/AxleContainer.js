@@ -11,10 +11,11 @@ const AxleContainer = (props) => {
 
 const styles = StyleSheet.create({
 container: {
-    flex:1,
-    flexDirection:'row',
+    flex: 1,
+    flexDirection: "row",
+    maxWidth:385,    
     margin: 5,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: colors.axleBlue,
     borderRadius: 4.5,
     backgroundColor: colors.white,

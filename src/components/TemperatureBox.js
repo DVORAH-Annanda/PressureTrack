@@ -6,14 +6,16 @@ import colors from '../styles/colors'
 const TemperatureBox = (props) => {
     return (
         <View style={styles.container(props)} >
-            <Text style={styles.valueBox}>{props.children.temperatureValue} C</Text>
+            <Text style={styles.textValue}>{props.children.temperatureValue}&deg;C</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: props  => ({
+        flex: 1, 
         width: '100%',
+        
         height: 25,
         borderWidth: 1,
         borderColor: colors.lightGray,
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     }),
-    valueBox: {
+    textValue: {
     color: colors.white,
     },
     });

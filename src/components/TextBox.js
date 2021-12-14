@@ -11,8 +11,8 @@ const TextBox = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container: ({
-        width: '100%',
+    container: ({   
+        width: '100%',     
         fontSize: 10,
         height: 18,
         borderWidth: 1,

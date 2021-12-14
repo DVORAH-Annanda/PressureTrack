@@ -72,7 +72,7 @@ const UnitsNavigator = () => {
         options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
         tabBarButton: (props) => null})}
       />
-      <UnitListTabs.Screen
+      {/* <UnitListTabs.Screen
         name="Sign Out"
         component={SignOut}
         options={{
@@ -104,7 +104,7 @@ const UnitsNavigator = () => {
             },
           }),
         }}
-      />
+      /> */}
     </UnitListTabs.Navigator>
   );
 };

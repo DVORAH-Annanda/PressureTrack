@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
+  Platform, 
   StyleSheet,
   ScrollView,
   View,
@@ -72,7 +73,7 @@ const SensorValues = ({ navigation, route }) => {
               <AxleContainer style={styles.axle} key={axle.axleId}>
                 {axle.wheels.map((wheel) => {
                   return (
-                    <WheelContainer style={styles.wheel} key={wheel.wheelId}>
+                    <WheelContainer  key={wheel.wheelId}>
                       <TextBox style={styles.tyreName}>
                         {wheel.wheelName}
                       </TextBox>
@@ -115,18 +116,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  axle: {
-    margin: 2.5,
-    padding: 2.5,
-    flexDirection: "row",
-  },
-  wheel: {
-    minWidth: 75,
-  },
   tyreName: {
+    flex: 1,
     backgroundColor: colors.tyreNameGreen,
-    alignItems: "center",
-    justifyContent: "center",
+    
+  
   },
   sensorId: {
     backgroundColor: colors.white,
@@ -134,6 +128,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+//marginTop: Platform.OS === 'ios' ? 35 : 1,
+//marginBottom: 1,
 
 export default SensorValues;
 

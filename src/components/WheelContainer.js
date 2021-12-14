@@ -1,21 +1,23 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {StyleSheet, View, Text} from 'react-native'
+import { StyleSheet, View, Text} from 'react-native'
 
 import colors from '../styles/colors'
 
 const WheelContainer = (props) => {
     return (
-        <SafeAreaView>
-        <View style={{ ...styles.container, ...props.style }}>{props.children}</View>
-        </SafeAreaView>
+        <View>
+        <View style={styles.container}>{props.children}</View>
+        </View>
       );
 }
 
 const styles = StyleSheet.create({
 container: {
-    margin:0.5,
-    borderWidth: 1.5,
+    flex: 1,
+    margin: 5,    
+    width: 75,    
+    borderWidth: 1,
     borderColor: colors.gray,
     padding: 1.5,
     borderRadius: 4.5,
@@ -24,5 +26,5 @@ container: {
     justifyContent: 'center',
 },
 });
-
+//height: 95,
 export default WheelContainer;

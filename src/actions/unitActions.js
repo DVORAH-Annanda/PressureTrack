@@ -371,7 +371,7 @@ function getWheelsSensorMetrics(unitSensorValues, e6SensorValues, wheels) {
         wheels[w].tyreId = "T12345";
         if (property.includes("pressure")) {
           wheels[w].pressureValue = parseFloat(
-            (e6SensorValues[property] * 0.0689475729).toFixed(2)
+            (e6SensorValues[property] * 0.0689475729).toFixed(1)
           );
         }
 
