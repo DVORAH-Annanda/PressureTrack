@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import UnitList from "../screens/UnitList";
 import UnitsSelected from "../screens/UnitsSelected";
-import SensorValues from "../screens/SensorValues";
+import SensorValuesDiagram from "../screens/SensorValuesDiagram";
 
 import { listUserUnits } from "../actions/unitActions";
 
@@ -34,15 +34,13 @@ const SensorValuesNavigator = () => {
 
   useEffect(() => {
     dispatch(listUserUnits());
-  }, []);
-
- 
+  }, []); 
 
   return (
     <SensorValuesTabs.Navigator
       screenOptions={tabBarOptions}
       initialRouteName={
-        "SensorValues"
+        "SensorValuesDiagram"
       }
     >
       <SensorValuesTabs.Screen

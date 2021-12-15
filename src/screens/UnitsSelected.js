@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { MaterialIcons } from "@expo/vector-icons"; 
 import { signIn } from "../actions/userActions";
 import {
   listUnits,
@@ -54,7 +54,7 @@ const UnitsSelected = ({ navigation }) => {
               return (               
                 <TouchableOpacity
                 activeOpacity={0.45}
-                onPress={() => navigation.navigate("SensorValues", { title: item.nm, item: item })}
+                onPress={() => navigation.navigate("WheelsDiagram", { title: item.nm, item: item })}
               >
 
                     <View style={styles.listItem}>

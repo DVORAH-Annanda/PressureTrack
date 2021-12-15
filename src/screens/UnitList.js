@@ -10,7 +10,7 @@ import {
   Image,
   ColorPropType,
 } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"; //person-add person-remove
+import { MaterialIcons } from "@expo/vector-icons"; //person-add person-remove
 import { signIn } from "../actions/userActions";
 import {
   listUnits,
@@ -84,7 +84,7 @@ const UnitList = ({ navigation, route }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.45}
-        onPress={() => navigation.navigate("SensorValues", { title: item.nm, item: item })}
+        onPress={() => navigation.navigate("WheelsDiagram", { title: item.nm, item: item })}
       >
         <View style={styles.listItem}>
           <Text style={{ marginLeft: 10 }}>{item.nm}</Text>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-
+//import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { MaterialIcons } from "@expo/vector-icons"; 
 import UnitList from "../screens/UnitList";
 import UnitsSelected from "../screens/UnitsSelected";
-import SensorValues from "../screens/SensorValues";
+import SensorValuesDiagram from "../screens/SensorValuesDiagram";
+import WheelsDiagram from "../screens/WheelsDiagram";
 import SignOut from "../screens/SignOut";
 
 import { listUserUnits } from "../actions/unitActions";
@@ -64,12 +65,13 @@ const UnitsNavigator = () => {
           ),
         }}
       />
-      <UnitListTabs.Screen
-        name="SensorValues"
-        component={SensorValues}
+
+            <UnitListTabs.Screen
+        name="WheelsDiagram"
+        component={WheelsDiagram}
         // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
 
-        options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
+        options={({ route }) => ({ title: route.params?.title || 'Wheels Diagram',
         tabBarButton: (props) => null})}
       />
       {/* <UnitListTabs.Screen
@@ -113,5 +115,14 @@ const UnitsNavigator = () => {
 //  title: route.params.item.nm,
 //})}
 //options={{tabBarButton: props => null}}
+
+      /* <UnitListTabs.Screen
+        name="SensorValues"
+        component={SensorValuesDiagram}
+        // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
+
+        options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
+        tabBarButton: (props) => null})}
+      /> */
 
 export default UnitsNavigator;

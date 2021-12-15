@@ -15,7 +15,7 @@ container: {
     flexDirection: "row",
     maxWidth:385,    
     margin: 5,
-    borderWidth: 1,
+    
     borderColor: colors.axleBlue,
     borderRadius: 4.5,
     backgroundColor: colors.white,

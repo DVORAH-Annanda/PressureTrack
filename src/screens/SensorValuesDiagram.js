@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Platform, 
   StyleSheet,
@@ -26,7 +25,7 @@ import AxleContainer from "../components/AxleContainer";
 //import LoadingBox from '../../components/LoadingBox'
 //import MessageBox from '../../components/MessageBox'
 
-const SensorValues = ({ navigation, route }) => {
+const SensorValuesDiagram = ({ navigation, route }) => {
   //const { route } = props;
   const { title, item } = route.params;
   const { id, nm } = item;
@@ -116,6 +115,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  axle: {
+    borderWidth: 1,
+  },
   tyreName: {
     flex: 1,
     backgroundColor: colors.tyreNameGreen,
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
 //marginTop: Platform.OS === 'ios' ? 35 : 1,
 //marginBottom: 1,
 
-export default SensorValues;
+export default SensorValuesDiagram;
 
 //<Text>{JSON.stringify(sensorValues)}</Text>
 //<View></View>
