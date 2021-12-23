@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  Platform, 
+  Platform,
   StyleSheet,
   ScrollView,
   View,
@@ -14,7 +14,6 @@ import { unitSensorValues } from "../actions/unitActions";
 //import { setLogout } from '../../redux/ducks/user'
 
 import colors from "../styles/colors";
-import Wheel from "../components/Wheel";
 
 import MetricsContainer from "../components/MetricsContainer";
 import TextBox from "../components/TextBox";
@@ -61,27 +60,10 @@ const WheelsDiagram = ({ navigation, route }) => {
       {loading ? (
         <Text>loading...</Text>
       ) : (
-        //<View>
-        //  <Text>{sensorValues[0].name}</Text>
-        //
-        //</View>
-
         <ScrollView>
           {sensorValues.map((axle) => {
-            return (
-              <AxleContainer style={styles.axle} key={axle.axleId}>
-                {axle.wheels.map((wheel) => {
-                  
-                  return (   
-                    <Wheel key={wheel.wheelId}>
-                      {wheel}
-                    </Wheel>
-                  
-                  );
-
-                })}
-              </AxleContainer>
-            );
+            return <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
+ 
           })}
         </ScrollView>
       )}

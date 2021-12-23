@@ -1,7 +1,7 @@
 import React from "react";
 
 import { StyleSheet, View, Text } from "react-native";
-import Axle from "../components/Axle";
+
 
 import colors from "../styles/colors";
 
@@ -9,8 +9,13 @@ const Wheel = (props) => {
   {
     console.log(`PROPS WHEEL ${JSON.stringify(props)}`);
   }
-
+//wheel.pressureValue == null
   renderWheelStyle = () => {
+    if(props.children.pressureValue == null){
+      return (
+        <View style={[styles.wheel, styles.noSignalWheel]}></View>
+      );
+    }
     if(props.children.pressureValue > props.children.maxPressureValue){
       return (
         <View style={[styles.wheel, styles.purpleWheel]}></View>
@@ -40,9 +45,9 @@ const Wheel = (props) => {
   return (
     <View>
       {props.children.wheelId === 2 ? (
-        <View style={styles.wheelAxle}>
+        <View >
           {renderWheelStyle()}
-          <View style={styles.axle}></View>
+          
         </View>
       ) : (
         <View>
@@ -54,21 +59,21 @@ const Wheel = (props) => {
 };
 
 const styles = StyleSheet.create({
-  wheelAxle: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   wheel: {
     margin: 0.5,
     width: 25,
-    height: 50,
+    height: 60,
     borderWidth: 2.5,
     borderColor: colors.darkGray,
     borderRadius: 8.5,
     backgroundColor: colors.black,
     alignItems: "center",
     justifyContent: "center",
+  },
+  noSignalWheel: {
+    borderColor: colors.noSignalBlueBorder,
+    backgroundColor: colors.noSignalBlue,    
   },
   purpleWheel: {
     backgroundColor: colors.purpleWheel,
@@ -85,9 +90,6 @@ const styles = StyleSheet.create({
   yellowWheel: {
     backgroundColor: colors.yellowWheel,
     borderColor: colors.yellowWheelBorder,
-  },
-  noSignalWheel: {
-    backgroundColor: colors.noSignalBlue,
   },
   axle: {
     width: 45,

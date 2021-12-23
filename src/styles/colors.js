@@ -7,6 +7,7 @@ export default {
     darkGray: "#5d5d5d",
     black: "#181818",
     noSignalBlue: "#85ceee",
+    noSignalBlueBorder: "#a9daf5",
     purpleWheel: "#7557ae",
     purpleWheelBorder: "#2E0755",    
     redWheel: "#ad0505",

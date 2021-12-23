@@ -146,9 +146,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         timeTo +
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
         userInfo[0].eId;
-      const { data } = await Axios.get(getSensorsValuesUrl);
-
-     
+      const { data } = await Axios.get(getSensorsValuesUrl);     
 
       let sensorValues = [];
       if (
@@ -246,7 +244,6 @@ function getAxles(unitId, sensors, notifications) {
     }
   }
 
-  console.log(`AXLES js ${JSON.stringify(axles)}`);
   axles.sort((a, b) => (a.axleId > b.axleId ? 1 : -1));
 
   return axles;
@@ -266,17 +263,7 @@ function getAxleMetrics(unitId, axleNo, notifications) {
   let temperatureMetric = false;
   let voltageMetric = false;
 
-  console.log(
-    `dvorah ${JSON.stringify(notifications)} unitid ${unitId} axleNo ${axleNo}`
-  );
-
-  //notifications = [{"userName":"10002","eId":"317a8ca4d3cd4564974cca1476437fa4"}];
-
   let keyNames = Object.keys(notifications[0].unf);
-  console.log(`keyNames ${JSON.stringify(keyNames)}`);
-  // const k = "1";
-  // const temp = notifications[0].unf[k].un[0];
-  // console.log(`UNITid & data[0].unf[key].un[0] & ${temp}`);
 
   for (let key = 0; key < keyNames.length; key++) {
     if (pressureMetric && temperatureMetric && voltageMetric) break;
@@ -314,7 +301,6 @@ function getAxleMetrics(unitId, axleNo, notifications) {
       }
     }
   }
-  console.log(`axleMetrics ${JSON.stringify(axleMetrics)}`);
   return axleMetrics;
 }
 
