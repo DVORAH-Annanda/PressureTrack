@@ -16,7 +16,7 @@ import {
 import authenticationHandler from "../utilities/authenticationHandler";
 import { getLocalStorageData } from "../utilities/localStoreData";
 
-export const listUnits = () => async (dispatch, getState) => {
+export const listUnits = () => async (dispatch, getState) => {  
   dispatch({
     type: UNIT_LIST_REQUEST,
   });
@@ -97,24 +97,36 @@ async function getNotifications(url) {
 export const unitSensorValues = (unitId) => async (dispatch, getState) => {
   dispatch({ type: UNIT_SENSORVALUES_REQUEST, payload: unitId });
   try {
-    
     const {
       userSignIn: { userInfo },
     } = getState();
-
+    console.log(`unit ID ${unitId}`);
     if (!isObjectEmpty(userInfo[0].eId)) {
-
-      let notifications = {};
-      let sensors = {};
-      let sensorValues = [];
-
       const notificationsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"notifications","propValueMask":"*","sortType":"notifications","propType":"propitemname"},"force":1,"flags":1025,"from":0,"to":1}&sid=` +
         userInfo[0].eId;
 
+      console.log(`notificationsUrl ${notificationsUrl}`);
+
+      const notifications = await getNotifications(notificationsUrl);
+
+      //const sensorsUrl =
+      ///`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"unit_sensors","propValueMask":"*","sortType":"unit_sensors","propType":"propitemname"},"force":1,"flags":4097,"from":0,"to":1}&sid=` +
+      //userInfo[0].eId;
+
       const sensorsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=` +
         userInfo[0].eId;
+
+      console.log(`sensorsUrl ${sensorsUrl}`);
+      const getSensorsResponse = await Axios.get(sensorsUrl);
+      console.log(`sensorData ${JSON.stringify(getSensorsResponse.data)}`);
+      const sensorData = getSensorsResponse.data
+      let sensors = {};
+      sensors = Object.assign(sensors, sensorData.item.sens);
+      
+
+      console.log(`sensors ${JSON.stringify(sensors)}`);
 
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
@@ -127,54 +139,45 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         timeTo +
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
         userInfo[0].eId;
+      const { data } = await Axios.get(sensorValuesUrl);     
 
-      let endpoints = [notificationsUrl, sensorsUrl, sensorValuesUrl];
-      Promise.all(endpoints.map((endpoint) => Axios.get(endpoint))).then(
-        ([
-          { data: notificationData },
-          { data: sensorData },
-          { data: sensorValuesData },
-        ]) => {
-
-          notifications = notificationData.items;
-          sensors = Object.assign(sensors, sensorData.item.sens);
-
-          if (sensorValuesData && !isObjectEmpty(sensorValuesData)) {
-            const e6SensorValues = getE6SensorValues(sensorValuesData);
-            if (sensors && !isObjectEmpty(sensors) && notifications && !isObjectEmpty(notifications)) {
-              sensorValues = getWheels(
-                getAxles(unitId, sensors, notifications),
-                sensors,
-                e6SensorValues
-              );
-            } else {
-              if (!sensors) {
-                console.log(`NO SENSOR  DATA`);
-              }
-              if (isObjectEmpty(sensors)) {
-                console.log(`SENSOR DATA OBJECT IS EMPTY`);
-              }
-              if (!notifications) {
-                console.log(`NO NOTIFICATIONS`);
-              }
-              if (isObjectEmpty(notifications)) {
-                console.log(`NOTIFICATIONS OBJECT IS EMPTY`);
-              }
-            }
-            dispatch({
-              type: UNIT_SENSORVALUES_SUCCESS,
-              payload: sensorValues,
-            });
-          } else {
-            if (!sensorValuesData) {
-              console.log(`NO SENSOR VALUES DATA`);
-            }
-            if (isObjectEmpty(sensorValuesData)) {
-              console.log(`SENSOR VALUES DATA OBJECT IS EMPTY`);
-            }
-          }
+      let sensorValues = [];
+      if (
+        data &&
+        !isObjectEmpty(data) &&
+        notifications &&
+        !isObjectEmpty(notifications)
+      ) {
+        const e6SensorValues = getE6SensorValues(data);
+        console.log(`e6SensorValues ${JSON.stringify(e6SensorValues)}`);
+        sensorValues = getWheels(
+          getAxles(unitId, sensors, notifications),
+          sensors,
+          e6SensorValues
+        );
+        console.log(`sensorValuesTEST ${JSON.stringify(sensorValues)}`);
+      } else {
+        if (!data) {
+          console.log(`NO DATA`);
         }
+        if (isObjectEmpty(data)) {
+          console.log(`DATA IS EMPTY`);
+        }
+        if (!notifications) {
+          console.log(`NO NOTIFICATIONS`);
+        }
+        if (isObjectEmpty(notifications)) {
+          console.log(`NOTIFICATIONS IS EMPTY`);
+        }
+      }
+
+      console.log(
+        "unitSensorValues -AXLES!!!!! " + JSON.stringify(sensorValues)
       );
+      dispatch({
+        type: UNIT_SENSORVALUES_SUCCESS,
+        payload: sensorValues,
+      });
     }
   } catch (error) {
     dispatch({
@@ -300,30 +303,30 @@ function getWheels(unitSensorValues, sensors, e6SensorValues) {
   for (let i = 0; i < unitSensorValues.length; i++) {
     let wheels = [];
     for (let key = 0; key < keyNames.length; key++) {
-      if (sensors[keyNames[key]].m === "bar") {
-        let axleNo = sensors[keyNames[key]].n.slice(1, 2);
-        let wheelNo = sensors[keyNames[key]].n.slice(2, 3);
-
-        if (unitSensorValues[i].axleId === parseInt(axleNo)) {
-          //if (!wheelIdExists(wheels, parseInt(wheelNo))) {
-          let wheel = {};
-          wheel.wheelId = parseInt(wheelNo);
-          if (axleNo === "9") {
-            wheel.wheelName = "Spare " + wheelNo;
-          } else {
-            wheel.wheelName = "A" + axleNo + "-" + "T" + wheelNo;
+      if (sensors[keyNames[key]].m === "bar") {  
+          let axleNo = sensors[keyNames[key]].n.slice(1, 2);
+          let wheelNo = sensors[keyNames[key]].n.slice(2, 3);
+      
+          if (unitSensorValues[i].axleId === parseInt(axleNo)) {
+              //if (!wheelIdExists(wheels, parseInt(wheelNo))) {
+              let wheel = {};
+              wheel.wheelId = parseInt(wheelNo);
+              if (axleNo === "9") {
+                  wheel.wheelName = "Spare " + wheelNo;
+              } else {
+                  wheel.wheelName = "A" + axleNo + "-" + "T" + wheelNo;
+              }
+              wheel.sensorId = sensors[keyNames[key]].n.slice(-8);
+              wheel.tyreId = sensors[keyNames[key]].d;
+              wheel.minPressureValue = unitSensorValues[i].minPressureValue;
+              wheel.maxPressureValue = unitSensorValues[i].maxPressureValue;
+              wheel.maxTemperatureValue = unitSensorValues[i].maxTemperatureValue;
+              wheel.minVoltageValue = unitSensorValues[i].minVoltageValue;
+              wheels.push(wheel);
+              //}
           }
-          wheel.sensorId = sensors[keyNames[key]].n.slice(-8);
-          wheel.tyreId = sensors[keyNames[key]].d;
-          wheel.minPressureValue = unitSensorValues[i].minPressureValue;
-          wheel.maxPressureValue = unitSensorValues[i].maxPressureValue;
-          wheel.maxTemperatureValue = unitSensorValues[i].maxTemperatureValue;
-          wheel.minVoltageValue = unitSensorValues[i].minVoltageValue;
-          wheels.push(wheel);
-          //}
-        }
       }
-    }
+  }
     wheels.sort((a, b) => (a.wheelId > b.wheelId ? 1 : -1));
     unitSensorValues[i].wheels = getWheelsSensorMetrics(
       unitSensorValues[i],

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import Wheel from "./Wheel";
+
 import WheelAxle from "../components/WheelAxle";
 
 import colors from "../styles/colors";
@@ -14,6 +15,7 @@ const Axle4Wheels = (props) => {
       {props.children.wheelId === 2 ? (
         <WheelAxle>{props.children}</WheelAxle>
       ) : (
+        
         <Wheel>{props.children}</Wheel>
       )}
     </View>

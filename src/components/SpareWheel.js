@@ -2,11 +2,9 @@ import React from "react";
 
 import { StyleSheet, View, Text } from "react-native";
 
-import SpareWheel from "./SpareWheel";
-
 import colors from "../styles/colors";
 
-const Wheel = (props) => {
+const SpareWheel = (props) => {
   {
     console.log(`PROPS WHEEL ${JSON.stringify(props)}`);
   }
@@ -44,15 +42,10 @@ const Wheel = (props) => {
   }
 
   return (
-    <View>
-      {props.children.wheelName.slice(0, 5) !== "Spare" ? (
-        <View >
-          {renderWheelStyle()}
-          
-        </View>
-      ) : (
-<SpareWheel>{props.children}</SpareWheel>
-      )}
+    <View>   
+        
+        {renderWheelStyle()}
+       
     </View>
   );
 };
@@ -60,9 +53,9 @@ const Wheel = (props) => {
 const styles = StyleSheet.create({
 
   wheel: {
-    margin: 0.5,
-    width: 25,
-    height: 60,
+    margin: 1.5,
+    width: 60,
+    height: 25,
     borderWidth: 2.5,
     borderColor: colors.darkGray,
     borderRadius: 8.5,
@@ -90,13 +83,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.yellowWheel,
     borderColor: colors.yellowWheelBorder,
   },
-  axle: {
-    width: 45,
-    height: 8.5,
-    backgroundColor: colors.axleBlue,
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
 //height: 95,
-export default Wheel;
+export default SpareWheel;

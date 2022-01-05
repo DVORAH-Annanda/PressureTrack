@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import Wheel from "../components/Wheel";
+import SpareWheel from "../components/SpareWheel";
 
 import colors from "../styles/colors";
 
@@ -13,7 +14,7 @@ const WheelAxle = (props) => {
     </View>
   ) : (
     <View style={styles.wheelAxle}>
-      <Wheel>{props.children}</Wheel>
+      <SpareWheel>{props.children}</SpareWheel>
     </View>
   );
 };
