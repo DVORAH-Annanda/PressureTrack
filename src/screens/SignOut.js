@@ -10,7 +10,7 @@ const SignOut = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(signOut());
-    Alert.alert('Are you sure you want to go exit?', [
+    Alert.alert('Are you sure you want to exit?', [
       {
         text: 'Cancel',
         onPress: () => null,

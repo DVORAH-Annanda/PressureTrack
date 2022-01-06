@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   Platform, 
   StyleSheet,
+  TouchableWithoutFeedback,
   ScrollView,
   View,
   Text,
@@ -21,7 +22,7 @@ import PressureBox from "../components/PressureBox";
 import NoSignalBox from "../components/NoSignalBox";
 import TemperatureBox from "../components/TemperatureBox";
 import VoltageBox from "../components/VoltageBox";
-import AxleContainer from "../components/AxleContainer";
+import SensorValuesAxleContainer from "../components/SensorValuesAxleContainer";
 //import LoadingBox from '../../components/LoadingBox'
 //import MessageBox from '../../components/MessageBox'
 
@@ -57,6 +58,7 @@ const SensorValuesDiagram = ({ navigation, route }) => {
   }, [dispatch, unitSensorValues, id]);
 
   return (
+    <TouchableWithoutFeedback onPress={() => navigation.navigate("WheelsDiagram", { title: item.nm, item: item })}>
     <View style={styles.page}>
       {loading ? (
         <Text>loading...</Text>
@@ -69,7 +71,7 @@ const SensorValuesDiagram = ({ navigation, route }) => {
         <ScrollView>
           {sensorValues.map((axle) => {
             return (
-              <AxleContainer style={styles.axle} key={axle.axleId}>
+              <SensorValuesAxleContainer style={styles.axle} key={axle.axleId}>
                 {axle.wheels.map((wheel) => {
                   return (
                     <WheelContainer  key={wheel.wheelId}>
@@ -89,13 +91,14 @@ const SensorValuesDiagram = ({ navigation, route }) => {
                     </WheelContainer>
                   );
                 })}
-              </AxleContainer>
+              </SensorValuesAxleContainer>
             );
           })}
         </ScrollView>
       )}
       <View></View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -120,9 +123,7 @@ const styles = StyleSheet.create({
   },
   tyreName: {
     flex: 1,
-    backgroundColor: colors.tyreNameGreen,
-    
-  
+    backgroundColor: colors.tyreNameGreen,   
   },
   sensorId: {
     backgroundColor: colors.white,

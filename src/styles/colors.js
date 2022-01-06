@@ -9,7 +9,7 @@ export default {
     noSignalBlue: "#85ceee",
     noSignalBlueBorder: "#a9daf5",
     purpleWheel: "#7557ae",
-    purpleWheelBorder: "#2E0755",    
+    purpleWheelBorder: "#7575ae",    
     redWheel: "#ad0505",
     redWheelBorder: "#f82525", 
     orangeWheel: "#ff580f",

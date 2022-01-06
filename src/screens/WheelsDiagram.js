@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Platform,
   StyleSheet,
+  TouchableWithoutFeedback,
   ScrollView,
   View,
   Text,
@@ -10,7 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import { unitSensorValues } from "../actions/unitActions";
-
+import SensorValuesDiagram from "../screens/SensorValuesDiagram";
 //import { setLogout } from '../../redux/ducks/user'
 
 import colors from "../styles/colors";
@@ -25,6 +26,10 @@ import AxleContainer from "../components/AxleContainer";
 //import MessageBox from '../../components/MessageBox'
 
 const WheelsDiagram = ({ navigation, route }) => {
+
+
+
+  
   //const { route } = props;
   const { title, item } = route.params;
   const { id, nm } = item;
@@ -51,11 +56,12 @@ const WheelsDiagram = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    console.log(`sensorValues screen useEffect unit id ${id}`);
+    console.log(`wheelsdiagram screen useEffect unit id ${id}`);
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
   return (
+    <TouchableWithoutFeedback onPress={() => navigation.navigate("SensorValuesDiagram", { title: item.nm, item: item })}>
     <View style={styles.page}>
       {loading ? (
         <Text>loading...</Text>
@@ -69,6 +75,7 @@ const WheelsDiagram = ({ navigation, route }) => {
       )}
       <View></View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

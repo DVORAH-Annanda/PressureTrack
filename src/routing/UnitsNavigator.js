@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-//import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { MaterialIcons } from "@expo/vector-icons"; 
+
+import { MaterialIcons } from "@expo/vector-icons";
+
 import UnitList from "../screens/UnitList";
 import UnitsSelected from "../screens/UnitsSelected";
 import SensorValuesDiagram from "../screens/SensorValuesDiagram";
 import WheelsDiagram from "../screens/WheelsDiagram";
-import SignOut from "../screens/SignOut";
+
 
 import { listUserUnits } from "../actions/unitActions";
 
@@ -18,7 +19,7 @@ const UnitListTabs = createBottomTabNavigator();
 const UnitsNavigator = () => {
   const tabBarOptions = {
     tabBarShowLabel: true,
-    tabBarActiveTintColor: colors.primary,
+        tabBarActiveTintColor: colors.primary,
     tabBarStyle: [
       {
         height: "10%",
@@ -59,54 +60,31 @@ const UnitsNavigator = () => {
         name="Units Selected"
         component={UnitsSelected}
         options={{
-          //title: "User's Selected Units",
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person" color={color} size={36} />
           ),
         }}
       />
-
-            <UnitListTabs.Screen
+      <UnitListTabs.Screen
         name="WheelsDiagram"
         component={WheelsDiagram}
         // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
 
-        options={({ route }) => ({ title: route.params?.title || 'Wheels Diagram',
-        tabBarButton: (props) => null})}
+        options={({ route }) => ({
+          title: route.params?.title || "Wheels Diagram",
+          tabBarButton: (props) => null,
+        })}
       />
-      {/* <UnitListTabs.Screen
-        name="Sign Out"
-        component={SignOut}
-        options={{
-          //title: "",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="logout" color={color} size={36} />
-          ),
-          navigationOptions: ({ navigation }) => ({
-            tabBarOnPress: () => {
-              Alert.alert(
-                "Sign Out",
-                "Are you sure you want to sign out?",
-                [
-                  {
-                    text: "No",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Yes",
-                    onPress: () => {
-                      //console.log("logout");
-                      //AsyncStorage.setItem("token", null);
-                      navigation.navigate("SignIn");
-                    },
-                  },
-                ],
-                { cancelable: false }
-              );
-            },
-          }),
-        }}
-      /> */}
+      <UnitListTabs.Screen
+        name="SensorValuesDiagram"
+        component={SensorValuesDiagram}
+        // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
+
+        options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
+        tabBarButton: (props) => null,
+        })}
+      /> 
+
     </UnitListTabs.Navigator>
   );
 };
@@ -116,7 +94,7 @@ const UnitsNavigator = () => {
 //})}
 //options={{tabBarButton: props => null}}
 
-      /* <UnitListTabs.Screen
+/* <UnitListTabs.Screen
         name="SensorValues"
         component={SensorValuesDiagram}
         // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,

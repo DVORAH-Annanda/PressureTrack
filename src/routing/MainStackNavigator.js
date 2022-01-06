@@ -2,7 +2,10 @@ import React, { useDispatch, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import UnitsNavigator from "./UnitsNavigator";
+
+
 import SensorValuesNavigator from "./SensorValuesNavigator";
 import Splash from "../screens/Splash";
 import AppCheck from "../screens/AppCheck";
@@ -64,7 +67,8 @@ function MainStackNavigator() {
         }}
       >
         {userInfo ? (
-          <>                      
+          <>     
+               
             <MainStack.Screen
               name={MainRoutes.UnitsNavigator}
               component={UnitsNavigator}
@@ -72,6 +76,7 @@ function MainStackNavigator() {
                 title: "Units",
               }}
             />
+
           </>
         ) : (
           <>
@@ -103,6 +108,9 @@ function MainStackNavigator() {
                 title: "Units",
               }}
             />
+
+    
+
           </>
         )}
       </MainStack.Navigator>
