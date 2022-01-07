@@ -9,7 +9,6 @@ import UnitsSelected from "../screens/UnitsSelected";
 import SensorValuesDiagram from "../screens/SensorValuesDiagram";
 import WheelsDiagram from "../screens/WheelsDiagram";
 
-
 import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
@@ -17,17 +16,7 @@ import colors from "../styles/colors";
 const UnitListTabs = createBottomTabNavigator();
 
 const UnitsNavigator = () => {
-  const tabBarOptions = {
-    tabBarShowLabel: true,
-        tabBarActiveTintColor: colors.primary,
-    tabBarStyle: [
-      {
-        height: "10%",
-      },
-      null,
-    ],
-  };
-
+  
   const dispatch = useDispatch();
 
   //const logoutHandler = () => dispatch(setLogout())
@@ -39,37 +28,55 @@ const UnitsNavigator = () => {
     dispatch(listUserUnits());
   }, [dispatch, listUserUnits]);
 
+  const tabBarOptions = {
+    tabBarShowLabel: true,
+    tabBarActiveTintColor: colors.primary,
+    tabBarStyle: [
+      {
+        height: "10%",
+      },
+    ],
+  };
+
+  function getInitialRouteName() {
+    if (!loading) {
+      if (selectedUnits.length > 0) {         
+        return "UnitsSelected" }
+      else { 
+        return "UnitList" }
+    } else {
+      return "UnitsSelected" 
+    }
+  }
+
   return (
     <UnitListTabs.Navigator
       screenOptions={tabBarOptions}
-      initialRouteName={
-        "UnitList"
-        //selectedUnits > 0 ? "UnitsSelected"  : "UnitList"
-      }
+      initialRouteName={ getInitialRouteName() }
     >
       <UnitListTabs.Screen
-        name="All Units"
+        name="UnitList"
         component={UnitList}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="directions-bus" color={color} size={36} />
           ),
+          title: "All Units",
         }}
       />
       <UnitListTabs.Screen
-        name="Units Selected"
+        name="UnitsSelected"
         component={UnitsSelected}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person" color={color} size={36} />
           ),
+          title: "Selected Units",
         }}
       />
       <UnitListTabs.Screen
         name="WheelsDiagram"
         component={WheelsDiagram}
-        // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
-
         options={({ route }) => ({
           title: route.params?.title || "Wheels Diagram",
           tabBarButton: (props) => null,
@@ -78,29 +85,13 @@ const UnitsNavigator = () => {
       <UnitListTabs.Screen
         name="SensorValuesDiagram"
         component={SensorValuesDiagram}
-        // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
-
-        options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
-        tabBarButton: (props) => null,
+        options={({ route }) => ({
+          title: route.params?.title || "Sensor Values",
+          tabBarButton: (props) => null,
         })}
-      /> 
-
+      />
     </UnitListTabs.Navigator>
   );
 };
-
-//options={({ route }) => ({
-//  title: route.params.item.nm,
-//})}
-//options={{tabBarButton: props => null}}
-
-/* <UnitListTabs.Screen
-        name="SensorValues"
-        component={SensorValuesDiagram}
-        // options={({ route }) => ({ title: route.params.name })}  tabBarButton: (props) => null,
-
-        options={({ route }) => ({ title: route.params?.title || 'Sensor Values',
-        tabBarButton: (props) => null})}
-      /> */
 
 export default UnitsNavigator;
