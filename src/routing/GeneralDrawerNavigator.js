@@ -1,15 +1,10 @@
 import React, { useDispatch, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import UnitsNavigator from "./UnitsNavigator";
 import GeneralStackNavigator from "./GeneralStackNavigator";
 
 import colors from "../styles/colors";
-
-import SignIn from "../screens/SignIn";
-
-import { clearAllLocalStorageData } from "../utilities/localStoreData";
 
 const GeneralDrawer = createDrawerNavigator();
 

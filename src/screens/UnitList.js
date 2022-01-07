@@ -1,14 +1,11 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   FlatList,
   TouchableOpacity,
   Text,
-  Image,
-  ColorPropType,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons"; //person-add person-remove
 import { signIn } from "../actions/userActions";
@@ -18,7 +15,6 @@ import {
   removeSelectedUnit,
 } from "../actions/unitActions";
 import { storeData, removeStoredData } from "../utilities/localStoreData";
-
 
 import colors from "../styles/colors";
 
@@ -79,17 +75,18 @@ const UnitList = ({ navigation, route }) => {
     }
     return false;
   };
-//onPress={() => navigation.navigate("SensorValues", { item: item })}, 
+
   const renderItem = ({ item }) => {
     console.log("name: " + item.nm + " id: " + item.id);
     return (
       <TouchableOpacity
         activeOpacity={0.45}
-        onPress={() => navigation.navigate("WheelsDiagram", { title: item.nm, item: item })}
+        onPress={() =>
+          navigation.navigate("WheelsDiagram", { title: item.nm, item: item })
+        }
       >
         <View style={styles.listItem}>
           <Text style={{ marginLeft: 10 }}>{item.nm}</Text>
-
           <TouchableOpacity
             onPress={() =>
               exists(item)
@@ -117,7 +114,7 @@ const UnitList = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.page} >
+    <View style={styles.page}>
       {loading && <Text>loading...</Text>}
       {units && (
         <FlatList
@@ -129,10 +126,6 @@ const UnitList = ({ navigation, route }) => {
     </View>
   );
 };
-
-//name={exists(item) ? 'favorite' : 'favorite-outline'}
-//onPress={() => exists(item) ? handleRemoveSelectedUnit(item) : handleAddSelectedUnit(item)}
-//<Button color={colors.primary} title="Log Out" onPress={() => logoutHandler()} />
 
 const styles = StyleSheet.create({
   page: {

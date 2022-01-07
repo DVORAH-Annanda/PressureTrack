@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons"; 
 import { signIn } from "../actions/userActions";
 import {
-  listUnits,
   removeSelectedUnit,
 } from "../actions/unitActions";
 
@@ -17,16 +16,12 @@ const UnitsSelected = ({ navigation }) => {
   const { userInfo } = userSignIn;
   
   const unitList = useSelector((state) => state.unitList);
-  const { selectedUnits } = unitList;            
+  const { selectedUnits } = unitList;          
   
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(signIn(userInfo));
   }, [dispatch, signIn]);
-
-  console.log("UnitsSelected-unitList!!! " + JSON.stringify(unitList))
-  console.log("UnitsSelected-selectedUnits!!! " + JSON.stringify(selectedUnits))
 
   const removeFromSelectedUnits = (unit) => dispatch(removeSelectedUnit(unit));
   const handleRemoveSelectedUnit = (unit) => {
@@ -43,7 +38,7 @@ const UnitsSelected = ({ navigation }) => {
       <View style={{ flex: 1}}>
         {selectedUnits.length === 0 ? (
           <Text style={{ marginLeft: 10, color: colors.gray, fontSize: 18 }}>
-            No units selected.
+            You have not selected any units. Select units by clicking on the <MaterialIcons name="person-add" size={25}/>  icon from the 'All Units' list.
           </Text>
         ) : (
           <FlatList

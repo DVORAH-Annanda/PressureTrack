@@ -23,7 +23,8 @@ const SignIn = ({ navigation }) => {
   const handleSubmit = (userInfo) => {
     setUser(userInfo);   
     dispatch(signIn(userInfo));
-    navigation.navigate("UnitsNavigator");   
+    //navigation.navigate("UnitsNavigator");   
+    navigation.navigate("GeneralDrawerNavigator");   
   };
 
   return (

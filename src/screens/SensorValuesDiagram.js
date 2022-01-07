@@ -12,8 +12,6 @@ import {
 } from "react-native";
 import { unitSensorValues } from "../actions/unitActions";
 
-//import { setLogout } from '../../redux/ducks/user'
-
 import colors from "../styles/colors";
 import WheelContainer from "../components/WheelContainer";
 import MetricsContainer from "../components/MetricsContainer";

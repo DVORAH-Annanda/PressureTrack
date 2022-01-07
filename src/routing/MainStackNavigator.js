@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import UnitsNavigator from "./UnitsNavigator";
 import GeneralDrawerNavigator from "./GeneralDrawerNavigator";
 
 import Splash from "../screens/Splash";
@@ -18,8 +17,7 @@ const MainRoutes = {
   Splash: "Splash",
   AppCheck: "AppCheck",
   SignIn: "SignIn",
-  GeneralDrawerNavigator: "GeneralDrawerNavigator",
-  
+  GeneralDrawerNavigator: "GeneralDrawerNavigator",  
 };
 
 //{UnitsNavigator: "UnitsNavigator",
@@ -42,20 +40,23 @@ const MainRoutes = {
 function MainStackNavigator() {
   //clearAllLocalStorageData();
   const userSignIn = useSelector((state) => state.userSignIn);
-  const { userInfo } = userSignIn;
+  const { loading, userInfo } = userSignIn;
   //signIn(userInfo);
 
-  console.log(`userInfo ${JSON.stringify(userInfo)}`);
+  console.log(`LOADING ${loading}`);
+  console.log(`USERINFO MAIN nav ${JSON.stringify(userInfo)}`);
   //const dispatch = useDispatch();
 
   //dispatch(signIn(userInfo));
   //const userInfo = false;
   //console.log(`MAIN STACK isSignedIn ${JSON.stringify(userInfo)}`);
 
+  //initialRouteName={MainRoutes.Splash}
+
   return (
     <NavigationContainer>
       <MainStack.Navigator
-        initialRouteName={MainRoutes.Splash}
+        
         screenOptions={{
           headerShown: false,
           gestureEnabled: true,
