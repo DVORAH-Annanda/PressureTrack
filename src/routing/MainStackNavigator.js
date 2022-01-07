@@ -4,16 +4,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import UnitsNavigator from "./UnitsNavigator";
+import GeneralDrawerNavigator from "./GeneralDrawerNavigator";
 
-
-import SensorValuesNavigator from "./SensorValuesNavigator";
 import Splash from "../screens/Splash";
 import AppCheck from "../screens/AppCheck";
-
 import SignIn from "../screens/SignIn";
 
-
-import {clearAllLocalStorageData} from "../utilities/localStoreData";
+import { clearAllLocalStorageData } from "../utilities/localStoreData";
 
 const MainStack = createStackNavigator();
 
@@ -21,11 +18,11 @@ const MainRoutes = {
   Splash: "Splash",
   AppCheck: "AppCheck",
   SignIn: "SignIn",
-  UnitsNavigator: "UnitsNavigator",
-  SensorValuesNavigator: "SensorValuesNavigator",
+  GeneralDrawerNavigator: "GeneralDrawerNavigator",
+  
 };
 
-//{
+//{UnitsNavigator: "UnitsNavigator",
 //  gestureEnabled: true,
 //  headerStyle: {
 //    backgroundColor: "#101010",
@@ -43,16 +40,15 @@ const MainRoutes = {
 //}, []);
 
 function MainStackNavigator() {
-
   //clearAllLocalStorageData();
   const userSignIn = useSelector((state) => state.userSignIn);
   const { userInfo } = userSignIn;
   //signIn(userInfo);
 
-  console.log(`userInfo ${JSON.stringify(userInfo)}`)
+  console.log(`userInfo ${JSON.stringify(userInfo)}`);
   //const dispatch = useDispatch();
-  
-      //dispatch(signIn(userInfo));
+
+  //dispatch(signIn(userInfo));
   //const userInfo = false;
   //console.log(`MAIN STACK isSignedIn ${JSON.stringify(userInfo)}`);
 
@@ -67,16 +63,12 @@ function MainStackNavigator() {
         }}
       >
         {userInfo ? (
-          <>     
-               
-            <MainStack.Screen
-              name={MainRoutes.UnitsNavigator}
-              component={UnitsNavigator}
-              options={{
-                title: "Units",
-              }}
-            />
+          <>
+             <MainStack.Screen
+              name={MainRoutes.GeneralDrawerNavigator}
+              component={GeneralDrawerNavigator}
 
+            />
           </>
         ) : (
           <>
@@ -102,15 +94,12 @@ function MainStackNavigator() {
               }}
             />
             <MainStack.Screen
-              name={MainRoutes.UnitsNavigator}
-              component={UnitsNavigator}
-              options={{
-                title: "Units",
+              name={MainRoutes.GeneralDrawerNavigator}
+              component={GeneralDrawerNavigator}
+              navigationOptions={{
+                drawerLabel: () => null,
               }}
             />
-
-    
-
           </>
         )}
       </MainStack.Navigator>
