@@ -1,27 +1,47 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
+import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
+import colors from "../styles/colors";
+import { setRunning } from "../actions/appActions";
+import store from "../store";
 
 const AppLoading = ({ navigation }) => {
-    useEffect(() => {
-        setTimeout(() => {
-            navigation.navigate('UnitList')
-        }, 1500)
-    }, [navigation])
 
-    return (
-        <View style={styles.page}>
-            <Text>loading...</Text>
-        </View>
-    )
-}
+  const dispatch = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      setTimeout(() => {
+        //       console.log(
+        //         `APPLOADING store.getState() ${JSON.stringify(store.getState())}`
+        //       );
+                        /* 
+                 * fake timer where you would instead 
+                 * load and check the user data before
+                 * you send the user to the App Stack
+                 */
+        dispatch(setRunning(true));
+        //navigation.navigate("GeneralDrawerNavigator");
+      }, 1500);
+      //navigation.navigate("GeneralDrawerNavigator");
+    }, [dispatch])
+  );
+
+  return (
+    <View style={styles.page}>
+      <Text>Loading User Data...</Text>
+      <ActivityIndicator size="large" color={colors.primary} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    page: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-})
+  page: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
-export default AppLoading
+export default AppLoading;

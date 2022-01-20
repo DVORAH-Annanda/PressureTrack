@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Text, View } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -16,7 +17,7 @@ import colors from "../styles/colors";
 const UnitListTabs = createBottomTabNavigator();
 
 const UnitsNavigator = () => {
-  
+
   const dispatch = useDispatch();
 
   //const logoutHandler = () => dispatch(setLogout())
@@ -24,9 +25,9 @@ const UnitsNavigator = () => {
   //const { loading, error, units, selectedUnits } = unitList;
   const { loading, error, selectedUnits } = userUnitList;
 
-  useEffect(() => {
-    dispatch(listUserUnits());
-  }, [dispatch, listUserUnits]);
+  // useEffect(() => {
+  //   dispatch(listUserUnits());
+  // }, [dispatch, listUserUnits]);
 
   const tabBarOptions = {
     tabBarShowLabel: true,
@@ -38,16 +39,31 @@ const UnitsNavigator = () => {
     ],
   };
 
-  function getInitialRouteName() {
-    if (!loading) {
-      if (selectedUnits.length > 0) {         
-        return "UnitsSelected" }
-      else { 
+  function getInitialRouteName() {    
+    console.log(`LOADING LOADING ${loading} selectedUnits.length ${selectedUnits.length}`)
+    if(!loading){
+      if (selectedUnits.length === 0) {         
         return "UnitList" }
-    } else {
-      return "UnitsSelected" 
-    }
+      else { 
+        return "UnitsSelected" }     
+      }
   }
+
+  //function getInitialRouteName() {
+  //   if (!loading) {
+  //     if (selectedUnits.length > 0) {         
+  //       return "UnitsSelected" }
+  //     else { 
+  //       {console.log(`loading unitsnav ${loading}` )}
+  //       return "UnitList" }
+  //   } else {
+  //     return (
+  //     <View>
+  //     {console.log(`loading unitsnav ${loading}` )}
+  //     <Text>Loading...</Text>
+  //   </View>)
+  //   }
+  // }
 
   return (
     <UnitListTabs.Navigator

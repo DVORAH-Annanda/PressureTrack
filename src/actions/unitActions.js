@@ -13,8 +13,6 @@ import {
   ADD_SELECTED_UNIT,
   REMOVE_SELECTED_UNIT,
 } from "../constants/unitConstants";
-import authenticationHandler from "../utilities/authenticationHandler";
-import { getLocalStorageData } from "../utilities/localStoreData";
 
 export const listUnits = () => async (dispatch, getState) => {
   dispatch({
@@ -44,23 +42,25 @@ export const listUnits = () => async (dispatch, getState) => {
   }
 };
 
-export const listUserUnits = () => async (dispatch) => {
+export const listUserUnits = (selectedUnits) => async (dispatch) => {
   dispatch({
     type: USER_UNIT_LIST_REQUEST,
   });
   try {
-    const data = await getLocalStorageData("selectedUnits");
-    if (isObjectEmpty(data)) {
-      dispatch({
-        type: USER_UNIT_LIST_SUCCESS,
-        payload: [],
-      });
-    } else {
-      dispatch({
-        type: USER_UNIT_LIST_SUCCESS,
-        payload: JSON.parse(data),
-      });
-    }
+    // const data = await getLocalStorageData("selectedUnits");
+    // if (isObjectEmpty(data)) {
+    //   dispatch({
+    //     type: USER_UNIT_LIST_SUCCESS,
+    //     payload: [],
+    //   });
+    // } else {
+    //   dispatch({
+    //     type: USER_UNIT_LIST_SUCCESS,
+    //     payload: JSON.parse(data),
+    //   });
+    // }
+    console.log(`wat gaan hier aan USER_UNIT_LIST_SUCCESS ${selectedUnits}`)
+    dispatch({ type: USER_UNIT_LIST_SUCCESS, payload: selectedUnits });
   } catch (error) {
     dispatch({
       type: USER_UNIT_LIST_FAIL,

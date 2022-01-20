@@ -17,12 +17,12 @@ export const unitListReducer = (
   action
 ) => {
   switch (action.type) {
-    case UNIT_LIST_REQUEST:
-      return { ...state, loading: true };
+    //case UNIT_LIST_REQUEST:
+    //  return { ...state, loading: true };
     case UNIT_LIST_SUCCESS:
       return { ...state, loading: false, units: action.payload };
-    case USER_UNIT_LIST_REQUEST:
-      return { ...state, loading: true };
+    //case USER_UNIT_LIST_REQUEST:
+    //  return { ...state, loading: true };
     case USER_UNIT_LIST_SUCCESS:
       return { ...state, loading: false, selectedUnits: action.payload };
     case ADD_SELECTED_UNIT:

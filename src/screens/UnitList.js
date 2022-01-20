@@ -51,9 +51,9 @@ const UnitList = ({ navigation, route }) => {
   //}
 
   useEffect(() => {
-    dispatch(signIn(userInfo));
+    //dispatch(signIn(userInfo));
     dispatch(listUnits());
-  }, [dispatch, signIn, listUnits]);
+  }, [dispatch, listUnits]);
 
   const addToSelectedUnits = (unit) => dispatch(addSelectedUnit(unit));
 
@@ -61,7 +61,8 @@ const UnitList = ({ navigation, route }) => {
     addToSelectedUnits(unit);
 
     selectedUnits.push(unit);
-    storeData("selectedUnits", JSON.stringify(selectedUnits));
+    dispatch(listUserUnits(selectedUnits));
+    //storeData("selectedUnits", JSON.stringify(selectedUnits));
   };
 
   const removeFromSelectedUnits = (unit) => dispatch(removeSelectedUnit(unit));
@@ -121,6 +122,7 @@ const UnitList = ({ navigation, route }) => {
           data={units}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>

@@ -16,7 +16,7 @@ import colors from "../styles/colors";
 const Splash = ({ navigation }) => {
   //const { navigation } = props
   const navigate = useCallback(
-    () => navigation.navigate("SignIn"),
+    () => navigation.navigate("AppCheck"),
     [navigation]
   );
 
@@ -24,7 +24,7 @@ const Splash = ({ navigation }) => {
     useCallback(() => {
       const navigationTimer = setTimeout(() => {
         navigate();
-      }, 4500);
+      }, 750);
 
       return () => clearTimeout(navigationTimer);
     }, [navigate])

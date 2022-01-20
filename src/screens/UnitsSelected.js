@@ -29,7 +29,8 @@ const UnitsSelected = ({ navigation }) => {
     const selectedUnitsReduced = selectedUnits.filter(
       (item) => unit.id !== item.id
     );
-    storeData('selectedUnits', JSON.stringify(selectedUnitsReduced)); 
+    dispatch(listUserUnits(selectedUnitsReduced));
+    //storeData('selectedUnits', JSON.stringify(selectedUnitsReduced)); 
     removeFromSelectedUnits(unit);
   };
   //onPress={() => navigation.navigate("SensorValues", { item: item })}

@@ -9,22 +9,48 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./src/store";
 
-import { SafeAreaProvider} from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import MainStackNavigator from "./src/routing/MainStackNavigator";
+
+import AppLoading from "./src/screens/AppLoading";
 
 import { enableScreens } from "react-native-screens";
 
 enableScreens();
 
+// const [userToken, setUserToken] = useState(null);
+// const [isLoading, setIsLoading] = useState(true);
+
+// useEffect(() => {
+//   checkAuthenticationStatus()
+// }, [])
+
+// const checkAuthenticationStatus = async () => {
+//   try {
+//       const returnedToken = await AsyncStorage.getItem('user-token');
+//       setUserToken(returnedToken);
+//       console.warn('User token set to the state value');
+//   } catch(err){
+//       console.warn(`Here's the error that occured while retrieving token: ${err}`)
+//   }
+//   setIsLoading(false)
+// }
+
+const onBeforeLift = async () =>
+  console.log(`store.getState() ${JSON.stringify(store.getState())}`);
+
 export default App = () => {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
-      <SafeAreaProvider>
-        <MainStackNavigator />
+      <PersistGate
+        loading={null}
+        persistor={persistor}
+        onBeforeLift={onBeforeLift}
+      >
+        <SafeAreaProvider>
+          <MainStackNavigator />
         </SafeAreaProvider>
-        </PersistGate>
+      </PersistGate>
     </Provider>
   );
 };
-

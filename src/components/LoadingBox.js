@@ -6,7 +6,7 @@ import {
   Text,
 } from "react-native";
 
-const UnitItem = (props) => {
+const LoadingBox = (props) => {
   return (
     <TouchableOpacity activeOpacity={0.85} onPress={props.onShowUnitDiagram.bind(this, props)}>
       <View style={styles.listItem} >
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
 
 //<View style={styles.listItem} on>
 
-export default UnitItem;
+export default LoadingBox;
