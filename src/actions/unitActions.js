@@ -13,8 +13,11 @@ import {
   UNIT_SELECTED,
   ADD_SELECTED_UNIT,
   REMOVE_SELECTED_UNIT,
-  
+  CLEAR_UNITS_USER_SIGNOUT,
 } from "../constants/unitConstants";
+import {
+  removeStoredData,
+} from "../utilities/localStoreData";
 
 import { isObjectEmpty } from "../utilities/general";
 
@@ -378,3 +381,11 @@ function wheelIdExists(wheels, wheelId) {
     }
   }
 }
+
+export const clearStorageUnits = () => (dispatch) => {
+  console.log(`clearStorageUnits CLEAR_UNITS_USER_SIGNOUT`);
+  dispatch({
+    type: CLEAR_UNITS_USER_SIGNOUT,
+    payload: [],
+  });
+};

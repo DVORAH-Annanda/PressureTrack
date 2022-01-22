@@ -3,6 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
 import { signOut } from "../actions/userActions";
+import { clearStorageUnits } from "../actions/unitActions";
 import { setRunning } from "../actions/appActions";
 
 const SignOut = ({ navigation }) => {
@@ -14,8 +15,9 @@ const SignOut = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       dispatch(signOut());
+      dispatch(clearStorageUnits());
       dispatch(setRunning(false));
-    }, [dispatch, signOut, setRunning])
+    }, [dispatch, signOut, clearStorageUnits, setRunning])
   );
   return (
     <View style={styles.page}>

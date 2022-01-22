@@ -10,7 +10,8 @@ import {
   UNIT_SENSORVALUES_FAIL,
   UNIT_SENSORVALUES_REQUEST,
   UNIT_SENSORVALUES_SUCCESS,
-  UNIT_SELECTED
+  UNIT_SELECTED,
+  CLEAR_UNITS_USER_SIGNOUT,
 } from "../constants/unitConstants";
 
 export const unitListReducer = (
@@ -44,6 +45,8 @@ export const unitListReducer = (
       return { ...state, loading: false, error: action.payload };
     case USER_UNIT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case CLEAR_UNITS_USER_SIGNOUT:
+      return { loading: true, units: [], selectedUnits: [] };
     default:
       return state;
   }

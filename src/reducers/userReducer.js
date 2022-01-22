@@ -23,7 +23,7 @@ export const userSignInReducer = (
       console.log(`userSignInReducer USER_SIGNOUT ${JSON.stringify(action)}`)
       //*for all keys defined in your persistConfig(s)
       //storage.removeItem('persist:root')
-      return { userInfo: {} };
+      return { loading: true, userInfo: {} };
     default:
       return state;
   }

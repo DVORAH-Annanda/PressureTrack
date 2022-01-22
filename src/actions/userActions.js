@@ -8,6 +8,7 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
 } from "../constants/userConstants";
+
 import {
   getLocalStorageData,
   storeData,
@@ -36,7 +37,7 @@ export const signOut = () => (dispatch) => {
   console.log(`signOut USER_SIGNOUT`);
   //removeStoredData("userInfo");
   //removeStoredData("selectedUnits");
-  removeStoredData("persist:root");
+  removeStoredData("persist:root");  
   dispatch({ type: USER_SIGNOUT, payload: {} });
 };
 
