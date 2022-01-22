@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from 'react-native';
+import { Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -13,17 +13,24 @@ import WheelsDiagram from "../screens/WheelsDiagram";
 import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
+import { isObjectEmpty } from "../utilities/general";
 
 const UnitListTabs = createBottomTabNavigator();
 
 const UnitsNavigator = () => {
-
   const dispatch = useDispatch();
 
   //const logoutHandler = () => dispatch(setLogout())
   const userUnitList = useSelector((state) => state.unitList);
-  //const { loading, error, units, selectedUnits } = unitList;
   const { loading, error, selectedUnits } = userUnitList;
+
+  // const selectedUnitSensorValues = useSelector(
+  //   (state) => state.unitSensorValues
+  // );
+  // const { selectedUnit } = selectedUnitSensorValues;
+  // console.log(
+  //   `selectedUnitSensorValues state.unitSensorValuesh ${JSON.stringify(selectedUnit)}`
+  // );
 
   // useEffect(() => {
   //   dispatch(listUserUnits());
@@ -39,36 +46,25 @@ const UnitsNavigator = () => {
     ],
   };
 
-  function getInitialRouteName() {    
-    console.log(`LOADING LOADING ${loading} selectedUnits.length ${selectedUnits.length}`)
-    if(!loading){
-      if (selectedUnits.length === 0) {         
-        return "UnitList" }
-      else { 
-        return "UnitsSelected" }     
+  function getInitialRouteName() {
+    console.log(
+      `getInitialRouteName() loading ${loading} selectedUnits.length ${selectedUnits.length}`
+    );
+    if (!loading) {
+      if (selectedUnits.length === 0) {
+        return "UnitList";
+      } else {
+        return "UnitsSelected"
+        // if (isObjectEmpty(selectedUnit)) return "UnitsSelected";
+        // else return "WheelsDiagram";
       }
+    }
   }
-
-  //function getInitialRouteName() {
-  //   if (!loading) {
-  //     if (selectedUnits.length > 0) {         
-  //       return "UnitsSelected" }
-  //     else { 
-  //       {console.log(`loading unitsnav ${loading}` )}
-  //       return "UnitList" }
-  //   } else {
-  //     return (
-  //     <View>
-  //     {console.log(`loading unitsnav ${loading}` )}
-  //     <Text>Loading...</Text>
-  //   </View>)
-  //   }
-  // }
 
   return (
     <UnitListTabs.Navigator
       screenOptions={tabBarOptions}
-      initialRouteName={ getInitialRouteName() }
+      initialRouteName={getInitialRouteName()}
     >
       <UnitListTabs.Screen
         name="UnitList"

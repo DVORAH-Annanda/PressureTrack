@@ -9,9 +9,7 @@ import { isObjectEmpty } from "./general";
 
 class AuthenticationHandler {
   async getlocalStoreUserInfo() {
-    //clearAllLocalStorageData();
     try {
-      //const data = await getLocalStorageData("userInfo");
       if (isObjectEmpty(data)) {
         return [];
       } else {
@@ -24,40 +22,26 @@ class AuthenticationHandler {
 
   async getSignInUserInfo(url) {
     let userInfo = [];
-    console.log(`usrinfo se url!! ${url}`);
-    //if (url.includes("svc_error=0")) {
+    console.log(`getSignInUserInfo url ${url}`);
     const user = {};
     const urlParams = url.split("&");
     const token = urlParams[1].replace("access_token=", "");
-    //console.log(`token!! ${(token)}`);
     user.userName = urlParams[2].replace("user_name=", "");
-    //console.log(`user.userName!! ${(user.userName)}`);
     const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
-    //console.log(`wialonurl!! ${wialonUrl}`);
     const wialonUrl =
       wialonApi + '?svc=token/login&params={"token":"' + token + '"}';
-    console.log(`wialonurl!! ${wialonUrl}`);
+    console.log(`getSignInUserInfo wialonurl ${wialonUrl}`);
     const response = await fetch(wialonUrl);
     const result = await response.json();
     user.eId = result.eid;
-    console.log(`user.eId!! ${user.eId}`);
+    console.log(`getSignInUserInfo user.eId ${user.eId}`);
     userInfo.push(user);
-    //storeData("userInfo", JSON.stringify(userInfo));
-    //console.log(`usrinfo!! ${JSON.stringify(userInfo)}`);
-    //return result.eid;
-
-    //Alert.alert("Authorization failed!");
-
-    //}
-    console.log(`usrinfo to return!! ${JSON.stringify(userInfo)}`);
+    console.log(`getSignInUserInfo usrInfo ${JSON.stringify(userInfo)}`);
     return userInfo;
   }
 
   async getUserInfo(url) {
-    //clearAllLocalStorageData();
     if (url.includes("svc_error=0")) {
-      //if (url.includes("access_token=")) {
-
       let urlParams = url.split("&");
       let token = urlParams[1].replace("access_token=", "");
       let userInfo = [];
@@ -69,13 +53,13 @@ class AuthenticationHandler {
           //clearAllLocalStorageData();
         } else {
           let localStoreUser = JSON.parse(data);
-          console.log(`localStoreUser!! ${JSON.stringify(localStoreUser)}`);
+          console.log(`getUserInfo localStoreUser ${JSON.stringify(localStoreUser)}`);
           user.userName = urlParams[2].replace("user_name=", "");
           let localStoreUserName = localStoreUser[0].userName;
           if (localStoreUserName.trim() !== user.userName.trim()) {
             clearAllLocalStorageData();
           }
-          console.log(`userName!!! ${localStoreUserName}`);
+          console.log(`getUserInfo localStoreUserName ${localStoreUserName}`);
         }
       }
       if (token) {
@@ -87,12 +71,10 @@ class AuthenticationHandler {
         let result = await response.json();
         user.eId = result.eid;
         userInfo.push(user);
-        //storeData("userInfo", JSON.stringify(userInfo));
-        console.log(`usrinfo!! ${JSON.stringify(userInfo)}`);
+        console.log(`getUserInfo userinfo ${JSON.stringify(userInfo)}`);
         return result.eid;
       }
     } else {
-      //Alert.alert("Authorization failed!");
       return;
     }
   }
@@ -118,7 +100,6 @@ class AuthenticationHandler {
 
   async fetchJSONAsync(url) {
     let response = await fetch(url);
-
     let body = await response.json();
     let eid = "";
     if (body.eid !== "") eid = body.eid;

@@ -25,16 +25,14 @@ const tabBarOptions = {
 const SensorValuesTabs = createBottomTabNavigator();
 
 const SensorValuesNavigator = () => {
+ 
+  // const userUnitList = useSelector((state) => state.unitList);
+  // const { loading, error, selectedUnits } = userUnitList;
 
-  const dispatch = useDispatch();
-  //const logoutHandler = () => dispatch(setLogout())
-  const userUnitList = useSelector((state) => state.unitList);
-  //const { loading, error, units, selectedUnits } = unitList;
-  const { loading, error, selectedUnits } = userUnitList;
-
-  useEffect(() => {
-    dispatch(listUserUnits());
-  }, []); 
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(listUserUnits());
+  // }, []); 
 
   return (
     <SensorValuesTabs.Navigator

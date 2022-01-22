@@ -26,64 +26,59 @@ import AxleContainer from "../components/AxleContainer";
 //import MessageBox from '../../components/MessageBox'
 
 const WheelsDiagram = ({ navigation, route }) => {
-
-
-
-  
   //const { route } = props;
   const { title, item } = route.params;
   const { id, nm } = item;
 
-  const dispatch = useDispatch();
   //const unitId = item.id
   //console.log("UNIT ID: " + unitId)
   //const dispatch = useReduxDispatch()
   //const logoutHandler = () => dispatch(setLogout())
   //const { unitId } = route.params.item.id
 
-  const [unitId, setUnitId] = useState(0);
-  const [axleSensorValues, setAxleSensorValues] = useState([]);
+  // const [unitId, setUnitId] = useState(0);
+  // const [axleSensorValues, setAxleSensorValues] = useState([]);
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, sensorValues } = sensorValueProps;
+  //unitIsSelected, selectedUnit,
 
-  if (!loading) {
-    console.log(
-      `sensorValues screen ${JSON.stringify(
-        sensorValues
-      )} what is loading ${loading}`
-    );
-  }
+  // console.log(
+  //   `WheelsDiagram selectedUnit ${JSON.stringify(
+  //     selectedUnit
+  //   )} unitIsSelected ${unitIsSelected} loading ${loading}`
+  // );
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    console.log(`wheelsdiagram screen useEffect unit id ${id}`);
+    console.log(`WheelsDiagram useEffect unit id ${id}`);
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate("SensorValuesDiagram", { title: item.nm, item: item })}>
-    <View style={styles.page}>
-      {loading ? (
-        <Text>loading...</Text>
-      ) : (
-        <ScrollView>
-          {sensorValues.map((axle) => {
-            return <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
- 
-          })}
-        </ScrollView>
-      )}
-      <View></View>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() =>
+        navigation.navigate("SensorValuesDiagram", {
+          title: item.nm,
+          item: item,
+        })
+      }
+    >
+      <View style={styles.page}>
+        {loading ? (
+          <Text>loading...</Text>
+        ) : (
+          <ScrollView>
+            {sensorValues.map((axle) => {
+              return <AxleContainer key={axle.axleId}>{axle}</AxleContainer>;
+            })}
+          </ScrollView>
+        )}
+        <View></View>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
-
-//{loading ? (
-//  <LoadingBox></LoadingBox>
-//  ) : error ? (
-//  <MessageBox>{error}</MessageBox>
-//  ) : (
 
 const styles = StyleSheet.create({
   page: {
@@ -95,7 +90,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   tyreName: {
     flex: 1,
     backgroundColor: colors.tyreNameGreen,
@@ -106,8 +100,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-//marginTop: Platform.OS === 'ios' ? 35 : 1,
-//marginBottom: 1,
 
 export default WheelsDiagram;

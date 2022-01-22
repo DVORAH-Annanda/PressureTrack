@@ -6,7 +6,7 @@ import SpareWheel from "../components/SpareWheel";
 import colors from "../styles/colors";
 
 const WheelAxle = (props) => {
-  {console.log(`WHEELNAME : ${props.children.wheelName}`)}
+  {console.log(`WheelAxle wheelName props: ${props.children.wheelName}`)}
   return props.children.wheelName.slice(0, 5) !== "Spare" ? (
     <View style={styles.wheelAxle}>
       <Wheel>{props.children}</Wheel>
@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   axle: {
     width: 65,
     height: 8.5,
@@ -34,5 +33,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-//height: 95,
 export default WheelAxle;

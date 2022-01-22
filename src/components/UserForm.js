@@ -8,22 +8,18 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { WebView, WebViewNavigation } from "react-native-webview";
-import { signIn } from "../actions/userActions";
-import { setLogin } from "../actions/userActions";
-//import { selectIsSubmitting, selectLoginMessage } from '../../redux/ducks/user'
 
 import colors from "../styles/colors";
 
 import authenticationHandler from "../utilities/authenticationHandler";
 
 const UserForm = ({ submitHandler }) => {
+
   const handleWebViewNavigationStateChange = async (navState) => {
     try {
       const { url } = navState;
-
       if (url.includes("svc_error=0")) {
         const userInfo = await authenticationHandler.getSignInUserInfo(url);
-
         submitHandler(userInfo);
       }
     } catch (error) {
@@ -45,7 +41,6 @@ const UserForm = ({ submitHandler }) => {
     />
   );
 };
-//{loginMessage && <Text>{loginMessage}</Text>}
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",

@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { MainRoutes } from "../routing/Routes";
 import {
   StatusBar,
   ImageBackground,
@@ -14,9 +15,8 @@ import Footer from "../components/Footer";
 import colors from "../styles/colors";
 
 const Splash = ({ navigation }) => {
-  //const { navigation } = props
   const navigate = useCallback(
-    () => navigation.navigate("AppCheck"),
+    () => navigation.navigate(MainRoutes.AppCheck),
     [navigation]
   );
 
@@ -24,8 +24,7 @@ const Splash = ({ navigation }) => {
     useCallback(() => {
       const navigationTimer = setTimeout(() => {
         navigate();
-      }, 750);
-
+      }, 850);
       return () => clearTimeout(navigationTimer);
     }, [navigate])
   );
@@ -33,7 +32,6 @@ const Splash = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={() => navigate()}>
       <View style={styles.page}>
-      
         <ImageBackground
           style={styles.image}
           source={require("../../assets/background.jpg")}
@@ -42,9 +40,7 @@ const Splash = ({ navigation }) => {
             <Header />
           </View>
           <View style={styles.footer}>
-           
-              <Text>checking for updates...</Text>
-            
+            <Text>checking for updates...</Text>
             <Footer
               title="Stay On Track"
               subTitle="checking for updates....."
@@ -54,11 +50,9 @@ const Splash = ({ navigation }) => {
         <StatusBar backgroundColor={colors.primary} />
       </View>
     </TouchableWithoutFeedback>
-    
   );
 };
 
-//<View style={styles.background}></View>
 const styles = StyleSheet.create({
   page: {
     flex: 1,

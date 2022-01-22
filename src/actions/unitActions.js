@@ -10,9 +10,13 @@ import {
   UNIT_SENSORVALUES_FAIL,
   UNIT_SENSORVALUES_REQUEST,
   UNIT_SENSORVALUES_SUCCESS,
+  UNIT_SELECTED,
   ADD_SELECTED_UNIT,
   REMOVE_SELECTED_UNIT,
+  
 } from "../constants/unitConstants";
+
+import { isObjectEmpty } from "../utilities/general";
 
 export const listUnits = () => async (dispatch, getState) => {
   dispatch({
@@ -24,7 +28,7 @@ export const listUnits = () => async (dispatch, getState) => {
 
   try {
     if (!isObjectEmpty(userInfo[0].eId)) {
-      console.log(`listUnits userInfo%%% ${JSON.stringify(userInfo[0].eId)}`);
+      console.log(`listUnits UNIT_LIST_SUCCESS userInfo ${JSON.stringify(userInfo[0].eId)}`);
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
         userInfo[0].eId;
@@ -59,7 +63,7 @@ export const listUserUnits = (selectedUnits) => async (dispatch) => {
     //     payload: JSON.parse(data),
     //   });
     // }
-    console.log(`wat gaan hier aan USER_UNIT_LIST_SUCCESS ${selectedUnits}`)
+    console.log(`listUserUnits USER_UNIT_LIST_SUCCESS selectedUnits ${selectedUnits}`)
     dispatch({ type: USER_UNIT_LIST_SUCCESS, payload: selectedUnits });
   } catch (error) {
     dispatch({
@@ -67,6 +71,14 @@ export const listUserUnits = (selectedUnits) => async (dispatch) => {
       payload: error.message,
     });
   }
+};
+
+export const selectUnit = (unit) => (dispatch) => {
+  console.log(`selectUnit UNIT_SELECTED unit ${unit}`)
+  dispatch({
+    type: UNIT_SELECTED,
+    payload: unit,
+  });
 };
 
 export const addSelectedUnit = (unit) => (dispatch) => {
@@ -184,10 +196,6 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
   }
 };
 
-function isObjectEmpty(obj) {
-  return Object.keys(obj).length === 0 && obj.constructor === Object;
-} //move to utils
-
 function getE6SensorValues(sensorValues) {
   let e6SensorValues = {};
 
@@ -304,8 +312,7 @@ function getWheels(unitSensorValues, sensors, e6SensorValues) {
         let axleNo = sensors[keyNames[key]].n.slice(1, 2);
         let wheelNo = sensors[keyNames[key]].n.slice(2, 3);
 
-        if (unitSensorValues[i].axleId === parseInt(axleNo)) {
-          //if (!wheelIdExists(wheels, parseInt(wheelNo))) {
+        if (unitSensorValues[i].axleId === parseInt(axleNo)) {          
           let wheel = {};
           wheel.wheelId = parseInt(wheelNo);
           if (axleNo === "9") {
@@ -320,7 +327,6 @@ function getWheels(unitSensorValues, sensors, e6SensorValues) {
           wheel.maxTemperatureValue = unitSensorValues[i].maxTemperatureValue;
           wheel.minVoltageValue = unitSensorValues[i].minVoltageValue;
           wheels.push(wheel);
-          //}
         }
       }
     }

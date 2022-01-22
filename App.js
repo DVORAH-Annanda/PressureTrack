@@ -10,16 +10,12 @@ import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./src/store";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import MainStackNavigator from "./src/routing/MainStackNavigator";
 
-import AppLoading from "./src/screens/AppLoading";
+import MainStackNavigator from "./src/routing/MainStackNavigator";
 
 import { enableScreens } from "react-native-screens";
 
 enableScreens();
-
-// const [userToken, setUserToken] = useState(null);
-// const [isLoading, setIsLoading] = useState(true);
 
 // useEffect(() => {
 //   checkAuthenticationStatus()
@@ -27,17 +23,17 @@ enableScreens();
 
 // const checkAuthenticationStatus = async () => {
 //   try {
-//       const returnedToken = await AsyncStorage.getItem('user-token');
+//       const returnedToken = await AsyncStorage.getItem('userToken');
 //       setUserToken(returnedToken);
 //       console.warn('User token set to the state value');
 //   } catch(err){
-//       console.warn(`Here's the error that occured while retrieving token: ${err}`)
+//       console.warn(`Error occured while retrieving token: ${err}`)
 //   }
 //   setIsLoading(false)
 // }
 
 const onBeforeLift = async () =>
-  console.log(`store.getState() ${JSON.stringify(store.getState())}`);
+  console.log(`onBeforeLift store.getState() ${JSON.stringify(store.getState())}`);
 
 export default App = () => {
   return (

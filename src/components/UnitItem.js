@@ -24,6 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//<View style={styles.listItem} on>
-
 export default UnitItem;

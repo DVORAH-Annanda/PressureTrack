@@ -10,6 +10,7 @@ import {
   UNIT_SENSORVALUES_FAIL,
   UNIT_SENSORVALUES_REQUEST,
   UNIT_SENSORVALUES_SUCCESS,
+  UNIT_SELECTED
 } from "../constants/unitConstants";
 
 export const unitListReducer = (
@@ -48,11 +49,23 @@ export const unitListReducer = (
   }
 };
 
+export const unitSelectedReducer = (
+  state = { unitIsSelected: false, selectedUnit: {} },
+  action
+) => {
+  switch (action.type) {
+    case UNIT_SELECTED:
+      return { unitIsSelected: true, selectedUnit: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const unitSensorValuesReducer = (
   state = { loading: true, sensorValues: [] },
   action
 ) => {
-  console.log(`unitSensorValuesReducer!@!`)
+  console.log(`unitSensorValuesReducer sensorValues ${JSON.stringify(state.sensorValues)}`)
   switch (action.type) {
     case UNIT_SENSORVALUES_REQUEST:
       return { loading: true };

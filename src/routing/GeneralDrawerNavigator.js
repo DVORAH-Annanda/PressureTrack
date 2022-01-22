@@ -1,6 +1,5 @@
-import React, { useDispatch, useEffect } from "react";
+import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
 import UnitsNavigator from "./UnitsNavigator";
 import GeneralStackNavigator from "./GeneralStackNavigator";
 

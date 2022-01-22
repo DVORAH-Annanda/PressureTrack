@@ -8,9 +8,8 @@ import colors from "../styles/colors";
 
 const Wheel = (props) => {
   {
-    console.log(`PROPS WHEEL ${JSON.stringify(props)}`);
+    console.log(`Wheel props ${JSON.stringify(props)}`);
   }
-//wheel.pressureValue == null
   renderWheelStyle = () => {
     if(props.children.pressureValue == null){
       return (
@@ -98,5 +97,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-//height: 95,
 export default Wheel;

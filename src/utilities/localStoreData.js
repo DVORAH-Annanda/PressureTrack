@@ -10,41 +10,40 @@ const storeData = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, value);
   } catch (error) {
-    console.log(error);
+    console.log(`storeData error ${error}`);
   }
 };
 
 const removeStoredData = async (key) => {
   try {
-    console.log(`remove item`)
-      await AsyncStorage.removeItem(key);
-      console.log(`remove item ${key}`)
-      return true;
+    await AsyncStorage.removeItem(key);
+    console.log(`removeStoredData key ${key}`);
+    return true;
+  } catch (exception) {
+    return false;
   }
-  catch(exception) {
-      return false;
-  }
-}
+};
 
 const getLocalStorageData = async (key) => {
   try {
     const data = await AsyncStorage.getItem(key);
-    if(data){
-    console.log("getLocalStorageData js storedSelectedUnits no parse" + data)
-    console.log("getLocalStorageData js storedSelectedUnits PARSE " + JSON.parse(data))
-    return data;
-  } //else { return []}
+    if (data) {
+      console.log("getLocalStorageData " + JSON.parse(data));
+      return data;
+    }
   } catch (error) {
     console.log(error);
   }
 };
 
-
-  const clearAllLocalStorageData = () => {
+const clearAllLocalStorageData = () => {
   console.log("clearAllLocalStorgeData");
-  AsyncStorage.getAllKeys()
-    .then((keys) => AsyncStorage.multiRemove(keys));
-}
+  AsyncStorage.getAllKeys().then((keys) => AsyncStorage.multiRemove(keys));
+};
 
-export { storeData, removeStoredData, getLocalStorageData, clearAllLocalStorageData };
-
+export {
+  storeData,
+  removeStoredData,
+  getLocalStorageData,
+  clearAllLocalStorageData,
+};

@@ -8,7 +8,7 @@ import colors from "../styles/colors";
 
 const Axle4Wheels = (props) => {
   {
-    console.log(`props.children.wheel: ${JSON.stringify(props)}`);
+    console.log(`Axle4Wheels props.children.wheel: ${JSON.stringify(props)}`);
   }
   return (
     <View>

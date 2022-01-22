@@ -5,6 +5,7 @@ import { appStateReducer } from "./reducers/appReducer";
 import { userSignInReducer, userDetailsReducer } from "./reducers/userReducer";
 import {
   unitListReducer,
+  unitSelectedReducer,
   unitSensorValuesReducer,
 } from "./reducers/unitReducers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,7 +13,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["userSignIn", "unitList"],
+  whitelist: ["userSignIn"],
+  //whitelist: ["userSignIn", "unitList", "unitSelected", "unitSensorValues"],
 };
 
 const reducer = combineReducers({
@@ -20,20 +22,14 @@ const reducer = combineReducers({
   userSignIn: userSignInReducer,
   //userDetails: userDetailsReducer,
   unitList: unitListReducer,
+  unitSelected: unitSelectedReducer,
   unitSensorValues: unitSensorValuesReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 const store = createStore(
-  //reducer,
   persistedReducer,
-  // getDefaultMiddleware => getDefaultMiddleware({
-  //     serializableCheck: {
-  //         /* ignore persistance actions */
-  //         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-  //     },
-  // }).prepend(rootMiddleware),
   applyMiddleware(thunk)
 );
 

@@ -22,7 +22,7 @@ function MainStackNavigator() {
   const appState = useSelector((state) => state.appState);
   const { isRunning } = appState;
 
-  console.log(`MAIN STACK isRunning ${isRunning}`);
+  console.log(`MainStackNavigator useSelector isRunning ${isRunning}`);
 
   return (
     <NavigationContainer>
@@ -79,16 +79,5 @@ function MainStackNavigator() {
     </NavigationContainer>
   );
 }
-
-//<Stack.Screen
-//name="SensorValues"
-//screenOptions={{
-//  headerShown: true,
-//}}
-//component={SensorValues}
-//options={({ route }) => ({
-//  title: route.params.item.nm,
-//})}
-///>
 
 export default MainStackNavigator;

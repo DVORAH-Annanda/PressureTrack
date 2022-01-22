@@ -10,7 +10,7 @@ const AxleContainer = (props) => {
     <View style={{ ...styles.container, ...props.style }}>
       {props.children.wheels.map((wheel) => {
         {
-          console.log(`wheels count: ${props.children.wheels.length}`);
+          console.log(`AxleContainer wheels count: ${props.children.wheels.length}`);
         }
         return props.children.wheels.length === 4 ? (
           <Axle4Wheels key={wheel.wheelId}>{wheel}</Axle4Wheels>

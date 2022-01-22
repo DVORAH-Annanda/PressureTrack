@@ -1,10 +1,9 @@
 import React from "react";
 
 import { GeneralRoutes } from "./Routes";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import SignOut from "../screens/SignOut";
-
-import { createStackNavigator } from "@react-navigation/stack";
 
 const GeneralStack = createStackNavigator();
 

@@ -6,9 +6,8 @@ import colors from "../styles/colors";
 
 const SpareWheel = (props) => {
   {
-    console.log(`PROPS WHEEL ${JSON.stringify(props)}`);
+    console.log(`SpareWheel props ${JSON.stringify(props)}`);
   }
-//wheel.pressureValue == null
   renderWheelStyle = () => {
     if(props.children.pressureValue == null){
       return (
@@ -42,10 +41,8 @@ const SpareWheel = (props) => {
   }
 
   return (
-    <View>   
-        
-        {renderWheelStyle()}
-       
+    <View>           
+        {renderWheelStyle()}       
     </View>
   );
 };

@@ -20,8 +20,8 @@ export const userSignInReducer = (
     case USER_SIGNIN_FAIL:
       return { loading: false, error: action.payload };
     case USER_SIGNOUT:
-      console.log(`USER_SIGNOUT reducer ${JSON.stringify(action)}`)
-      // for all keys defined in your persistConfig(s)
+      console.log(`userSignInReducer USER_SIGNOUT ${JSON.stringify(action)}`)
+      //*for all keys defined in your persistConfig(s)
       //storage.removeItem('persist:root')
       return { userInfo: {} };
     default:
@@ -30,9 +30,8 @@ export const userSignInReducer = (
 };
 
 export const userDetailsReducer = (state = { loading: true, userInfo: {} }, action) => {
-  console.log(`userDetailsReducer!@! ACTION ${JSON.stringify(action)}`)
+  console.log(`userDetailsReducer action ${JSON.stringify(action)}`)
   switch (action.type) {
-    
     case USER_DETAILS_REQUEST:
       return { loading: true };
     case USER_DETAILS_SUCCESS:
