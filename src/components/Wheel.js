@@ -2,62 +2,54 @@ import React from "react";
 
 import { StyleSheet, View, Text } from "react-native";
 
+import BlinkWheel from "./BlinkWheel";
 import SpareWheel from "./SpareWheel";
 
 import colors from "../styles/colors";
 
 const Wheel = (props) => {
   {
-    console.log(`Wheel props ${JSON.stringify(props)}`);
+    console.log(`Wheel props ${JSON.stringify(props.children.pressureValue)}`);
   }
   renderWheelStyle = () => {
-    if(props.children.pressureValue == null){
-      return (
-        <View style={[styles.wheel, styles.noSignalWheel]}></View>
-      );
+    if (props.children.pressureValue == null) {
+      return <View style={[styles.wheel, styles.noSignalWheel]}></View>;
     }
-    if(props.children.pressureValue > props.children.maxPressureValue){
-      return (
-        <View style={[styles.wheel, styles.purpleWheel]}></View>
-      );
+    if (
+      props.children.pressureValue <
+      (20 / 100) * props.children.minPressureValue
+    ) {
+      return <BlinkWheel />;
     }
-    if(props.children.pressureValue < props.children.minPressureValue){
-      return (
-        <View style={[styles.wheel, styles.redWheel]}></View>
-      );
+    if (props.children.pressureValue > props.children.maxPressureValue) {
+      return <View style={[styles.wheel, styles.purpleWheel]}></View>;
     }
-    if(props.children.temperatureValue > props.children.maxTemperatureValue){
-      return (
-        <View style={[styles.wheel, styles.orangeWheel]}></View>
-      );
+    if (props.children.pressureValue < props.children.minPressureValue) {
+      return <View style={[styles.wheel, styles.redWheel]}></View>;
     }
-    if(props.children.voltageValue < props.children.minVoltageValue){
-      return (
-        <View style={[styles.wheel, styles.yellowWheel]}></View>
-      );
+
+    if (props.children.temperatureValue > props.children.maxTemperatureValue) {
+      return <View style={[styles.wheel, styles.orangeWheel]}></View>;
+    }
+    if (props.children.voltageValue < props.children.minVoltageValue) {
+      return <View style={[styles.wheel, styles.yellowWheel]}></View>;
     } else {
-      return (
-        <View style={styles.wheel}></View>
-      );
+      return <View style={styles.wheel}></View>;
     }
-  }
+  };
 
   return (
     <View>
       {props.children.wheelName.slice(0, 5) !== "Spare" ? (
-        <View >
-          {renderWheelStyle()}
-          
-        </View>
+        <View>{renderWheelStyle()}</View>
       ) : (
-<SpareWheel>{props.children}</SpareWheel>
+        <SpareWheel>{props.children}</SpareWheel>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-
   wheel: {
     margin: 0.5,
     width: 25,
@@ -71,7 +63,7 @@ const styles = StyleSheet.create({
   },
   noSignalWheel: {
     borderColor: colors.noSignalBlueBorder,
-    backgroundColor: colors.noSignalBlue,    
+    backgroundColor: colors.noSignalBlue,
   },
   purpleWheel: {
     backgroundColor: colors.purpleWheel,
