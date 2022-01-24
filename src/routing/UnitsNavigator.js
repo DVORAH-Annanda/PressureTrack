@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback  } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,6 +11,10 @@ import UnitsSelected from "../screens/UnitsSelected";
 import SensorValuesDiagram from "../screens/SensorValuesDiagram";
 import WheelsDiagram from "../screens/WheelsDiagram";
 
+import {
+  selectUnit
+} from "../actions/unitActions";
+
 import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
@@ -17,10 +22,11 @@ import { isObjectEmpty } from "../utilities/general";
 
 const UnitListTabs = createBottomTabNavigator();
 
-const UnitsNavigator = () => {
-  const dispatch = useDispatch();
+const UnitsNavigator = ({ navigation }) => {
 
-  //const logoutHandler = () => dispatch(setLogout())
+  const unitSelected = useSelector((state) => state.unitSelected);
+  const { unitIsSelected, selectedUnit } = unitSelected;
+
   const userUnitList = useSelector((state) => state.unitList);
   const { loading, error, selectedUnits } = userUnitList;
 
@@ -61,6 +67,21 @@ const UnitsNavigator = () => {
     }
   }
 
+  useFocusEffect(
+    useCallback(() => {  
+        if (unitIsSelected)
+          navigation.navigate("WheelsDiagram", { title: selectedUnit.nm, item: selectedUnit });
+    }, [navigation, dispatch])
+  );
+
+  const dispatch = useDispatch();
+  function resetSelectedUnit() {
+    console.log(
+      `RESETSELECTEDUNIT`
+    );
+    dispatch(selectUnit(false, {}));
+  }
+
   return (
     <UnitListTabs.Navigator
       screenOptions={tabBarOptions}
@@ -75,6 +96,7 @@ const UnitsNavigator = () => {
           ),
           title: "All Units",
         }}
+
       />
       <UnitListTabs.Screen
         name="UnitsSelected"
@@ -105,5 +127,12 @@ const UnitsNavigator = () => {
     </UnitListTabs.Navigator>
   );
 };
+
+// listeners={{
+//   tabPress: e => {
+//       resetSelectedUnit();
+//       e.preventDefault();
+//   },
+// }}
 
 export default UnitsNavigator;

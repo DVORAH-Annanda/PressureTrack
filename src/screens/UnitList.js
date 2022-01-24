@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -18,9 +19,8 @@ import {
 import colors from "../styles/colors";
 
 const UnitList = ({ navigation, route }) => {
-  
-  const userSignIn = useSelector((state) => state.userSignIn);
-  const { userInfo } = userSignIn;
+  // const unitSelected = useSelector((state) => state.unitSelected);
+  // const { unitIsSelected, selectedUnit } = unitSelected;
 
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
@@ -38,8 +38,13 @@ const UnitList = ({ navigation, route }) => {
   //  }
   //}
 
+  // useFocusEffect(
+  //   useCallback(() => {
+  //       unitIsSelected ? navigation.navigate("WheelsDiagram", { title: selectedUnit.nm, item: selectedUnit }) : dispatch(listUnits());
+  //   }, [navigation, dispatch, listUnits])
+  // );
+
   useEffect(() => {
-    //dispatch(signIn(userInfo));
     dispatch(listUnits());
   }, [dispatch, listUnits]);
 
@@ -59,7 +64,7 @@ const UnitList = ({ navigation, route }) => {
   };
 
   const handleSelectedUnit = (unit) => {
-    dispatch(selectUnit(unit));
+    dispatch(selectUnit(true, unit));
   };
 
   const exists = (unit) => {

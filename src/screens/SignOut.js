@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
 import { signOut } from "../actions/userActions";
 import { clearStorageUnits } from "../actions/unitActions";
+import { selectUnit } from "../actions/unitActions";
 import { setRunning } from "../actions/appActions";
 
 const SignOut = ({ navigation }) => {
-  
   // const userSignIn = useSelector((state) => state.userSignIn);
   // const { userInfo } = userSignIn;
 
@@ -16,6 +16,7 @@ const SignOut = ({ navigation }) => {
     useCallback(() => {
       dispatch(signOut());
       dispatch(clearStorageUnits());
+      dispatch(selectUnit(false, {}));
       dispatch(setRunning(false));
     }, [dispatch, signOut, clearStorageUnits, setRunning])
   );

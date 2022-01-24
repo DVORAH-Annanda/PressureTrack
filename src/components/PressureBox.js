@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
     backgroundColor:
       props.children.pressureValue < props.children.minPressureValue
         ? "red"
-        : "green",
+        : ( props.children.pressureValue > props.children.maxPressureValue
+          ? colors.purpleWheel
+          : "green" ),     
     alignItems: "center",
     justifyContent: "center",
   }),

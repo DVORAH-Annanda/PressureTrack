@@ -10,10 +10,9 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import { signIn } from "../actions/userActions";
-import { removeSelectedUnit } from "../actions/unitActions";
+import { removeSelectedUnit, selectUnit } from "../actions/unitActions";
 
 import colors from "../styles/colors";
-import { storeData } from "../utilities/localStoreData";
 
 const UnitsSelected = ({ navigation }) => {
   const userSignIn = useSelector((state) => state.userSignIn);
@@ -21,6 +20,10 @@ const UnitsSelected = ({ navigation }) => {
 
   const unitList = useSelector((state) => state.unitList);
   const { selectedUnits } = unitList;
+
+  const handleSelectedUnit = (unit) => {
+    dispatch(selectUnit(true, unit));
+  };
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,12 +58,13 @@ const UnitsSelected = ({ navigation }) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.45}
-                  onPress={() =>
+                  onPress={() => {
+                    handleSelectedUnit(item);
                     navigation.navigate("WheelsDiagram", {
                       title: item.nm,
                       item: item,
-                    })
-                  }
+                    });
+                  }}
                 >
                   <View style={styles.listItem}>
                     <Text style={{ marginLeft: 10, fontSize: 18 }}>

@@ -58,7 +58,7 @@ export const unitSelectedReducer = (
 ) => {
   switch (action.type) {
     case UNIT_SELECTED:
-      return { unitIsSelected: true, selectedUnit: action.payload };
+      return { unitIsSelected: action.payload.unitIsSelected, selectedUnit: action.payload.selectedUnit };
     default:
       return state;
   }

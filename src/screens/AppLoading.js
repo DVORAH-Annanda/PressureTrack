@@ -7,6 +7,7 @@ import { setRunning } from "../actions/appActions";
 
 const AppLoading = ({ navigation }) => {
   const dispatch = useDispatch();
+  
   useFocusEffect(
     useCallback(() => {
       setTimeout(() => {

@@ -76,11 +76,11 @@ export const listUserUnits = (selectedUnits) => async (dispatch) => {
   }
 };
 
-export const selectUnit = (unit) => (dispatch) => {
-  console.log(`selectUnit UNIT_SELECTED unit ${unit}`)
+export const selectUnit = (isSelected, unit) => (dispatch) => {
+  console.log(`selectUnit UNIT_SELECTED unit ${JSON.stringify(unit)}`)
   dispatch({
     type: UNIT_SELECTED,
-    payload: unit,
+    payload: {unitIsSelected: isSelected, selectedUnit: unit}    
   });
 };
 
