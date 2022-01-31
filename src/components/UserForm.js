@@ -11,7 +11,7 @@ import { WebView, WebViewNavigation } from "react-native-webview";
 
 import colors from "../styles/colors";
 
-import authenticationHandler from "../utilities/authenticationHandler";
+import {getSignInUserInfo} from "../utilities/authenticationHandler";
 
 const UserForm = ({ submitHandler }) => {
 
@@ -19,7 +19,7 @@ const UserForm = ({ submitHandler }) => {
     try {
       const { url } = navState;
       if (url.includes("svc_error=0")) {
-        const userInfo = await authenticationHandler.getSignInUserInfo(url);
+        const userInfo = await getSignInUserInfo(url);
         submitHandler(userInfo);
       }
     } catch (error) {

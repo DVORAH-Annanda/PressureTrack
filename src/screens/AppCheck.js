@@ -9,6 +9,9 @@ const AppCheck = ({ navigation }) => {
   const userDetails = useSelector((state) => state.userSignIn);
   const { userInfo } = userDetails;
 
+  // const userDetails = useSelector((state) => state.userSignIn);
+  // const { userInfo } = userDetails;
+
   const getRoute = useCallback(
     () => (!isObjectEmpty(userInfo) ? "AppLoading" : "SignIn"), 
     [userInfo]

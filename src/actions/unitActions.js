@@ -30,11 +30,11 @@ export const listUnits = () => async (dispatch, getState) => {
   } = getState();
 
   try {
-    if (!isObjectEmpty(userInfo[0].eId)) {
-      console.log(`listUnits UNIT_LIST_SUCCESS userInfo ${JSON.stringify(userInfo[0].eId)}`);
+    if (!isObjectEmpty(userInfo.eId)) {
+      console.log(`listUnits UNIT_LIST_SUCCESS userInfo ${JSON.stringify(userInfo.eId)}`);
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
-        userInfo[0].eId;
+        userInfo.eId;
       const { data } = await Axios.get(fetchurl);
       dispatch({
         type: UNIT_LIST_SUCCESS,
@@ -117,7 +117,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
       userSignIn: { userInfo },
     } = getState();
 
-    if (!isObjectEmpty(userInfo[0].eId)) {
+    if (!isObjectEmpty(userInfo.eId)) {
 
       let notifications = {};
       let sensors = {};
@@ -125,11 +125,11 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
 
       const notificationsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"notifications","propValueMask":"*","sortType":"notifications","propType":"propitemname"},"force":1,"flags":1025,"from":0,"to":1}&sid=` +
-        userInfo[0].eId;
+        userInfo.eId;
 
       const sensorsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=` +
-        userInfo[0].eId;
+        userInfo.eId;
 
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
@@ -141,7 +141,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         ',"timeTo":' +
         timeTo +
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
-        userInfo[0].eId;
+        userInfo.eId;
 
       let endpoints = [notificationsUrl, sensorsUrl, sensorValuesUrl];
       Promise.all(endpoints.map((endpoint) => Axios.get(endpoint))).then(

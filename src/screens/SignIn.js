@@ -11,6 +11,7 @@ import { setRunning } from "../actions/appActions";
 import colors from "../styles/colors";
 
 const SignIn = ({ navigation }) => {
+  
   const userDetails = useSelector((state) => state.userSignIn);
   const { userInfo } = userDetails;
 

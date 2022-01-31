@@ -16,10 +16,6 @@ import {
   clearAllLocalStorageData,
 } from "../utilities/localStoreData";
 
-export const setLogin = (isLoggedIn) => async (dispatch) => {
-  dispatch({ type: USER_SIGNIN_SUCCESS, payload: isLoggedIn });
-};
-
 export const signIn = (userInfo) => async (dispatch) => {
   //dispatch({ type: USER_SIGNIN_REQUEST });
   try {
@@ -28,6 +24,34 @@ export const signIn = (userInfo) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+export const validateToken = (eid) => async (dispatch, getState) => {
+  dispatch({
+    type: UNIT_LIST_REQUEST,
+  });
+  const {
+    userSignIn: { userInfo },
+  } = getState();
+
+  try {
+    if (!isObjectEmpty(userInfo.eId)) {
+      console.log(`listUnits UNIT_LIST_SUCCESS userInfo ${JSON.stringify(userInfo.eId)}`);
+      const fetchurl =
+        'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
+        userInfo.eId;
+      const { data } = await Axios.get(fetchurl);
+      dispatch({
+        type: UNIT_LIST_SUCCESS,
+        payload: data.items,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: UNIT_LIST_FAIL,
       payload: error.message,
     });
   }
