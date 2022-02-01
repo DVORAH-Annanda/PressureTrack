@@ -67,8 +67,7 @@ export const unitSelectedReducer = (
 export const unitSensorValuesReducer = (
   state = { loading: true, sensorValues: [] },
   action
-) => {
-  console.log(`unitSensorValuesReducer sensorValues ${JSON.stringify(state.sensorValues)}`)
+) => {  
   switch (action.type) {
     case UNIT_SENSORVALUES_REQUEST:
       return { loading: true };

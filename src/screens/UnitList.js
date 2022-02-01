@@ -25,6 +25,10 @@ const UnitList = ({ navigation, route }) => {
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
 
+  console.log(`UnitList LOAding ${loading}`);
+  console.log(`UnitList ERROR ${error}`);
+  console.log(`UnitList units ${JSON.stringify(units)}`);
+
   const dispatch = useDispatch();
   //if(!loading && !units){
   //  const userInfoRemoved = removeStoredData("userInfo");

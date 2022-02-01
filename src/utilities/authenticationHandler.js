@@ -98,7 +98,7 @@
       const response = await fetch(wialonUrl);
       const result = await response.json();
       userInfo.eId = result.eid;
-      console.log(`getCurrentSessionId user.eId ${userInfo.eId }`);
+      console.log(`getCurrentSessionId result ${JSON.stringify(result)}`);
       //userInfo.push(user);
       console.log(`getCurrentSessionId usrInfo ${JSON.stringify(userInfo)}`);
       return userInfo; 

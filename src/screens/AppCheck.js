@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Text, View, StyleSheet } from "react-native";
+import { updateSessionId } from "../actions/userActions";  
 import { isObjectEmpty } from "../utilities/general";
 
 const AppCheck = ({ navigation }) => {
@@ -17,6 +19,7 @@ const AppCheck = ({ navigation }) => {
     [userInfo]
   );
 
+  const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
       /*
@@ -24,7 +27,13 @@ const AppCheck = ({ navigation }) => {
        * load and check the app version
        * and possible breaking changes before
        * you send the user to the App Stack
-       */          
+       */   
+      
+      
+
+        
+        dispatch(updateSessionId());
+          
         userInfo ? navigation.navigate(getRoute()) : navigation.navigate("SignIn");      
     }, [navigation, getRoute])
   );

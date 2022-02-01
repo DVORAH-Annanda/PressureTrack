@@ -17,6 +17,7 @@ import AxleContainer from "../components/AxleContainer";
 import colors from "../styles/colors";
 
 const WheelsDiagram = ({ navigation, route }) => {
+
   const { title, item } = route.params;
   const { id, nm } = item;
 
@@ -29,10 +30,14 @@ const WheelsDiagram = ({ navigation, route }) => {
   //     selectedUnit
   //   )} unitIsSelected ${unitIsSelected} loading ${loading}`
   // );
+  console.log(`WheelsDiagram LOAding ${loading}`);
+  console.log(`WheelsDiagram ERROR ${error}`);
+  console.log(`WheelsDiagram sensorValues ${JSON.stringify(sensorValues)}`);
 
   const dispatch = useDispatch();
   useEffect(() => {
     console.log(`WheelsDiagram useEffect unit id ${id}`);
+    console.log(`WheelsDiagram useEffect LOAding ${loading}`);
     dispatch(unitSensorValues(id));
 
     const interval = setInterval(() => {

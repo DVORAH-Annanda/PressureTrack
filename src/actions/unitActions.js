@@ -15,9 +15,9 @@ import {
   REMOVE_SELECTED_UNIT,
   CLEAR_UNITS_USER_SIGNOUT,
 } from "../constants/unitConstants";
-import {
-  removeStoredData,
-} from "../utilities/localStoreData";
+import 
+  { getCurrentSessionId }
+ from "../utilities/authenticationHandler";
 
 import { isObjectEmpty } from "../utilities/general";
 
@@ -117,7 +117,15 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
       userSignIn: { userInfo },
     } = getState();
 
-    if (!isObjectEmpty(userInfo.eId)) {
+    console.log(`unitActions unitSensorValues STATE SessionId ${JSON.stringify(userInfo)}`)
+
+    if (!isObjectEmpty(userInfo)) {
+
+      console.log(`unitActions unitSensorValues BEFORE getCurrentSessionId ${userInfo.eId}`)
+
+      //await getCurrentSessionId(userInfo);
+
+      //console.log(`unitActions unitSensorValues AFTER getCurrentSessionId ${userInfo.eId}`)
 
       let notifications = {};
       let sensors = {};
@@ -128,9 +136,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         userInfo.eId;
 
       const sensorsUrl =
-        `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=` +
-        userInfo.eId;
-
+        `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=${userInfo.eId}`;
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
       const sensorValuesUrl =
