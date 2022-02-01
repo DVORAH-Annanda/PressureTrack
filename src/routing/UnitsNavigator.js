@@ -27,8 +27,8 @@ const UnitsNavigator = ({ navigation }) => {
   const unitSelected = useSelector((state) => state.unitSelected);
   const { unitIsSelected, selectedUnit } = unitSelected;
 
-  const userUnitList = useSelector((state) => state.unitList);
-  const { loading, error, selectedUnits } = userUnitList;
+  // const userUnitList = useSelector((state) => state.unitList);
+  // const { loading, error, selectedUnits } = userUnitList;
 
   // const selectedUnitSensorValues = useSelector(
   //   (state) => state.unitSensorValues
@@ -85,7 +85,7 @@ const UnitsNavigator = ({ navigation }) => {
   return (
     <UnitListTabs.Navigator
       screenOptions={tabBarOptions}
-      initialRouteName={getInitialRouteName()}
+      initialRouteName="UnitList"
     >
       <UnitListTabs.Screen
         name="UnitList"
@@ -97,16 +97,6 @@ const UnitsNavigator = ({ navigation }) => {
           title: "All Units",
         }}
 
-      />
-      <UnitListTabs.Screen
-        name="UnitsSelected"
-        component={UnitsSelected}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="person" color={color} size={36} />
-          ),
-          title: "Selected Units",
-        }}
       />
       <UnitListTabs.Screen
         name="WheelsDiagram"
@@ -127,6 +117,18 @@ const UnitsNavigator = ({ navigation }) => {
     </UnitListTabs.Navigator>
   );
 };
+
+
+{/* <UnitListTabs.Screen
+name="UnitsSelected"
+component={UnitsSelected}
+options={{
+  tabBarIcon: ({ color, size }) => (
+    <MaterialIcons name="person" color={color} size={36} />
+  ),
+  title: "Selected Units",
+}}
+/> */}
 
 // listeners={{
 //   tabPress: e => {

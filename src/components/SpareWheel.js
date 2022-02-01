@@ -2,8 +2,6 @@ import React from "react";
 
 import { StyleSheet, View, Text } from "react-native";
 
-import BlinkSpareWheel from "./BlinkSpareWheel";
-
 import colors from "../styles/colors";
 
 const SpareWheel = (props) => {
@@ -13,9 +11,6 @@ const SpareWheel = (props) => {
   renderWheelStyle = () => {
     if (props.children.pressureValue == null) {
       return <View style={[styles.wheel, styles.noSignalWheel]}></View>;
-    }
-    if (props.children.pressureValue < (20 / 100) * props.children.minPressureValue) {
-      return <BlinkSpareWheel />;
     }
     if (props.children.pressureValue > props.children.maxPressureValue) {
       return <View style={[styles.wheel, styles.purpleWheel]}></View>;

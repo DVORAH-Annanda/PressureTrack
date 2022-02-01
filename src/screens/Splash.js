@@ -15,6 +15,7 @@ import Footer from "../components/Footer";
 import colors from "../styles/colors";
 
 const Splash = ({ navigation }) => {
+  
   const navigate = useCallback(
     () => navigation.navigate(MainRoutes.AppCheck),
     [navigation]
@@ -41,10 +42,7 @@ const Splash = ({ navigation }) => {
           </View>
           <View style={styles.footer}>
             <Text>checking for updates...</Text>
-            <Footer
-              title="Stay On Track"
-              subTitle="checking for updates....."
-            />
+            <Footer title="Stay On Track" subTitle="..." />
           </View>
         </ImageBackground>
         <StatusBar backgroundColor={colors.primary} />

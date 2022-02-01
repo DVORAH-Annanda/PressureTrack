@@ -65,14 +65,14 @@ export const unitSelectedReducer = (
 };
 
 export const unitSensorValuesReducer = (
-  state = { loading: true, sensorValues: [] },
+  state = { loading: true, sensorValues: [], timeUpdated: "" },
   action
 ) => {  
   switch (action.type) {
     case UNIT_SENSORVALUES_REQUEST:
       return { loading: true };
     case UNIT_SENSORVALUES_SUCCESS:
-      return { loading: false, sensorValues: action.payload };
+      return { loading: false, sensorValues: action.payload.sensorValues, timeUpdated: action.payload.timeUpdated };
     case UNIT_SENSORVALUES_FAIL:
       return { loading: false, error: action.payload };
     default:

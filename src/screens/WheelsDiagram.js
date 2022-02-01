@@ -22,7 +22,7 @@ const WheelsDiagram = ({ navigation, route }) => {
   const { id, nm } = item;
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
-  const { loading, error, sensorValues } = sensorValueProps;
+  const { loading, error, sensorValues, timeUpdated } = sensorValueProps;
   //unitIsSelected, selectedUnit,
 
   // console.log(
@@ -36,15 +36,26 @@ const WheelsDiagram = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(unitSensorValues(id));
     console.log(`WheelsDiagram useEffect unit id ${id}`);
     console.log(`WheelsDiagram useEffect LOAding ${loading}`);
-    dispatch(unitSensorValues(id));
-
     const interval = setInterval(() => {
       dispatch(unitSensorValues(id));
     }, 60000);
+    
     return () => clearInterval(interval);
+    
+
+
   }, [dispatch, unitSensorValues, id]);
+
+
+
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   console.log(`sensorValues screen useEffect unit id ${id}`);
+  //   dispatch(unitSensorValues(id));
+  // }, [dispatch, unitSensorValues, id]);
 
   return (
     <TouchableWithoutFeedback
@@ -59,13 +70,17 @@ const WheelsDiagram = ({ navigation, route }) => {
         {loading ? (
           <Text>loading...</Text>
         ) : (
+<View>
+          
           <ScrollView>
             {sensorValues.map((axle) => {
               return <AxleContainer key={axle.axleId}>{axle}</AxleContainer>;
             })}
           </ScrollView>
+          <Text>Last Updated: {timeUpdated}</Text>
+          </View>
         )}
-        <View></View>
+        
       </View>
     </TouchableWithoutFeedback>
   );

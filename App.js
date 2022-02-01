@@ -33,7 +33,9 @@ enableScreens();
 // }
 
 const onBeforeLift = async () =>
-  console.log(`onBeforeLift store.getState() ${JSON.stringify(store.getState())}`);
+  console.log(
+    `onBeforeLift store.getState() ${JSON.stringify(store.getState())}`
+  );
 
 export default App = () => {
   return (

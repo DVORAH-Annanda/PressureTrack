@@ -1,5 +1,7 @@
 import Axios from "axios";
+
 import { API_URL } from "../constants/appConstants";
+
 import {
   UNIT_LIST_FAIL,
   UNIT_LIST_REQUEST,
@@ -15,13 +17,13 @@ import {
   REMOVE_SELECTED_UNIT,
   CLEAR_UNITS_USER_SIGNOUT,
 } from "../constants/unitConstants";
-import 
-  { getCurrentSessionId }
- from "../utilities/authenticationHandler";
 
-import { isObjectEmpty } from "../utilities/general";
+import { getCurrentSessionId } from "../utilities/authenticationHandler";
+
+import { isObjectEmpty, convertUnixTime } from "../utilities/general";
 
 export const listUnits = () => async (dispatch, getState) => {
+
   dispatch({
     type: UNIT_LIST_REQUEST,
   });
@@ -31,7 +33,9 @@ export const listUnits = () => async (dispatch, getState) => {
 
   try {
     if (!isObjectEmpty(userInfo.eId)) {
-      console.log(`listUnits UNIT_LIST_SUCCESS userInfo ${JSON.stringify(userInfo.eId)}`);
+      console.log(
+        `listUnits UNIT_LIST_SUCCESS userInfo ${JSON.stringify(userInfo.eId)}`
+      );
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
         userInfo.eId;
@@ -50,6 +54,7 @@ export const listUnits = () => async (dispatch, getState) => {
 };
 
 export const listUserUnits = (selectedUnits) => async (dispatch) => {
+
   dispatch({
     type: USER_UNIT_LIST_REQUEST,
   });
@@ -66,7 +71,9 @@ export const listUserUnits = (selectedUnits) => async (dispatch) => {
     //     payload: JSON.parse(data),
     //   });
     // }
-    console.log(`listUserUnits USER_UNIT_LIST_SUCCESS selectedUnits ${selectedUnits}`)
+    console.log(
+      `listUserUnits USER_UNIT_LIST_SUCCESS selectedUnits ${selectedUnits}`
+    );
     dispatch({ type: USER_UNIT_LIST_SUCCESS, payload: selectedUnits });
   } catch (error) {
     dispatch({
@@ -77,14 +84,16 @@ export const listUserUnits = (selectedUnits) => async (dispatch) => {
 };
 
 export const selectUnit = (isSelected, unit) => (dispatch) => {
-  console.log(`selectUnit UNIT_SELECTED unit ${JSON.stringify(unit)}`)
+
+  console.log(`selectUnit UNIT_SELECTED unit ${JSON.stringify(unit)}`);
   dispatch({
     type: UNIT_SELECTED,
-    payload: {unitIsSelected: isSelected, selectedUnit: unit}    
+    payload: { unitIsSelected: isSelected, selectedUnit: unit },
   });
 };
 
 export const addSelectedUnit = (unit) => (dispatch) => {
+
   dispatch({
     type: ADD_SELECTED_UNIT,
     payload: unit,
@@ -92,6 +101,7 @@ export const addSelectedUnit = (unit) => (dispatch) => {
 };
 
 export const removeSelectedUnit = (unit) => (dispatch) => {
+
   dispatch({
     type: REMOVE_SELECTED_UNIT,
     payload: unit,
@@ -99,6 +109,7 @@ export const removeSelectedUnit = (unit) => (dispatch) => {
 };
 
 async function getNotifications(url) {
+
   return await Axios.get(url)
     .then((response) => {
       return response.data.items;
@@ -110,18 +121,21 @@ async function getNotifications(url) {
 }
 
 export const unitSensorValues = (unitId) => async (dispatch, getState) => {
+
   dispatch({ type: UNIT_SENSORVALUES_REQUEST, payload: unitId });
   try {
-    
     const {
       userSignIn: { userInfo },
     } = getState();
 
-    console.log(`unitActions unitSensorValues STATE SessionId ${JSON.stringify(userInfo)}`)
+    console.log(
+      `unitActions unitSensorValues STATE SessionId ${JSON.stringify(userInfo)}`
+    );
 
     if (!isObjectEmpty(userInfo)) {
-
-      console.log(`unitActions unitSensorValues BEFORE getCurrentSessionId ${userInfo.eId}`)
+      console.log(
+        `unitActions unitSensorValues BEFORE getCurrentSessionId ${userInfo.eId}`
+      );
 
       //await getCurrentSessionId(userInfo);
 
@@ -130,13 +144,14 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
       let notifications = {};
       let sensors = {};
       let sensorValues = [];
-
+      console.log(`timeUpdated `);
+      let timeUpdated = new Date();
+      console.log(`timeUpdated ${timeUpdated}`);
       const notificationsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"notifications","propValueMask":"*","sortType":"notifications","propType":"propitemname"},"force":1,"flags":1025,"from":0,"to":1}&sid=` +
         userInfo.eId;
 
-      const sensorsUrl =
-        `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=${userInfo.eId}`;
+      const sensorsUrl = `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={"id":${unitId},"flags":4096}&sid=${userInfo.eId}`;
       const timeTo = Math.floor(Date.now() / 1000);
       const timeFrom = timeTo - 3600;
       const sensorValuesUrl =
@@ -149,6 +164,14 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
         userInfo.eId;
 
+      console.log(
+        `unitActions unitSensorValues notificationsUrl ${notificationsUrl}`
+      );
+      console.log(`unitActions unitSensorValues sensorsUrl ${sensorsUrl}`);
+      console.log(
+        `unitActions unitSensorValues sensorValuesUrl ${sensorValuesUrl}`
+      );
+
       let endpoints = [notificationsUrl, sensorsUrl, sensorValuesUrl];
       Promise.all(endpoints.map((endpoint) => Axios.get(endpoint))).then(
         ([
@@ -156,13 +179,18 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
           { data: sensorData },
           { data: sensorValuesData },
         ]) => {
-
           notifications = notificationData.items;
           sensors = Object.assign(sensors, sensorData.item.sens);
+          timeUpdated = getTimeUpdated(sensorValuesData);
 
           if (sensorValuesData && !isObjectEmpty(sensorValuesData)) {
             const e6SensorValues = getE6SensorValues(sensorValuesData);
-            if (sensors && !isObjectEmpty(sensors) && notifications && !isObjectEmpty(notifications)) {
+            if (
+              sensors &&
+              !isObjectEmpty(sensors) &&
+              notifications &&
+              !isObjectEmpty(notifications)
+            ) {
               sensorValues = getWheels(
                 getAxles(unitId, sensors, notifications),
                 sensors,
@@ -184,7 +212,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
             }
             dispatch({
               type: UNIT_SENSORVALUES_SUCCESS,
-              payload: sensorValues,
+              payload: { sensorValues: sensorValues, timeUpdated: timeUpdated },
             });
           } else {
             if (!sensorValuesData) {
@@ -206,6 +234,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
 };
 
 function getE6SensorValues(sensorValues) {
+
   let e6SensorValues = {};
 
   for (let i = 0; i < sensorValues.messages.length; i++) {
@@ -224,7 +253,22 @@ function getE6SensorValues(sensorValues) {
   return e6SensorValues;
 }
 
+function getTimeUpdated(sensorValues) {
+
+  let timeUpdated = 0;
+  let lastUpdated = 0;
+
+  for (let i = 0; i < sensorValues.messages.length; i++) {
+    if (sensorValues.messages[i].p.data_type === "E6") {
+      lastUpdated = sensorValues.messages[i].rt;
+      if (timeUpdated < lastUpdated) timeUpdated = lastUpdated;
+    }
+  }
+  return convertUnixTime(timeUpdated);
+}
+
 function getAxles(unitId, sensors, notifications) {
+
   let keyNames = Object.keys(sensors);
   let axles = [];
   for (let key = 0; key < keyNames.length; key++) {
@@ -258,6 +302,7 @@ function getAxles(unitId, sensors, notifications) {
 }
 
 function axleIdExists(axles, axleId) {
+
   for (let i = 0; i < axles.length; ++i) {
     if (axles[i].axleId === axleId) {
       return true;
@@ -266,6 +311,7 @@ function axleIdExists(axles, axleId) {
 }
 
 function getAxleMetrics(unitId, axleNo, notifications) {
+
   let axleMetrics = {};
   let pressureMetric = false;
   let temperatureMetric = false;
@@ -313,6 +359,7 @@ function getAxleMetrics(unitId, axleNo, notifications) {
 }
 
 function getWheels(unitSensorValues, sensors, e6SensorValues) {
+
   let keyNames = Object.keys(sensors);
   for (let i = 0; i < unitSensorValues.length; i++) {
     let wheels = [];
@@ -321,7 +368,7 @@ function getWheels(unitSensorValues, sensors, e6SensorValues) {
         let axleNo = sensors[keyNames[key]].n.slice(1, 2);
         let wheelNo = sensors[keyNames[key]].n.slice(2, 3);
 
-        if (unitSensorValues[i].axleId === parseInt(axleNo)) {          
+        if (unitSensorValues[i].axleId === parseInt(axleNo)) {
           let wheel = {};
           wheel.wheelId = parseInt(wheelNo);
           if (axleNo === "9") {
@@ -351,6 +398,7 @@ function getWheels(unitSensorValues, sensors, e6SensorValues) {
 }
 
 function getWheelsSensorMetrics(unitSensorValues, e6SensorValues, wheels) {
+
   for (let w = 0; w < wheels.length; w++) {
     for (let property in e6SensorValues) {
       let axleNo = property.substring(1, 2);
@@ -381,6 +429,7 @@ function getWheelsSensorMetrics(unitSensorValues, e6SensorValues, wheels) {
 }
 
 function wheelIdExists(wheels, wheelId) {
+
   for (let i = 0; i < wheels.length; ++i) {
     if (wheels[i].wheelId === wheelId) {
       return true;
@@ -389,7 +438,7 @@ function wheelIdExists(wheels, wheelId) {
 }
 
 export const clearStorageUnits = () => (dispatch) => {
-  console.log(`clearStorageUnits CLEAR_UNITS_USER_SIGNOUT`);
+  
   dispatch({
     type: CLEAR_UNITS_USER_SIGNOUT,
     payload: [],
