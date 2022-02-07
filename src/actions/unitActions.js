@@ -18,9 +18,9 @@ import {
   CLEAR_UNITS_USER_SIGNOUT,
 } from "../constants/unitConstants";
 
-import { getCurrentSessionId } from "../utilities/authenticationHandler";
+import { getSessionId } from "../utilities/authenticationHandler";
 
-import { isObjectEmpty, convertUnixTime } from "../utilities/general";
+import { isObjectEmpty, convertUnixDateTime } from "../utilities/general";
 
 export const listUnits = () => async (dispatch, getState) => {
 
@@ -134,19 +134,27 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
 
     if (!isObjectEmpty(userInfo)) {
       console.log(
-        `unitActions unitSensorValues BEFORE getCurrentSessionId ${userInfo.eId}`
+        `unitActions unitSensorValues BEFORE getSessionId ${userInfo.eId}`
       );
 
-      //await getCurrentSessionId(userInfo);
+      //await getSessionId(userInfo);
 
-      //console.log(`unitActions unitSensorValues AFTER getCurrentSessionId ${userInfo.eId}`)
+      //console.log(`unitActions unitSensorValues AFTER getSessionId ${userInfo.eId}`)
 
       let notifications = {};
       let sensors = {};
       let sensorValues = [];
-      console.log(`timeUpdated `);
-      let timeUpdated = new Date();
-      console.log(`timeUpdated ${timeUpdated}`);
+      let dateUpdated = ""
+      let timeUpdated = "";
+
+      const bindedTrailersUrl = `https://hst-api.wialon.com/wialon/ajax.html?svc=resource/get_unit_trailers&params={"unitId":${unitId}}&sid=${userInfo.eId}`;
+      const { data } = await Axios.get(bindedTrailersUrl);
+      console.log(`unitActions 1 bindedTrailersUrl data ${JSON.stringify(data)}`);
+      // if (data.items.length > 0) {
+      
+      //   console.log(`unitActions 2 bindedTrailersUrl data ${JSON.stringify(data)}`);
+
+      // }
       const notificationsUrl =
         `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"notifications","propValueMask":"*","sortType":"notifications","propType":"propitemname"},"force":1,"flags":1025,"from":0,"to":1}&sid=` +
         userInfo.eId;
@@ -181,7 +189,9 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         ]) => {
           notifications = notificationData.items;
           sensors = Object.assign(sensors, sensorData.item.sens);
-          timeUpdated = getTimeUpdated(sensorValuesData);
+          const dateTimeUpdated = getDateTimeUpdated(sensorValuesData);
+          timeUpdated = dateTimeUpdated.slice(-9);
+          dateUpdated = dateTimeUpdated.slice(0, dateTimeUpdated.length - 9);
 
           if (sensorValuesData && !isObjectEmpty(sensorValuesData)) {
             const e6SensorValues = getE6SensorValues(sensorValuesData);
@@ -212,7 +222,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
             }
             dispatch({
               type: UNIT_SENSORVALUES_SUCCESS,
-              payload: { sensorValues: sensorValues, timeUpdated: timeUpdated },
+              payload: { sensorValues: sensorValues, dateUpdated: dateUpdated, timeUpdated: timeUpdated  },
             });
           } else {
             if (!sensorValuesData) {
@@ -253,18 +263,18 @@ function getE6SensorValues(sensorValues) {
   return e6SensorValues;
 }
 
-function getTimeUpdated(sensorValues) {
+function getDateTimeUpdated(sensorValues) {
 
-  let timeUpdated = 0;
+  let dateTimeUpdated = 0;
   let lastUpdated = 0;
 
   for (let i = 0; i < sensorValues.messages.length; i++) {
     if (sensorValues.messages[i].p.data_type === "E6") {
       lastUpdated = sensorValues.messages[i].rt;
-      if (timeUpdated < lastUpdated) timeUpdated = lastUpdated;
+      if (dateTimeUpdated < lastUpdated) dateTimeUpdated = lastUpdated;
     }
   }
-  return convertUnixTime(timeUpdated);
+  return convertUnixDateTime(dateTimeUpdated);
 }
 
 function getAxles(unitId, sensors, notifications) {

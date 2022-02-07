@@ -39,7 +39,7 @@
   //   // console.log(`getSignInUserInfo user.eId ${user.eId}`);
   //   userInfo.push(user);
   //   console.log(`getSignInUserInfo usrInfo ${JSON.stringify(userInfo)}`);
-  //   AuthenticationHandler.getCurrentSessionId(userInfo);
+  //   AuthenticationHandler.getSessionId(userInfo);
   //   return userInfo;
   // }
 
@@ -62,7 +62,7 @@
       // console.log(`getSignInUserInfo user.eId ${user.eId}`);
       //userInfo.push(user);
       
-      await getCurrentSessionId(user);
+      await getSessionId(user);
       console.log(`getSignInUserInfo user NA AWAIT ${JSON.stringify(user)}`);
       if (user.eId !== "")
         return user;
@@ -73,34 +73,34 @@
   };
   
 
-  // async getCurrentSessionId(userInfo) {
+  // async getSessionId(userInfo) {
 
   //   const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
   //   const wialonUrl =
   //     wialonApi + '?svc=token/login&params={"token":"' + userInfo.token + '"}';
-  //   console.log(`getCurrentSessionId wialonurl ${wialonUrl}`);
+  //   console.log(`getSessionId wialonurl ${wialonUrl}`);
   //   const response = await fetch(wialonUrl);
   //   const result = await response.json();
   //   user.eId = result.eid;
-  //   console.log(`getCurrentSessionId user.eId ${user.eId}`);
+  //   console.log(`getSessionId user.eId ${user.eId}`);
   //   userInfo.push(user);
-  //   console.log(`getCurrentSessionId usrInfo ${JSON.stringify(userInfo)}`);
+  //   console.log(`getSessionId usrInfo ${JSON.stringify(userInfo)}`);
   //   return userInfo;    
   // }
 
-  const getCurrentSessionId = async (userInfo) => {
+  const getSessionId = async (userInfo) => {
 
     try {
       const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
       const wialonUrl =
         wialonApi + '?svc=token/login&params={"token":"' + userInfo.token + '"}';
-      console.log(`getCurrentSessionId wialonurl ${wialonUrl}`);
+      console.log(`getSessionId wialonurl ${wialonUrl}`);
       const response = await fetch(wialonUrl);
       const result = await response.json();
       userInfo.eId = result.eid;
-      console.log(`getCurrentSessionId result ${JSON.stringify(result)}`);
+      console.log(`getSessionId result ${JSON.stringify(result)}`);
       //userInfo.push(user);
-      console.log(`getCurrentSessionId usrInfo ${JSON.stringify(userInfo)}`);
+      console.log(`getSessionId usrInfo ${JSON.stringify(userInfo)}`);
       return userInfo; 
       
     } catch (error) {
@@ -110,7 +110,7 @@
 
   export {
     getSignInUserInfo,
-    getCurrentSessionId,
+    getSessionId,
   };
 
   

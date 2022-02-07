@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import {
   StyleSheet,
-  SafeAreaView,
-  Text,
   ActivityIndicator,
 } from "react-native";
-import { WebView, WebViewNavigation } from "react-native-webview";
+import { WebView } from "react-native-webview";
+
+import { getSignInUserInfo } from "../utilities/authenticationHandler";
 
 import colors from "../styles/colors";
-
-import {getSignInUserInfo} from "../utilities/authenticationHandler";
 
 const UserForm = ({ submitHandler }) => {
 
@@ -41,6 +37,7 @@ const UserForm = ({ submitHandler }) => {
     />
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",

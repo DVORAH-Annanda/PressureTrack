@@ -7,6 +7,7 @@ import {
   USER_DETAILS_SUCCESS,
   USER_SIGNOUT,
   USER_SESSION_ID_UPDATE_FAIL,
+  USER_SESSION_ID_UPDATE_REQUEST,
   USER_SESSION_ID_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 
@@ -21,6 +22,8 @@ export const userSignInReducer = (
       return { loading: false, userInfo: action.payload };
     case USER_SIGNIN_FAIL:
       return { loading: false, error: action.payload };
+    case USER_SESSION_ID_UPDATE_REQUEST:
+      return { loading: true, userInfo: action.payload };
     case USER_SESSION_ID_UPDATE_SUCCESS:
       return { loading: false, userInfo: action.payload };
     case USER_SESSION_ID_UPDATE_FAIL:

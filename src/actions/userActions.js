@@ -9,10 +9,11 @@ import {
   USER_DETAILS_SUCCESS,
   USER_SESSION_ID_UPDATE_FAIL,
   USER_SESSION_ID_UPDATE_SUCCESS,
+  USER_SESSION_ID_UPDATE_REQUEST,
 } from "../constants/userConstants";
 
 import { isObjectEmpty } from "../utilities/general"; //isObjectEmpty
-import { getCurrentSessionId } from "../utilities/authenticationHandler"; 
+import { getSessionId } from "../utilities/authenticationHandler"; 
 import {
   getLocalStorageData,
   removeStoredData,
@@ -31,16 +32,18 @@ export const signIn = (userInfo) => async (dispatch) => {
   }
 };
 
-export const updateSessionId = () => async (dispatch, getState) => {
-
-  const {
-    userSignIn: { userInfo },
-  } = getState();
+export const updateSessionId = (userInfo) => async (dispatch) => {
 
   try {
-    if (!isObjectEmpty(userInfo)) {
-      console.log(`usrActions updateSessionId userInfo.eid ${JSON.stringify(userInfo.eId)}`);
-      await getCurrentSessionId(userInfo);
+    //if (!isObjectEmpty(userInfo)) {
+      console.log(`usrActions updateSessionId userInfo.eid before -1 ${JSON.stringify(userInfo.eId)}`);
+      userInfo.eid = "";
+      console.log(`usrActions updateSessionId userInfo.eid to -1 ${JSON.stringify(userInfo.eId)}`);
+      dispatch({
+       type: USER_SESSION_ID_UPDATE_REQUEST,
+       payload: userInfo,
+     });
+      await getSessionId(userInfo);
       console.log(`usrActions updateSessionId userInfo.eid ${JSON.stringify(userInfo.eId)}`);
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
@@ -53,7 +56,7 @@ export const updateSessionId = () => async (dispatch, getState) => {
           payload: userInfo,
         });
       }
-    }
+    //}
   } catch (error) {
     dispatch({
       type: USER_SESSION_ID_UPDATE_FAIL,
@@ -63,6 +66,7 @@ export const updateSessionId = () => async (dispatch, getState) => {
 };
 
 export const signOut = () => (dispatch) => {
+
   console.log(`signOut USER_SIGNOUT`);
   //removeStoredData("userInfo");
   //removeStoredData("selectedUnits");

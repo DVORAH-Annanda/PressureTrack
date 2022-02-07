@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
 import { View, StyleSheet, StatusBar } from "react-native";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,19 +9,30 @@ import UserForm from "../components/UserForm";
 import { signIn } from "../actions/userActions";
 import { setRunning } from "../actions/appActions";
 
+import { isObjectEmpty } from "../utilities/general";
+
 import colors from "../styles/colors";
 
 const SignIn = ({ navigation }) => {
-  
+
   const userDetails = useSelector((state) => state.userSignIn);
-  const { userInfo } = userDetails;
+  const { userInfo } = userDetails; 
 
   const dispatch = useDispatch();
   const handleSubmit = (userInfo) => {
-    dispatch(setRunning(true));
     dispatch(signIn(userInfo));
-    //navigation.navigate("UnitsNavigator");
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!isObjectEmpty(userInfo)) {
+        console.log(
+          `SignIn useFocusEffect userInfo.eid ${JSON.stringify(userInfo.eId)}`
+        );
+        navigation.navigate("AppLoading");
+      }
+    }, [navigation, userInfo])
+  );
 
   return (
     <View style={styles.page}>

@@ -13,6 +13,7 @@ import {
 import { unitSensorValues } from "../actions/unitActions";
 
 import AxleContainer from "../components/AxleContainer";
+import DateTimeUpdatedBox from "../components/DateTimeUpdatedBox";
 
 import colors from "../styles/colors";
 
@@ -22,15 +23,18 @@ const WheelsDiagram = ({ navigation, route }) => {
   const { id, nm } = item;
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
-  const { loading, error, sensorValues, timeUpdated } = sensorValueProps;
+  const { loading, error, sensorValues, dateUpdated, timeUpdated } = sensorValueProps;
   //unitIsSelected, selectedUnit,
+
+  //const time = dateTimeUpdated.toString();
+  //time = time.slice(0,8);
+  //console.log(  `TIME : ${time}`)
 
   // console.log(
   //   `WheelsDiagram selectedUnit ${JSON.stringify(
   //     selectedUnit
   //   )} unitIsSelected ${unitIsSelected} loading ${loading}`
   // );
-  console.log(`WheelsDiagram LOAding ${loading}`);
   console.log(`WheelsDiagram ERROR ${error}`);
   console.log(`WheelsDiagram sensorValues ${JSON.stringify(sensorValues)}`);
 
@@ -69,18 +73,15 @@ const WheelsDiagram = ({ navigation, route }) => {
       <View style={styles.page}>
         {loading ? (
           <Text>loading...</Text>
-        ) : (
-<View>
-          
+        ) : (          
           <ScrollView>
             {sensorValues.map((axle) => {
               return <AxleContainer key={axle.axleId}>{axle}</AxleContainer>;
             })}
-          </ScrollView>
-          <Text>Last Updated: {timeUpdated}</Text>
-          </View>
+          </ScrollView>        
+         
         )}
-        
+         <DateTimeUpdatedBox date = {dateUpdated} time = {timeUpdated}/> 
       </View>
     </TouchableWithoutFeedback>
   );

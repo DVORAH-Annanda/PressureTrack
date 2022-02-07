@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+
 import {
   listUnits,
   selectUnit,
@@ -16,41 +16,20 @@ import {
   removeSelectedUnit,
 } from "../actions/unitActions";
 
+import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 
-const UnitList = ({ navigation, route }) => {
-  // const unitSelected = useSelector((state) => state.unitSelected);
-  // const { unitIsSelected, selectedUnit } = unitSelected;
+const UnitList = ({ navigation }) => {
 
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
 
-  console.log(`UnitList LOAding ${loading}`);
-  console.log(`UnitList ERROR ${error}`);
-  console.log(`UnitList units ${JSON.stringify(units)}`);
-
   const dispatch = useDispatch();
-  //if(!loading && !units){
-  //  const userInfoRemoved = removeStoredData("userInfo");
-  //  if(userInfoRemoved){
-  //    dispatch(signIn([]));
-  //  useCallback(
-  //    () => navigation.navigate("SignIn"),
-  //    [navigation]
-  //  );
-  //  console.log("haloooo")
-  //  }
-  //}
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //       unitIsSelected ? navigation.navigate("WheelsDiagram", { title: selectedUnit.nm, item: selectedUnit }) : dispatch(listUnits());
-  //   }, [navigation, dispatch, listUnits])
-  // );
-
-  useEffect(() => {
-    dispatch(listUnits());
-  }, [dispatch, listUnits]);
+  useFocusEffect(
+    useCallback(() => {
+         dispatch(listUnits());
+    }, [dispatch, listUnits])
+  );
 
   const addToSelectedUnits = (unit) => dispatch(addSelectedUnit(unit));
 
@@ -59,7 +38,6 @@ const UnitList = ({ navigation, route }) => {
 
     selectedUnits.push(unit);
     dispatch(listUserUnits(selectedUnits));
-    //storeData("selectedUnits", JSON.stringify(selectedUnits));
   };
 
   const removeFromSelectedUnits = (unit) => dispatch(removeSelectedUnit(unit));

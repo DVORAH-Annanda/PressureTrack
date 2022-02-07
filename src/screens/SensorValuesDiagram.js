@@ -16,22 +16,24 @@ import TextBox from "../components/TextBox";
 import PressureBox from "../components/PressureBox";
 import NoSignalBox from "../components/NoSignalBox";
 import TemperatureBox from "../components/TemperatureBox";
-import VoltageBox from "../components/VoltageBox";
+import DateTimeUpdatedBox from "../components/DateTimeUpdatedBox";
 import SensorValuesAxleContainer from "../components/SensorValuesAxleContainer";
 
 import colors from "../styles/colors";
 
 const SensorValuesDiagram = ({ navigation, route }) => {
-  
   const { title, item } = route.params;
   const { id, nm } = item;
-  
+
   // const [unitId, setUnitId] = useState(0);
   // const [axleSensorValues, setAxleSensorValues] = useState([]);
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
-  const { loading, error, sensorValues } = sensorValueProps;
-  
+  const { loading, error, sensorValues, dateUpdated, timeUpdated } =
+    sensorValueProps;
+
+console.log(`sensorValues screen!! sensorvalues ${JSON.stringify(sensorValues)}`)    
+
   const dispatch = useDispatch();
   useEffect(() => {
     console.log(`sensorValues screen useEffect unit id ${id}`);
@@ -39,39 +41,46 @@ const SensorValuesDiagram = ({ navigation, route }) => {
   }, [dispatch, unitSensorValues, id]);
 
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate("WheelsDiagram", { title: item.nm, item: item })}>
-    <View style={styles.page}>
-      {loading ? (
-        <Text>loading...</Text>
-      ) : (
-        <ScrollView>
-          {sensorValues.map((axle) => {
-            return (
-              <SensorValuesAxleContainer style={styles.axle} key={axle.axleId}>
-                {axle.wheels.map((wheel) => {
-                  return (
-                    <WheelContainer  key={wheel.wheelId}>
-                      <TextBox style={styles.tyreName}>
-                        {wheel.wheelName}
-                      </TextBox>
-                      {wheel.pressureValue == null ? (
-                        <NoSignalBox>{wheel}</NoSignalBox>
-                      ) : (
-                        <MetricsContainer>
-                        <PressureBox>{wheel}</PressureBox>
-                        <TemperatureBox>{wheel}</TemperatureBox>
-                      </MetricsContainer>
-                      )}
-                    </WheelContainer>
-                  );
-                })}
-              </SensorValuesAxleContainer>
-            );
-          })}
-        </ScrollView>
-      )}
-      <View></View>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() =>
+        navigation.navigate("WheelsDiagram", { title: item.nm, item: item })
+      }
+    >
+      <View style={styles.page}>
+        {loading ? (
+          <Text>loading...</Text>
+        ) : (
+          <ScrollView>
+            {sensorValues.map((axle) => {
+              return (
+                <SensorValuesAxleContainer
+                  style={styles.axle}
+                  key={axle.axleId}
+                >
+                  {axle.wheels.map((wheel) => {
+                    return (
+                      <WheelContainer key={wheel.wheelId}>
+                        <TextBox style={styles.tyreName}>
+                          {wheel.wheelName}
+                        </TextBox>
+                        {wheel.pressureValue == null ? (
+                          <NoSignalBox>{wheel}</NoSignalBox>
+                        ) : (
+                          <MetricsContainer>
+                            <PressureBox>{wheel}</PressureBox>
+                            <TemperatureBox>{wheel}</TemperatureBox>
+                          </MetricsContainer>
+                        )}
+                      </WheelContainer>
+                    );
+                  })}
+                </SensorValuesAxleContainer>
+              );
+            })}
+          </ScrollView>
+        )}
+        <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -91,7 +100,7 @@ const styles = StyleSheet.create({
   },
   tyreName: {
     flex: 1,
-    backgroundColor: colors.tyreNameGreen,   
+    backgroundColor: colors.tyreNameGreen,
   },
   sensorId: {
     backgroundColor: colors.white,
@@ -101,4 +110,3 @@ const styles = StyleSheet.create({
 });
 
 export default SensorValuesDiagram;
-
