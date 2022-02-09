@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["userSignIn"],
+  whitelist: ["userSignIn", "unitSelected"],
   //whitelist: ["userSignIn", "unitSelected"],
   //whitelist: ["userSignIn", "unitList", "unitSelected", "unitSensorValues"],
 };

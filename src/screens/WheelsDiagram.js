@@ -45,17 +45,14 @@ const WheelsDiagram = ({ navigation, route }) => {
   useEffect(() => {
     dispatch(unitSensorValues(id));
     console.log(`WheelsDiagram useEffect unit id ${id}`);
-    if (!loading || !isObjectEmpty(unitTrailersSensorValues)) 
-      console.log(
-        `WheelsDiagram useEffect LOAding ${JSON.stringify(
-          unitTrailersSensorValues
-        )}`
-      );
+    if (!loading){ 
+
       const interval = setInterval(() => {
         dispatch(unitSensorValues(id));
       }, 60000);
 
       return () => clearInterval(interval);
+    }
     
   }, [dispatch, unitSensorValues, id]);
 
@@ -114,9 +111,10 @@ const WheelsDiagram = ({ navigation, route }) => {
           <Text>loading...</Text>
         ) : (
           <ScrollView>
+            
             {unitTrailersSensorValues.map((unit) => {
               return (
-                <View style={styles.axle} key={unit.unitId}>
+                <View style={styles.unit} key={unit.unitId}>
                   {unit.sensorValues.map((axle) => {
                     return (
                       <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
@@ -125,6 +123,7 @@ const WheelsDiagram = ({ navigation, route }) => {
                 </View>
               );
             })}
+            
           </ScrollView>
          ) 
         }
@@ -143,6 +142,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },  
+  unit: {
+    borderWidth: 1,
+    marginBottom: 5,
   },
   tyreName: {
     flex: 1,

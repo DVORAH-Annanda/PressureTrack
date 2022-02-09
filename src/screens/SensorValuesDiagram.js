@@ -51,13 +51,13 @@ const SensorValuesDiagram = ({ navigation, route }) => {
       }
     >
       <View style={styles.page}>
-        {loading ? (
+        {loading || unitTrailersSensorValues == null ? (
           <Text>loading...</Text>
         ) : (
           <ScrollView>
             {unitTrailersSensorValues.map((unit) => {
               return (
-                <View style={styles.axle} key={unit.unitId}>
+                <View style={styles.unit} key={unit.unitId}>
                   {unit.sensorValues.map((axle) => {
                     return (
                       <SensorValuesAxleContainer
@@ -104,6 +104,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  unit: {
+    margin: 2.5,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
   },
   axle: {
     borderWidth: 1,
