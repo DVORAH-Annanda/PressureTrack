@@ -15,15 +15,17 @@ import { unitSensorValues } from "../actions/unitActions";
 import AxleContainer from "../components/AxleContainer";
 import DateTimeUpdatedBox from "../components/DateTimeUpdatedBox";
 
+import { isObjectEmpty } from "../utilities/general";
+
 import colors from "../styles/colors";
 
 const WheelsDiagram = ({ navigation, route }) => {
-
   const { title, item } = route.params;
   const { id, nm } = item;
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
-  const { loading, error, sensorValues, dateUpdated, timeUpdated } = sensorValueProps;
+  const { loading, error, unitTrailersSensorValues, dateUpdated, timeUpdated } =
+    sensorValueProps;
   //unitIsSelected, selectedUnit,
 
   //const time = dateTimeUpdated.toString();
@@ -35,31 +37,68 @@ const WheelsDiagram = ({ navigation, route }) => {
   //     selectedUnit
   //   )} unitIsSelected ${unitIsSelected} loading ${loading}`
   // );
-  console.log(`WheelsDiagram ERROR ${error}`);
-  console.log(`WheelsDiagram sensorValues ${JSON.stringify(sensorValues)}`);
+
+  //*** */ console.log(`WheelsDiagram ERROR ${error}`);
+  //*** */ console.log(`WheelsDiagram sensorValues ${JSON.stringify(unitTrailersSensorValues)}`);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(unitSensorValues(id));
     console.log(`WheelsDiagram useEffect unit id ${id}`);
-    console.log(`WheelsDiagram useEffect LOAding ${loading}`);
-    const interval = setInterval(() => {
-      dispatch(unitSensorValues(id));
-    }, 60000);
-    
-    return () => clearInterval(interval);
-    
+    if (!loading || !isObjectEmpty(unitTrailersSensorValues)) 
+      console.log(
+        `WheelsDiagram useEffect LOAding ${JSON.stringify(
+          unitTrailersSensorValues
+        )}`
+      );
+      const interval = setInterval(() => {
+        dispatch(unitSensorValues(id));
+      }, 60000);
 
-
+      return () => clearInterval(interval);
+    
   }, [dispatch, unitSensorValues, id]);
-
-
 
   // const dispatch = useDispatch();
   // useEffect(() => {
   //   console.log(`sensorValues screen useEffect unit id ${id}`);
   //   dispatch(unitSensorValues(id));
   // }, [dispatch, unitSensorValues, id]);
+
+  // return (
+  //   <TouchableWithoutFeedback
+  //     onPress={() =>
+  //       navigation.navigate("SensorValuesDiagram", {
+  //         title: item.nm,
+  //         item: item,
+  //       })
+  //     }
+  //   >
+  //     <View style={styles.page}>
+  //       {loading ? (
+  //         <Text>loading...</Text>
+  //       ) : (
+  //         <ScrollView>
+  //           {unitTrailersSensorValues.map((unit) => {
+  //             return (
+  //               <View
+  //                 style={styles.axle}
+  //                 key={unit.unitId}
+  //               >
+  //           {unit.sensorValues.map((axle) => {
+  //             return (
+  //             <AxleContainer key={axle.axleId}>{axle}
+  //             </AxleContainer>
+  //           )})}
+  //           </View>);
+  //           })}
+  //         </ScrollView>
+
+  //       )}
+  //        <DateTimeUpdatedBox date = {dateUpdated} time = {timeUpdated}/>
+  //     </View>
+  //   </TouchableWithoutFeedback>
+  // );
 
   return (
     <TouchableWithoutFeedback
@@ -71,17 +110,25 @@ const WheelsDiagram = ({ navigation, route }) => {
       }
     >
       <View style={styles.page}>
-        {loading ? (
+        {loading || unitTrailersSensorValues == null ?  (
           <Text>loading...</Text>
-        ) : (          
+        ) : (
           <ScrollView>
-            {sensorValues.map((axle) => {
-              return <AxleContainer key={axle.axleId}>{axle}</AxleContainer>;
+            {unitTrailersSensorValues.map((unit) => {
+              return (
+                <View style={styles.axle} key={unit.unitId}>
+                  {unit.sensorValues.map((axle) => {
+                    return (
+                      <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
+                    );
+                  })}
+                </View>
+              );
             })}
-          </ScrollView>        
-         
-        )}
-         <DateTimeUpdatedBox date = {dateUpdated} time = {timeUpdated}/> 
+          </ScrollView>
+         ) 
+        }
+        <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
       </View>
     </TouchableWithoutFeedback>
   );

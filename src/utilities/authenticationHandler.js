@@ -21,166 +21,161 @@
 //     }
 //   }
 
-  // async getSignInUserInfo(url) {
-  //   let userInfo = [];
-  //   console.log(`getSignInUserInfo url ${url}`);
-  //   const user = {};
-  //   user.eid = "";
-  //   const urlParams = url.split("&");
-  //   const token = urlParams[1].replace("access_token=", "");
-  //   user.userName = urlParams[2].replace("user_name=", "");
-  //   // const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
-  //   // const wialonUrl =
-  //   //   wialonApi + '?svc=token/login&params={"token":"' + token + '"}';
-  //   // console.log(`getSignInUserInfo wialonurl ${wialonUrl}`);
-  //   // const response = await fetch(wialonUrl);
-  //   // const result = await response.json();
-  //   // user.eId = result.eid;
-  //   // console.log(`getSignInUserInfo user.eId ${user.eId}`);
-  //   userInfo.push(user);
-  //   console.log(`getSignInUserInfo usrInfo ${JSON.stringify(userInfo)}`);
-  //   AuthenticationHandler.getSessionId(userInfo);
-  //   return userInfo;
-  // }
+// async getSignInUserInfo(url) {
+//   let userInfo = [];
+//   console.log(`getSignInUserInfo url ${url}`);
+//   const user = {};
+//   user.eid = "";
+//   const urlParams = url.split("&");
+//   const token = urlParams[1].replace("access_token=", "");
+//   user.userName = urlParams[2].replace("user_name=", "");
+//   // const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
+//   // const wialonUrl =
+//   //   wialonApi + '?svc=token/login&params={"token":"' + token + '"}';
+//   // console.log(`getSignInUserInfo wialonurl ${wialonUrl}`);
+//   // const response = await fetch(wialonUrl);
+//   // const result = await response.json();
+//   // user.eId = result.eid;
+//   // console.log(`getSignInUserInfo user.eId ${user.eId}`);
+//   userInfo.push(user);
+//   console.log(`getSignInUserInfo usrInfo ${JSON.stringify(userInfo)}`);
+//   AuthenticationHandler.getSessionId(userInfo);
+//   return userInfo;
+// }
 
-  const getSignInUserInfo = async (url) => {
-    try {
-      //let userInfo = [];
-      console.log(`getSignInUserInfo url ${url}`);
-      const user = {};
-      user.eId = "";
-      const urlParams = url.split("&");
-      user.token = urlParams[1].replace("access_token=", "");
-      user.userName = urlParams[2].replace("user_name=", "");
-      // const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
-      // const wialonUrl =
-      //   wialonApi + '?svc=token/login&params={"token":"' + token + '"}';
-      // console.log(`getSignInUserInfo wialonurl ${wialonUrl}`);
-      // const response = await fetch(wialonUrl);
-      // const result = await response.json();
-      // user.eId = result.eid;
-      // console.log(`getSignInUserInfo user.eId ${user.eId}`);
-      //userInfo.push(user);
-      
-      await getSessionId(user);
-      console.log(`getSignInUserInfo user NA AWAIT ${JSON.stringify(user)}`);
-      if (user.eId !== "")
-        return user;
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const getSignInUserInfo = async (url) => {
   
+  try {
+    //let userInfo = [];
+    console.log(`getSignInUserInfo url ${url}`);
+    const user = {};
+    user.eId = "";
+    const urlParams = url.split("&");
+    user.token = urlParams[1].replace("access_token=", "");
+    user.userName = urlParams[2].replace("user_name=", "");
+    // const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
+    // const wialonUrl =
+    //   wialonApi + '?svc=token/login&params={"token":"' + token + '"}';
+    // console.log(`getSignInUserInfo wialonurl ${wialonUrl}`);
+    // const response = await fetch(wialonUrl);
+    // const result = await response.json();
+    // user.eId = result.eid;
+    // console.log(`getSignInUserInfo user.eId ${user.eId}`);
+    //userInfo.push(user);
 
-  // async getSessionId(userInfo) {
+    await getSessionId(user);
+    console.log(`getSignInUserInfo user NA AWAIT ${JSON.stringify(user)}`);
+    if (user.eId !== "") return user;
+  } catch (error) {
+    console.log(`getSignInUserInfo error`);
+  }
+};
 
-  //   const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
-  //   const wialonUrl =
-  //     wialonApi + '?svc=token/login&params={"token":"' + userInfo.token + '"}';
-  //   console.log(`getSessionId wialonurl ${wialonUrl}`);
-  //   const response = await fetch(wialonUrl);
-  //   const result = await response.json();
-  //   user.eId = result.eid;
-  //   console.log(`getSessionId user.eId ${user.eId}`);
-  //   userInfo.push(user);
-  //   console.log(`getSessionId usrInfo ${JSON.stringify(userInfo)}`);
-  //   return userInfo;    
-  // }
+// async getSessionId(userInfo) {
 
-  const getSessionId = async (userInfo) => {
+//   const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
+//   const wialonUrl =
+//     wialonApi + '?svc=token/login&params={"token":"' + userInfo.token + '"}';
+//   console.log(`getSessionId wialonurl ${wialonUrl}`);
+//   const response = await fetch(wialonUrl);
+//   const result = await response.json();
+//   user.eId = result.eid;
+//   console.log(`getSessionId user.eId ${user.eId}`);
+//   userInfo.push(user);
+//   console.log(`getSessionId usrInfo ${JSON.stringify(userInfo)}`);
+//   return userInfo;
+// }
 
-    try {
-      const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
-      const wialonUrl =
-        wialonApi + '?svc=token/login&params={"token":"' + userInfo.token + '"}';
-      console.log(`getSessionId wialonurl ${wialonUrl}`);
-      const response = await fetch(wialonUrl);
-      const result = await response.json();
+const getSessionId = async (userInfo) => {
+
+  try {
+    const currentSessionId = userInfo.eId;
+    const wialonApi = "https://hst-api.wialon.com/wialon/ajax.html";
+    const wialonUrl =
+      wialonApi + '?svc=token/login&params={"token":"' + userInfo.token + '"}';
+    console.log(`getSessionId wialonurl ${wialonUrl}`);
+    const response = await fetch(wialonUrl);
+    const result = await response.json();
+    if (currentSessionId !== result.eid) {
       userInfo.eId = result.eid;
       console.log(`getSessionId result ${JSON.stringify(result)}`);
       //userInfo.push(user);
       console.log(`getSessionId usrInfo ${JSON.stringify(userInfo)}`);
-      return userInfo; 
-      
-    } catch (error) {
-      console.log(error);
+      return userInfo;
     }
+  } catch (error) {
+    console.log(`error in getSessionId`);
   }
+};
 
-  export {
-    getSignInUserInfo,
-    getSessionId,
-  };
+export { getSignInUserInfo, getSessionId };
 
-  
+// async getUserInfo(url) {
+//   if (url.includes("svc_error=0")) {
+//     let urlParams = url.split("&");
+//     let token = urlParams[1].replace("access_token=", "");
+//     let userInfo = [];
+//     let user = {};
+//     user.userName = urlParams[2].replace("user_name=", "");
+//     let data = await getLocalStorageData("userInfo");
+//     if (!isObjectEmpty(data)) {
+//       if (data.length === 0) {
+//         //clearAllLocalStorageData();
+//       } else {
+//         let localStoreUser = JSON.parse(data);
+//         console.log(`getUserInfo localStoreUser ${JSON.stringify(localStoreUser)}`);
+//         user.userName = urlParams[2].replace("user_name=", "");
+//         let localStoreUserName = localStoreUser[0].userName;
+//         if (localStoreUserName.trim() !== user.userName.trim()) {
+//           clearAllLocalStorageData();
+//         }
+//         console.log(`getUserInfo localStoreUserName ${localStoreUserName}`);
+//       }
+//     }
+//     if (token) {
+//       const wialonurl = "https://hst-api.wialon.com/wialon/ajax.html";
+//       const wialonapi =
+//         wialonurl + '?svc=token/login&params={"token":"' + token + '"}';
 
-  // async getUserInfo(url) {
-  //   if (url.includes("svc_error=0")) {
-  //     let urlParams = url.split("&");
-  //     let token = urlParams[1].replace("access_token=", "");
-  //     let userInfo = [];
-  //     let user = {};
-  //     user.userName = urlParams[2].replace("user_name=", "");
-  //     let data = await getLocalStorageData("userInfo");
-  //     if (!isObjectEmpty(data)) {
-  //       if (data.length === 0) {
-  //         //clearAllLocalStorageData();
-  //       } else {
-  //         let localStoreUser = JSON.parse(data);
-  //         console.log(`getUserInfo localStoreUser ${JSON.stringify(localStoreUser)}`);
-  //         user.userName = urlParams[2].replace("user_name=", "");
-  //         let localStoreUserName = localStoreUser[0].userName;
-  //         if (localStoreUserName.trim() !== user.userName.trim()) {
-  //           clearAllLocalStorageData();
-  //         }
-  //         console.log(`getUserInfo localStoreUserName ${localStoreUserName}`);
-  //       }
-  //     }
-  //     if (token) {
-  //       const wialonurl = "https://hst-api.wialon.com/wialon/ajax.html";
-  //       const wialonapi =
-  //         wialonurl + '?svc=token/login&params={"token":"' + token + '"}';
+//       let response = await fetch(wialonapi);
+//       let result = await response.json();
+//       user.eId = result.eid;
+//       userInfo.push(user);
+//       console.log(`getUserInfo userinfo ${JSON.stringify(userInfo)}`);
+//       return result.eid;
+//     }
+//   } else {
+//     return;
+//   }
+// }
 
-  //       let response = await fetch(wialonapi);
-  //       let result = await response.json();
-  //       user.eId = result.eid;
-  //       userInfo.push(user);
-  //       console.log(`getUserInfo userinfo ${JSON.stringify(userInfo)}`);
-  //       return result.eid;
-  //     }
-  //   } else {
-  //     return;
-  //   }
-  // }
+// async getStoredToken() {
+//   try {
+//     const value = await AsyncStorage.getItem("eid");
+//     if (value !== null) {
+//       return value;
+//     }
+//   } catch (e) {
+//     console.log("Session expired!");
+//   }
+// }
 
-  // async getStoredToken() {
-  //   try {
-  //     const value = await AsyncStorage.getItem("eid");
-  //     if (value !== null) {
-  //       return value;
-  //     }
-  //   } catch (e) {
-  //     console.log("Session expired!");
-  //   }
-  // }
+// async storeToken(eid) {
+//   try {
+//     await AsyncStorage.setItem("eid", eid);
+//   } catch (error) {
+//     console.log("Something went wrong", error);
+//   }
+// }
 
-  // async storeToken(eid) {
-  //   try {
-  //     await AsyncStorage.setItem("eid", eid);
-  //   } catch (error) {
-  //     console.log("Something went wrong", error);
-  //   }
-  // }
-
-  // async fetchJSONAsync(url) {
-  //   let response = await fetch(url);
-  //   let body = await response.json();
-  //   let eid = "";
-  //   if (body.eid !== "") eid = body.eid;
-  //   console.log(eid);
-  //   return body;
-  // }
+// async fetchJSONAsync(url) {
+//   let response = await fetch(url);
+//   let body = await response.json();
+//   let eid = "";
+//   if (body.eid !== "") eid = body.eid;
+//   console.log(eid);
+//   return body;
+// }
 
 //   async onLogin() {
 //     try {

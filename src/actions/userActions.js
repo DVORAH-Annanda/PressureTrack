@@ -36,21 +36,23 @@ export const updateSessionId = (userInfo) => async (dispatch) => {
 
   try {
     //if (!isObjectEmpty(userInfo)) {
-      console.log(`usrActions updateSessionId userInfo.eid before -1 ${JSON.stringify(userInfo.eId)}`);
+      console.log(`usrActions updateSessionId userInfo.eid before -1 ${JSON.stringify(userInfo)}`);
       userInfo.eid = "";
-      console.log(`usrActions updateSessionId userInfo.eid to -1 ${JSON.stringify(userInfo.eId)}`);
+     
       dispatch({
        type: USER_SESSION_ID_UPDATE_REQUEST,
        payload: userInfo,
      });
+     console.log(`usrActions updateSessionId userInfo.eid to -1 ${JSON.stringify(userInfo)}`);
       await getSessionId(userInfo);
-      console.log(`usrActions updateSessionId userInfo.eid ${JSON.stringify(userInfo.eId)}`);
+      console.log(`usrActions updateSessionId USER_SESSION_ID_UPDATE_REQUEST userInfo.eid ${JSON.stringify(userInfo)}`);
       const fetchurl =
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
         userInfo.eId;
       const { data } = await Axios.get(fetchurl);
+      console.log(`usrActions updateSessionId BEFORE DISPATCH USER_SESSION_ID_UPDATE_SUCCESS userInfo.eid ${JSON.stringify(data)}`);
       if (data.items.length > 0) {
-        console.log(`usrActions updateSessionId BEFORE DISPATCH userInfo.eid ${JSON.stringify(userInfo.eId)}`);
+        
          dispatch({
           type: USER_SESSION_ID_UPDATE_SUCCESS,
           payload: userInfo,

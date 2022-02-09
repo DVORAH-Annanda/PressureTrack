@@ -29,10 +29,14 @@ const SensorValuesDiagram = ({ navigation, route }) => {
   // const [axleSensorValues, setAxleSensorValues] = useState([]);
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
-  const { loading, error, sensorValues, dateUpdated, timeUpdated } =
+  const { loading, error, unitTrailersSensorValues, dateUpdated, timeUpdated } =
     sensorValueProps;
 
-console.log(`sensorValues screen!! sensorvalues ${JSON.stringify(sensorValues)}`)    
+  console.log(
+    `sensorValues screen!! sensorvalues ${JSON.stringify(
+      unitTrailersSensorValues
+    )}`
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,30 +55,36 @@ console.log(`sensorValues screen!! sensorvalues ${JSON.stringify(sensorValues)}`
           <Text>loading...</Text>
         ) : (
           <ScrollView>
-            {sensorValues.map((axle) => {
+            {unitTrailersSensorValues.map((unit) => {
               return (
-                <SensorValuesAxleContainer
-                  style={styles.axle}
-                  key={axle.axleId}
-                >
-                  {axle.wheels.map((wheel) => {
+                <View style={styles.axle} key={unit.unitId}>
+                  {unit.sensorValues.map((axle) => {
                     return (
-                      <WheelContainer key={wheel.wheelId}>
-                        <TextBox style={styles.tyreName}>
-                          {wheel.wheelName}
-                        </TextBox>
-                        {wheel.pressureValue == null ? (
-                          <NoSignalBox>{wheel}</NoSignalBox>
-                        ) : (
-                          <MetricsContainer>
-                            <PressureBox>{wheel}</PressureBox>
-                            <TemperatureBox>{wheel}</TemperatureBox>
-                          </MetricsContainer>
-                        )}
-                      </WheelContainer>
+                      <SensorValuesAxleContainer
+                        style={styles.axle}
+                        key={axle.axleId}
+                      >
+                        {axle.wheels.map((wheel) => {
+                          return (
+                            <WheelContainer key={wheel.wheelId}>
+                              <TextBox style={styles.tyreName}>
+                                {wheel.wheelName}
+                              </TextBox>
+                              {wheel.pressureValue == null ? (
+                                <NoSignalBox>{wheel}</NoSignalBox>
+                              ) : (
+                                <MetricsContainer>
+                                  <PressureBox>{wheel}</PressureBox>
+                                  <TemperatureBox>{wheel}</TemperatureBox>
+                                </MetricsContainer>
+                              )}
+                            </WheelContainer>
+                          );
+                        })}
+                      </SensorValuesAxleContainer>
                     );
                   })}
-                </SensorValuesAxleContainer>
+                </View>
               );
             })}
           </ScrollView>
