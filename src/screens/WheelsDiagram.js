@@ -20,8 +20,12 @@ import { isObjectEmpty } from "../utilities/general";
 import colors from "../styles/colors";
 
 const WheelsDiagram = ({ navigation, route }) => {
+  
   const { title, item } = route.params;
   const { id, nm } = item;
+
+  
+  
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, unitTrailersSensorValues, dateUpdated, timeUpdated } =
@@ -45,57 +49,17 @@ const WheelsDiagram = ({ navigation, route }) => {
   useEffect(() => {
     dispatch(unitSensorValues(id));
     console.log(`WheelsDiagram useEffect unit id ${id}`);
-    if (!loading){ 
 
+    //if (!loading){  @setInterval regte manier!!
       const interval = setInterval(() => {
         dispatch(unitSensorValues(id));
       }, 60000);
 
       return () => clearInterval(interval);
-    }
+    //}
     
   }, [dispatch, unitSensorValues, id]);
 
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   console.log(`sensorValues screen useEffect unit id ${id}`);
-  //   dispatch(unitSensorValues(id));
-  // }, [dispatch, unitSensorValues, id]);
-
-  // return (
-  //   <TouchableWithoutFeedback
-  //     onPress={() =>
-  //       navigation.navigate("SensorValuesDiagram", {
-  //         title: item.nm,
-  //         item: item,
-  //       })
-  //     }
-  //   >
-  //     <View style={styles.page}>
-  //       {loading ? (
-  //         <Text>loading...</Text>
-  //       ) : (
-  //         <ScrollView>
-  //           {unitTrailersSensorValues.map((unit) => {
-  //             return (
-  //               <View
-  //                 style={styles.axle}
-  //                 key={unit.unitId}
-  //               >
-  //           {unit.sensorValues.map((axle) => {
-  //             return (
-  //             <AxleContainer key={axle.axleId}>{axle}
-  //             </AxleContainer>
-  //           )})}
-  //           </View>);
-  //           })}
-  //         </ScrollView>
-
-  //       )}
-  //        <DateTimeUpdatedBox date = {dateUpdated} time = {timeUpdated}/>
-  //     </View>
-  //   </TouchableWithoutFeedback>
-  // );
 
   return (
     <TouchableWithoutFeedback
@@ -106,15 +70,20 @@ const WheelsDiagram = ({ navigation, route }) => {
         })
       }
     >
+      
       <View style={styles.page}>
         {loading || unitTrailersSensorValues == null ?  (
           <Text>loading...</Text>
         ) : (
+          <View>
+            
           <ScrollView>
             
             {unitTrailersSensorValues.map((unit) => {
               return (
+                
                 <View style={styles.unit} key={unit.unitId}>
+                  <Text style={styles.unitName}>{unit.unitName}</Text>
                   {unit.sensorValues.map((axle) => {
                     return (
                       <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
@@ -125,9 +94,10 @@ const WheelsDiagram = ({ navigation, route }) => {
             })}
             
           </ScrollView>
+          </View>
          ) 
         }
-        <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
+        <DateTimeUpdatedBox  date={dateUpdated} time={timeUpdated} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -136,9 +106,10 @@ const WheelsDiagram = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
+    marginTop: StatusBar.currentHeight + 10,
     marginLeft: 2.5,
     marginRight: 5,
+    marginBottom: 18,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -146,6 +117,10 @@ const styles = StyleSheet.create({
   unit: {
     borderWidth: 1,
     marginBottom: 5,
+  },
+  unitName: {
+    textAlign: 'center', 
+    fontWeight: 'bold',
   },
   tyreName: {
     flex: 1,

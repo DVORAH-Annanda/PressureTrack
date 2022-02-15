@@ -1,4 +1,4 @@
-import React, { useCallback  } from "react";
+import React, { useCallback, useState, useEffect  } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
 import { isObjectEmpty } from "../utilities/general";
+import { getLocalStorageData  } from "../utilities/localStoreData";
 
 const UnitListTabs = createBottomTabNavigator();
 
@@ -26,6 +27,9 @@ const UnitsNavigator = ({ navigation }) => {
 
   const unitSelected = useSelector((state) => state.unitSelected);
   const { unitIsSelected, selectedUnit } = unitSelected;
+
+  const [isUnitSelected, setIsUnitSelected] = useState(false);
+  const [params, setParams] = useState("");
 
   // const userUnitList = useSelector((state) => state.unitList);
   // const { loading, error, selectedUnits } = userUnitList;
@@ -42,8 +46,11 @@ const UnitsNavigator = ({ navigation }) => {
   //   dispatch(listUserUnits());
   // }, [dispatch, listUserUnits]);
 
+
+
   const tabBarOptions = {
-    tabBarShowLabel: true,
+    
+    tabBarShowLabel: false,
     tabBarActiveTintColor: colors.primary,
     tabBarStyle: [
       {
@@ -82,9 +89,36 @@ const UnitsNavigator = ({ navigation }) => {
     dispatch(selectUnit(false, {}));
   }
 
+  
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAssigned = await getLocalStorageData("isAssigned");
+      const alreadyExist = await getLocalStorageData("WheelsDiagram");
+
+      setParams(alreadyExist);
+      setIsUnitSelected(isAssigned);
+
+      if (isAssigned === "true") {
+        //   console.log("SUUCUCUUCUC");
+        navigation.navigate("WheelsDiagram", {
+          title: JSON.parse(params).nm,
+          item: JSON.parse(params),
+        });
+      }
+    };
+    checkAuth().then()
+    .catch((e) => {
+      console.log("catch", e);
+    });
+  }, [unitIsSelected, params]);
+
+
+  console.log(`isUnitSelected? ${typeof isUnitSelected}`);
   return (
     <UnitListTabs.Navigator
+    
       screenOptions={tabBarOptions}
+      
       initialRouteName="UnitList"
     >
       <UnitListTabs.Screen
@@ -102,7 +136,7 @@ const UnitsNavigator = ({ navigation }) => {
         name="WheelsDiagram"
         component={WheelsDiagram}
         options={({ route }) => ({
-          title: route.params?.title || "Wheels Diagram",
+          title: "",
           tabBarButton: (props) => null,
         })}
       />
@@ -110,7 +144,7 @@ const UnitsNavigator = ({ navigation }) => {
         name="SensorValuesDiagram"
         component={SensorValuesDiagram}
         options={({ route }) => ({
-          title: route.params?.title || "Sensor Values",
+          title: "",
           tabBarButton: (props) => null,
         })}
       />

@@ -103,16 +103,16 @@ export const removeSelectedUnit = (unit) => (dispatch) => {
   });
 };
 
-async function getNotifications(url) {
-  return await Axios.get(url)
-    .then((response) => {
-      return response.data.items;
-    })
-    .catch((error) => {
-      console.log(`Get Notifications - API ERROR ${error}`);
-      return "Get Notifications - API ERROR";
-    });
-}
+// async function getNotifications(url) {
+//   return await Axios.get(url)
+//     .then((response) => {
+//       return response.data.items;
+//     })
+//     .catch((error) => {
+//       console.log(`Get Notifications - API ERROR ${error}`);
+//       return "Get Notifications - API ERROR";
+//     });
+// }
 
 export const unitSensorValues = (unitId) => async (dispatch, getState) => {
   dispatch({ type: UNIT_SENSORVALUES_REQUEST, payload: unitId });
@@ -137,6 +137,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
 
       let unit = {};
       unit.unitId = unitId;
+      unit.orderId = 0;
       unitWithTrailers.push(unit);
 
       unit = {};
@@ -154,6 +155,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
           }
         }
         unit.unitId = linkedTrailerUnitId;
+        unit.orderId = 1;
         unitWithTrailers.push(unit);
       }
 
@@ -167,6 +169,14 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         let unit = {};
         unitId = unitWithTrailers[uwt].unitId;
         unit.unitId = unitId;
+        unit.orderId = unitWithTrailers[uwt].orderId;
+
+        for (let u = 0; u < units.length; u++) {
+          if (unit.unitId === units[u].id) {
+            unit.unitName = units[u].nm;
+            break;
+          }
+        }
 
         let sensors = {};
         let sensorValues = [];
@@ -193,9 +203,12 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
         Promise.all(endpoints.map((endpoint) => Axios.get(endpoint))).then(
           ([{ data: sensorData }, { data: sensorValuesData }]) => {
             sensors = Object.assign(sensors, sensorData.item.sens);
+            if (unitWithTrailers[uwt].orderId === 0) {
             const dateTimeUpdated = getDateTimeUpdated(sensorValuesData);
+
             timeUpdated = dateTimeUpdated.slice(-9);
             dateUpdated = dateTimeUpdated.slice(0, dateTimeUpdated.length - 9);
+            }
 
             if (sensorValuesData && !isObjectEmpty(sensorValuesData)) {
               const e6SensorValues = getE6SensorValues(sensorValuesData);
@@ -212,7 +225,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
                 );
                 unit.sensorValues = sensorValues;
                 unitTrailersSensorValues.push(unit);
-
+                unitTrailersSensorValues.sort((a, b) => a.orderId - b.orderId);
                 dispatch({
                   type: UNIT_SENSORVALUES_SUCCESS,
                   payload: {
@@ -249,7 +262,9 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
               }
             }
           }
-        );
+        ).catch(function (err) {
+          console.log("catch__error", err);
+        });
       }
     }
   } catch (error) {
@@ -280,6 +295,7 @@ function getE6SensorValues(sensorValues) {
 }
 
 function getDateTimeUpdated(sensorValues) {
+
   let dateTimeUpdated = 0;
   let lastUpdated = 0;
 
@@ -289,6 +305,9 @@ function getDateTimeUpdated(sensorValues) {
       if (dateTimeUpdated < lastUpdated) dateTimeUpdated = lastUpdated;
     }
   }
+  if (dateTimeUpdated === 0)
+  return "---";
+  else
   return convertUnixDateTime(dateTimeUpdated);
 }
 

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   wheel: {
     margin: 0.5,
     width: 25,
-    height: 60,
+    height: 55,
     borderWidth: 2.5,
     borderColor: colors.darkGray,
     borderRadius: 8.5,

@@ -5,9 +5,7 @@ import { StyleSheet, View, Text } from "react-native";
 import colors from "../styles/colors";
 
 const SpareWheel = (props) => {
-  {
-    console.log(`SpareWheel props ${JSON.stringify(props)}`);
-  }
+
   renderWheelStyle = () => {
     if (props.children.pressureValue == null) {
       return <View style={[styles.wheel, styles.noSignalWheel]}></View>;

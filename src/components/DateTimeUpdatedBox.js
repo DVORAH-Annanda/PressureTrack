@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 35,
     marginLeft: 5,
-    marginRight: 5,
+    marginRight: 5,    
     padding: 1.5,
     alignSelf: "stretch",
     backgroundColor: colors.lightGray,

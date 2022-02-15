@@ -19,10 +19,14 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 
+import { storeData } from "../utilities/localStoreData";
+
 const UnitList = ({ navigation }) => {
 
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
+
+
 
   const dispatch = useDispatch();
   useFocusEffect(
@@ -63,6 +67,8 @@ const UnitList = ({ navigation }) => {
         activeOpacity={0.45}
         onPress={() => {
           handleSelectedUnit(item);
+          storeData("isAssigned", "true");
+          storeData("WheelsDiagram", JSON.stringify(item));
           navigation.navigate("WheelsDiagram", { title: item.nm, item: item });
         }}
       >
