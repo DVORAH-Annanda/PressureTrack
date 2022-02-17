@@ -9,6 +9,7 @@ import {
   Text,
   Button,
   StatusBar,
+  Alert,
 } from "react-native";
 import { unitSensorValues } from "../actions/unitActions";
 
@@ -16,16 +17,13 @@ import AxleContainer from "../components/AxleContainer";
 import DateTimeUpdatedBox from "../components/DateTimeUpdatedBox";
 
 import { isObjectEmpty } from "../utilities/general";
+import { useFocusEffect } from "@react-navigation/native";
 
 import colors from "../styles/colors";
 
 const WheelsDiagram = ({ navigation, route }) => {
-  
   const { title, item } = route.params;
   const { id, nm } = item;
-
-  
-  
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, unitTrailersSensorValues, dateUpdated, timeUpdated } =
@@ -46,20 +44,19 @@ const WheelsDiagram = ({ navigation, route }) => {
   //*** */ console.log(`WheelsDiagram sensorValues ${JSON.stringify(unitTrailersSensorValues)}`);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(unitSensorValues(id));
-    console.log(`WheelsDiagram useEffect unit id ${id}`);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(unitSensorValues(id));
+      console.log(`WheelsDiagram useEffect unit id ${id}`);
 
-    //if (!loading){  @setInterval regte manier!!
+      //if (!loading){  @setInterval regte manier!!
       const interval = setInterval(() => {
         dispatch(unitSensorValues(id));
       }, 60000);
 
       return () => clearInterval(interval);
-    //}
-    
-  }, [dispatch, unitSensorValues, id]);
-
+    }, [dispatch, unitSensorValues, id, route])
+  );
 
   return (
     <TouchableWithoutFeedback
@@ -70,34 +67,28 @@ const WheelsDiagram = ({ navigation, route }) => {
         })
       }
     >
-      
       <View style={styles.page}>
-        {loading || unitTrailersSensorValues == null ?  (
+        {loading || unitTrailersSensorValues == null ? (
           <Text>loading...</Text>
         ) : (
           <View>
-            
-          <ScrollView>
-            
-            {unitTrailersSensorValues.map((unit) => {
-              return (
-                
-                <View style={styles.unit} key={unit.unitId}>
-                  <Text style={styles.unitName}>{unit.unitName}</Text>
-                  {unit.sensorValues.map((axle) => {
-                    return (
-                      <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
-                    );
-                  })}
-                </View>
-              );
-            })}
-            
-          </ScrollView>
+            <ScrollView>
+              {unitTrailersSensorValues.map((unit) => {
+                return (
+                  <View style={styles.unit} key={unit.unitId}>
+                    <Text style={styles.unitName}>{unit.unitName}</Text>
+                    {unit.sensorValues.map((axle) => {
+                      return (
+                        <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
+                      );
+                    })}
+                  </View>
+                );
+              })}
+            </ScrollView>
           </View>
-         ) 
-        }
-        <DateTimeUpdatedBox  date={dateUpdated} time={timeUpdated} />
+        )}
+        <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -113,14 +104,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },  
+  },
   unit: {
     borderWidth: 1,
     marginBottom: 5,
   },
   unitName: {
-    textAlign: 'center', 
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   tyreName: {
     flex: 1,

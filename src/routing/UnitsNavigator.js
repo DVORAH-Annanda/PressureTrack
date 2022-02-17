@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect  } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,20 +11,17 @@ import UnitsSelected from "../screens/UnitsSelected";
 import SensorValuesDiagram from "../screens/SensorValuesDiagram";
 import WheelsDiagram from "../screens/WheelsDiagram";
 
-import {
-  selectUnit
-} from "../actions/unitActions";
+import { selectUnit } from "../actions/unitActions";
 
 import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
 import { isObjectEmpty } from "../utilities/general";
-import { getLocalStorageData  } from "../utilities/localStoreData";
+import { getLocalStorageData } from "../utilities/localStoreData";
 
 const UnitListTabs = createBottomTabNavigator();
 
 const UnitsNavigator = ({ navigation }) => {
-
   const unitSelected = useSelector((state) => state.unitSelected);
   const { unitIsSelected, selectedUnit } = unitSelected;
 
@@ -46,10 +43,7 @@ const UnitsNavigator = ({ navigation }) => {
   //   dispatch(listUserUnits());
   // }, [dispatch, listUserUnits]);
 
-
-
   const tabBarOptions = {
-    
     tabBarShowLabel: false,
     tabBarActiveTintColor: colors.primary,
     tabBarStyle: [
@@ -67,7 +61,7 @@ const UnitsNavigator = ({ navigation }) => {
       if (selectedUnits.length === 0) {
         return "UnitList";
       } else {
-        return "UnitsSelected"
+        return "UnitsSelected";
         // if (isObjectEmpty(selectedUnit)) return "UnitsSelected";
         // else return "WheelsDiagram";
       }
@@ -75,21 +69,21 @@ const UnitsNavigator = ({ navigation }) => {
   }
 
   useFocusEffect(
-    useCallback(() => {  
-        if (unitIsSelected)
-          navigation.navigate("WheelsDiagram", { title: selectedUnit.nm, item: selectedUnit });
+    useCallback(() => {
+      if (unitIsSelected)
+        navigation.navigate("WheelsDiagram", {
+          title: selectedUnit.nm,
+          item: selectedUnit,
+        });
     }, [navigation, dispatch])
   );
 
   const dispatch = useDispatch();
   function resetSelectedUnit() {
-    console.log(
-      `RESETSELECTEDUNIT`
-    );
+    console.log(`RESETSELECTEDUNIT`);
     dispatch(selectUnit(false, {}));
   }
 
-  
   useEffect(() => {
     const checkAuth = async () => {
       const isAssigned = await getLocalStorageData("isAssigned");
@@ -106,19 +100,17 @@ const UnitsNavigator = ({ navigation }) => {
         });
       }
     };
-    checkAuth().then()
-    .catch((e) => {
-      console.log("catch", e);
-    });
+    checkAuth()
+      .then()
+      .catch((e) => {
+        console.log("catch", e);
+      });
   }, [unitIsSelected, params]);
-
 
   console.log(`isUnitSelected? ${typeof isUnitSelected}`);
   return (
     <UnitListTabs.Navigator
-    
       screenOptions={tabBarOptions}
-      
       initialRouteName="UnitList"
     >
       <UnitListTabs.Screen
@@ -130,7 +122,6 @@ const UnitsNavigator = ({ navigation }) => {
           ),
           title: "All Units",
         }}
-
       />
       <UnitListTabs.Screen
         name="WheelsDiagram"
@@ -152,8 +143,8 @@ const UnitsNavigator = ({ navigation }) => {
   );
 };
 
-
-{/* <UnitListTabs.Screen
+{
+  /* <UnitListTabs.Screen
 name="UnitsSelected"
 component={UnitsSelected}
 options={{
@@ -162,7 +153,8 @@ options={{
   ),
   title: "Selected Units",
 }}
-/> */}
+/> */
+}
 
 // listeners={{
 //   tabPress: e => {

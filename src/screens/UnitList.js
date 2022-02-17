@@ -22,16 +22,15 @@ import colors from "../styles/colors";
 import { storeData } from "../utilities/localStoreData";
 
 const UnitList = ({ navigation }) => {
-
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
-
-
+  const userDetails = useSelector((state) => state.userSignIn);
+  const { userInfo } = userDetails;
 
   const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
-         dispatch(listUnits());
+      dispatch(listUnits());
     }, [dispatch, listUnits])
   );
 
@@ -69,6 +68,8 @@ const UnitList = ({ navigation }) => {
           handleSelectedUnit(item);
           storeData("isAssigned", "true");
           storeData("WheelsDiagram", JSON.stringify(item));
+          storeData("unitList", JSON.stringify(unitList));
+          storeData("userInfo", JSON.stringify(userInfo));
           navigation.navigate("WheelsDiagram", { title: item.nm, item: item });
         }}
       >

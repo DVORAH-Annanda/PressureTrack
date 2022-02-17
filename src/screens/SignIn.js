@@ -14,9 +14,8 @@ import { isObjectEmpty } from "../utilities/general";
 import colors from "../styles/colors";
 
 const SignIn = ({ navigation }) => {
-
   const userDetails = useSelector((state) => state.userSignIn);
-  const { userInfo } = userDetails; 
+  const { userInfo } = userDetails;
 
   const dispatch = useDispatch();
   const handleSubmit = (userInfo) => {

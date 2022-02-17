@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["userSignIn", "unitSensorValues"],
+  whitelist: ["userSignIn", "unitSensorValues", "unitList"],
   //whitelist: ["userSignIn", "unitList", "unitSelected", "unitSensorValues"],
 };
 
@@ -28,10 +28,7 @@ const reducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-const store = createStore(
-  persistedReducer,
-  applyMiddleware(thunk)
-);
+const store = createStore(persistedReducer, applyMiddleware(thunk));
 
 export const persistor = persistStore(store);
 
