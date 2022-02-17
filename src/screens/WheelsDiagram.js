@@ -82,7 +82,7 @@ const WheelsDiagram = ({ navigation, route }) => {
             {unitTrailersSensorValues.map((unit) => {
               return (
                 
-                <View style={styles.unit} key={unit.unitId}>
+                <View style={styles.unit} onStartShouldSetResponder={() => true} key={unit.unitId}>
                   <Text style={styles.unitName}>{unit.unitName}</Text>
                   {unit.sensorValues.map((axle) => {
                     return (
@@ -106,7 +106,7 @@ const WheelsDiagram = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    marginTop: StatusBar.currentHeight + 10,
+    marginTop: (Platform.OS === 'ios') ? StatusBar.currentHeight + 45 : 12.5,
     marginLeft: 2.5,
     marginRight: 5,
     marginBottom: 18,
@@ -115,8 +115,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },  
   unit: {
-    borderWidth: 1,
-    marginBottom: 5,
+    marginTop: (Platform.OS === 'ios') ? StatusBar.currentHeight + 25 : 25,    
+    marginBottom: -18,
+    borderWidth: 1   
   },
   unitName: {
     textAlign: 'center', 

@@ -50,11 +50,11 @@ const UnitsNavigator = ({ navigation }) => {
 
   const tabBarOptions = {
     
-    tabBarShowLabel: false,
+    tabBarShowLabel: true,
     tabBarActiveTintColor: colors.primary,
     tabBarStyle: [
       {
-        height: "10%",
+        height: (Platform.OS === 'ios') ? "10%" : "7.5%"
       },
     ],
   };
@@ -73,6 +73,14 @@ const UnitsNavigator = ({ navigation }) => {
       }
     }
   }
+
+  const handleSelectedUnit = (unit) => {
+    dispatch(selectUnit(true, unit));
+    return navigation.navigate("WheelsDiagram", {
+      title: unit.nm,
+      item: unit,
+    });
+  };
 
   useFocusEffect(
     useCallback(() => {  
@@ -100,10 +108,11 @@ const UnitsNavigator = ({ navigation }) => {
 
       if (isAssigned === "true") {
         //   console.log("SUUCUCUUCUC");
-        navigation.navigate("WheelsDiagram", {
-          title: JSON.parse(params).nm,
-          item: JSON.parse(params),
-        });
+        handleSelectedUnit(JSON.parse(params));
+        // navigation.navigate("WheelsDiagram", {
+        //   title: JSON.parse(params).nm,
+        //   item: JSON.parse(params),
+        // });
       }
     };
     checkAuth().then()
@@ -136,7 +145,8 @@ const UnitsNavigator = ({ navigation }) => {
         name="WheelsDiagram"
         component={WheelsDiagram}
         options={({ route }) => ({
-          title: "",
+          title: "WheelsDiagram",
+          headerShown: false,
           tabBarButton: (props) => null,
         })}
       />
@@ -144,7 +154,8 @@ const UnitsNavigator = ({ navigation }) => {
         name="SensorValuesDiagram"
         component={SensorValuesDiagram}
         options={({ route }) => ({
-          title: "",
+          title: "Sensor Values Diagram",
+          headerShown: false,
           tabBarButton: (props) => null,
         })}
       />
