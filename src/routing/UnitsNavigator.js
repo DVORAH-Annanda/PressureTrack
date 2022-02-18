@@ -19,7 +19,7 @@ import { listUserUnits } from "../actions/unitActions";
 
 import colors from "../styles/colors";
 import { isObjectEmpty } from "../utilities/general";
-import { getLocalStorageData  } from "../utilities/localStoreData";
+import { getLocalStorageData } from "../utilities/localStoreData";
 
 const UnitListTabs = createBottomTabNavigator();
 
@@ -67,7 +67,7 @@ const UnitsNavigator = ({ navigation }) => {
       if (selectedUnits.length === 0) {
         return "UnitList";
       } else {
-        return "UnitsSelected"
+        return "UnitsSelected";
         // if (isObjectEmpty(selectedUnit)) return "UnitsSelected";
         // else return "WheelsDiagram";
       }

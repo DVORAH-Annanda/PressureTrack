@@ -23,10 +23,11 @@ import { storeData } from "../utilities/localStoreData";
 
 const UnitList = ({ navigation }) => {
 
+  const userDetails = useSelector((state) => state.userSignIn);
+  const { userInfo } = userDetails;
+
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
-
-
 
   const dispatch = useDispatch();
   useFocusEffect(
@@ -69,6 +70,8 @@ const UnitList = ({ navigation }) => {
           handleSelectedUnit(item);
           storeData("isAssigned", "true");
           storeData("WheelsDiagram", JSON.stringify(item));
+          storeData("unitList", JSON.stringify(unitList));
+          storeData("userInfo", JSON.stringify(userInfo));
           navigation.navigate("WheelsDiagram", { title: item.nm, item: item });
         }}
       >

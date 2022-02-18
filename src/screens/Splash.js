@@ -25,7 +25,7 @@ const Splash = ({ navigation }) => {
     useCallback(() => {
       const navigationTimer = setTimeout(() => {
         navigate();
-      }, 850);
+      }, 1850);
       return () => clearTimeout(navigationTimer);
     }, [navigate])
   );
@@ -40,8 +40,7 @@ const Splash = ({ navigation }) => {
           <View style={styles.header}>
             <Header />
           </View>
-          <View style={styles.footer}>
-            <Text>checking for updates...</Text>
+          <View style={styles.footer}>           
             <Footer title="Stay On Track" subTitle="..." />
           </View>
         </ImageBackground>

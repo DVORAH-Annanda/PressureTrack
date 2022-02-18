@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  ActivityIndicator,
   StyleSheet,
   TouchableWithoutFeedback,
   ScrollView,
@@ -52,7 +53,9 @@ const SensorValuesDiagram = ({ navigation, route }) => {
     >
       <View style={styles.page}>
         {loading || unitTrailersSensorValues == null ? (
-          <Text>loading...</Text>
+                   <View style={styles.page}>
+                   <ActivityIndicator size="large" color={colors.primary} />
+                 </View>
         ) : (
           <ScrollView>
             

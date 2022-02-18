@@ -1,11 +1,13 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
-import { Text, View, StyleSheet } from "react-native";
+import { ActivityIndicator, View, StyleSheet } from "react-native";
 
 import { updateSessionId } from "../actions/userActions";
 
 import { isObjectEmpty } from "../utilities/general";
+
+import colors from "../styles/colors";
 
 const AppCheck = ({ navigation }) => {
 
@@ -54,7 +56,7 @@ const AppCheck = ({ navigation }) => {
 
   return (
     <View style={styles.page}>
-      <Text>checking for updates...</Text>
+      <ActivityIndicator size="large" color={colors.primary} />
     </View>
   );
 };

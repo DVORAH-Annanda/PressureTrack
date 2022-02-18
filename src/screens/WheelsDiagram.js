@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  ActivityIndicator,
   Platform,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -9,6 +11,7 @@ import {
   Text,
   Button,
   StatusBar,
+  Alert,
 } from "react-native";
 import { unitSensorValues } from "../actions/unitActions";
 
@@ -20,12 +23,8 @@ import { isObjectEmpty } from "../utilities/general";
 import colors from "../styles/colors";
 
 const WheelsDiagram = ({ navigation, route }) => {
-  
   const { title, item } = route.params;
   const { id, nm } = item;
-
-  
-  
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, unitTrailersSensorValues, dateUpdated, timeUpdated } =
@@ -46,20 +45,23 @@ const WheelsDiagram = ({ navigation, route }) => {
   //*** */ console.log(`WheelsDiagram sensorValues ${JSON.stringify(unitTrailersSensorValues)}`);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(unitSensorValues(id));
-    console.log(`WheelsDiagram useEffect unit id ${id}`);
+  // useEffect(() => {
+  //   dispatch(unitSensorValues(id));
+  //   console.log(`WheelsDiagram useEffect unit id ${id}`);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(unitSensorValues(id));
+      console.log(`WheelsDiagram useEffect unit id ${id}`);
 
-    //if (!loading){  @setInterval regte manier!!
+      //if (!loading){  @setInterval regte manier!!
       const interval = setInterval(() => {
         dispatch(unitSensorValues(id));
       }, 60000);
 
       return () => clearInterval(interval);
-    //}
-    
-  }, [dispatch, unitSensorValues, id]);
-
+      //}
+    }, [dispatch, unitSensorValues, id, route])
+  );
 
   return (
     <TouchableWithoutFeedback
@@ -70,34 +72,34 @@ const WheelsDiagram = ({ navigation, route }) => {
         })
       }
     >
-      
       <View style={styles.page}>
-        {loading || unitTrailersSensorValues == null ?  (
-          <Text>loading...</Text>
+        {loading || unitTrailersSensorValues == null ? (
+          <View style={styles.page}>
+            <ActivityIndicator size="large" color={colors.primary} />
+          </View>
         ) : (
           <View>
-            
-          <ScrollView>
-            
-            {unitTrailersSensorValues.map((unit) => {
-              return (
-                
-                <View style={styles.unit} onStartShouldSetResponder={() => true} key={unit.unitId}>
-                  <Text style={styles.unitName}>{unit.unitName}</Text>
-                  {unit.sensorValues.map((axle) => {
-                    return (
-                      <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
-                    );
-                  })}
-                </View>
-              );
-            })}
-            
-          </ScrollView>
+            <ScrollView>
+              {unitTrailersSensorValues.map((unit) => {
+                return (
+                  <View
+                    style={styles.unit}
+                    onStartShouldSetResponder={() => true}
+                    key={unit.unitId}
+                  >
+                    <Text style={styles.unitName}>{unit.unitName}</Text>
+                    {unit.sensorValues.map((axle) => {
+                      return (
+                        <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
+                      );
+                    })}
+                  </View>
+                );
+              })}
+            </ScrollView>
           </View>
-         ) 
-        }
-        <DateTimeUpdatedBox  date={dateUpdated} time={timeUpdated} />
+        )}
+        <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -106,22 +108,22 @@ const WheelsDiagram = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    marginTop: (Platform.OS === 'ios') ? StatusBar.currentHeight + 45 : 12.5,
+    marginTop: Platform.OS === "ios" ? StatusBar.currentHeight + 45 : 12.5,
     marginLeft: 2.5,
     marginRight: 5,
     marginBottom: 18,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },  
+  },
   unit: {
-    marginTop: (Platform.OS === 'ios') ? StatusBar.currentHeight + 25 : 25,    
-    marginBottom: -18,
-    borderWidth: 1   
+    marginTop: Platform.OS === "ios" ? StatusBar.currentHeight + 25 : 25,
+
+    borderWidth: 1,
   },
   unitName: {
-    textAlign: 'center', 
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   tyreName: {
     flex: 1,
