@@ -117,10 +117,10 @@ export const removeSelectedUnit = (unit) => (dispatch) => {
 
 export const unitSensorValues = (unitId) => async (dispatch, getState) => {
   let storedUnits = await getLocalStorageData("unitList");
-  storedUnits = JSON.parse(storedUnits).units;
+  storedUnits = storedUnits ? JSON.parse(storedUnits).units : null;
 
   let storedUserInfo = await getLocalStorageData("userInfo");
-  storedUserInfo = JSON.parse(storedUserInfo);
+  storedUserInfo = storedUserInfo ? JSON.parse(storedUserInfo) : null;
 
   dispatch({ type: UNIT_SENSORVALUES_REQUEST, payload: unitId });
 
