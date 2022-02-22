@@ -58,23 +58,37 @@ export const unitSelectedReducer = (
 ) => {
   switch (action.type) {
     case UNIT_SELECTED:
-      return { unitIsSelected: action.payload.unitIsSelected, selectedUnit: action.payload.selectedUnit };
+      return {
+        unitIsSelected: action.payload.unitIsSelected,
+        selectedUnit: action.payload.selectedUnit,
+      };
     default:
       return state;
   }
 };
 
 export const unitSensorValuesReducer = (
-  state = { loading: true, unitTrailersSensorValues: [], dateUpdated: "", timeUpdated: "" },
+  state = {
+    loading: true,
+    unitTrailersSensorValues: [],
+    dateUpdated: "",
+    timeUpdated: "",
+  },
   action
-) => {  
+) => {
   switch (action.type) {
     case UNIT_SENSORVALUES_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case UNIT_SENSORVALUES_SUCCESS:
-      return { loading: false, unitTrailersSensorValues: action.payload.unitTrailersSensorValues, dateUpdated: action.payload.dateUpdated, timeUpdated: action.payload.timeUpdated };
+      return {
+        ...state,
+        loading: false,
+        unitTrailersSensorValues: action.payload.unitTrailersSensorValues,
+        dateUpdated: action.payload.dateUpdated,
+        timeUpdated: action.payload.timeUpdated,
+      };
     case UNIT_SENSORVALUES_FAIL:
-      return { loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
