@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   ActivityIndicator,
   StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   ScrollView,
   View,
   Text,
   StatusBar,
 } from "react-native";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { unitSensorValues } from "../actions/unitActions";
 
 import WheelContainer from "../components/WheelContainer";
@@ -45,20 +47,33 @@ const SensorValuesDiagram = ({ navigation, route }) => {
     dispatch(unitSensorValues(id));
   }, [dispatch, unitSensorValues, id]);
 
+  // renderRightActions={rightSwipeActions}
+  // onSwipeableRightOpen={swipeFromRightOpen}
+  // onSwipeableLeftOpen={swipeFromLeftOpen}
+
+  // onPress={() =>
+  //   navigation.navigate("WheelsDiagram", { title: item.nm, item: item })
+  // } removeMoveResponder
+
   return (
-    <TouchableWithoutFeedback
-      onPress={() =>
-        navigation.navigate("WheelsDiagram", { title: item.nm, item: item })
-      }
-    >
+    <Swipeable
+    onSwipeableLeftOpen={() =>
+      navigation.navigate("WheelsDiagram", { title: item.nm, item: item })}
+
+  >
       <View style={styles.page}>
         {loading || unitTrailersSensorValues == null ? (
                    <View style={styles.page}>
                    <ActivityIndicator size="large" color={colors.primary} />
                  </View>
         ) : (
+         
           <ScrollView>
-            
+                <TouchableOpacity 
+                
+
+    >
+       <View>
             {unitTrailersSensorValues.map((unit) => {
               return (
                 
@@ -93,11 +108,14 @@ const SensorValuesDiagram = ({ navigation, route }) => {
                 </View>
               );
             })}
+             </View>
+            </TouchableOpacity >
           </ScrollView>
+         
         )}
         <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
       </View>
-    </TouchableWithoutFeedback>
+      </Swipeable>
   );
 };
 

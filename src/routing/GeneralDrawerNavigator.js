@@ -10,6 +10,8 @@ const GeneralDrawer = createDrawerNavigator();
 const GeneralDrawerNavigator = () => {
   return (
     <GeneralDrawer.Navigator
+    drawerType="front" 
+    drawerPosition="right"
       screenOptions={{
         headerShown: false,
         drawerActiveTintColor: colors.primary,

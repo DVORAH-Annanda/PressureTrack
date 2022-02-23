@@ -72,6 +72,10 @@ export const signOut = () => (dispatch) => {
   console.log(`signOut USER_SIGNOUT`);
   //removeStoredData("userInfo");
   //removeStoredData("selectedUnits");
+  removeStoredData("isAssigned");
+  removeStoredData("WheelsDiagram");
+  removeStoredData("unitList");
+  removeStoredData("userInfo");
   removeStoredData("persist:root");  
   dispatch({ type: USER_SIGNOUT, payload: {} });
 };
