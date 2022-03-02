@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   ActivityIndicator,
   Platform,
@@ -18,6 +19,8 @@ import { unitSensorValues } from "../actions/unitActions";
 import AxleContainer from "../components/AxleContainer";
 import DateTimeUpdatedBox from "../components/DateTimeUpdatedBox";
 
+import { FontAwesome5 } from "@expo/vector-icons";
+
 import { isObjectEmpty } from "../utilities/general";
 
 import colors from "../styles/colors";
@@ -25,6 +28,9 @@ import colors from "../styles/colors";
 const WheelsDiagram = ({ navigation, route }) => {
   const { title, item } = route.params;
   const { id, nm } = item;
+
+  const unitSelected = useSelector((state) => state.unitSelected);
+  const { unitIsSelected, selectedUnit } = unitSelected;
 
   const sensorValueProps = useSelector((state) => state.unitSensorValues);
   const { loading, error, unitTrailersSensorValues, dateUpdated, timeUpdated } =
@@ -41,9 +47,6 @@ const WheelsDiagram = ({ navigation, route }) => {
   //   )} unitIsSelected ${unitIsSelected} loading ${loading}`
   // );
 
-  //*** */ console.log(`WheelsDiagram ERROR ${error}`);
-  //*** */ console.log(`WheelsDiagram sensorValues ${JSON.stringify(unitTrailersSensorValues)}`);
-
   const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(unitSensorValues(id));
@@ -51,88 +54,95 @@ const WheelsDiagram = ({ navigation, route }) => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(unitSensorValues(id));
-      console.log(`WheelsDiagram useEffect unit id ${id}`);
 
-      //if (!loading){  @setInterval regte manier!!
+      // @setInterval regte manier??
       const interval = setInterval(() => {
         dispatch(unitSensorValues(id));
       }, 60000);
 
       return () => clearInterval(interval);
-      //}
     }, [dispatch, unitSensorValues, id, route])
   );
-
+  // style={styles.page}
   return (
-    <TouchableWithoutFeedback
-      onPress={() =>
-        navigation.navigate("SensorValuesDiagram", {
-          title: item.nm,
-          item: item,
-        })
-      }
-    >
-      <View style={styles.page}>
-        {loading || unitTrailersSensorValues == null ? (
-          <View style={styles.page}>
-            <ActivityIndicator size="large" color={colors.primary} />
+    <SafeAreaView style={styles.page}>
+      <View>
+        {!unitIsSelected ? (
+          <View>
+            <Text>
+              You have not selected a unit. Click on the{" "}
+              <FontAwesome5
+                name="hand-point-up"
+                size={24}
+                color={colors.primary}
+              />{" "}
+              icon and select a unit from the list.
+            </Text>
           </View>
         ) : (
-          <View>
-            <ScrollView>
-              {unitTrailersSensorValues.map((unit) => {
-                return (
-                  <View
-                    style={styles.unit}
-                    onStartShouldSetResponder={() => true}
-                    key={unit.unitId}
-                  >
-                    <Text style={styles.unitName}>{unit.unitName}</Text>
-                    {unit.sensorValues.map((axle) => {
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View>
+              {loading || unitTrailersSensorValues == null ? (
+                <View>
+                  <ActivityIndicator size="large" color={colors.primary} />
+                </View>
+              ) : (
+                <View style={styles.unitsView}>
+                  <ScrollView>
+                    {unitTrailersSensorValues.map((unit) => {
                       return (
-                        <AxleContainer key={axle.axleId}>{axle}</AxleContainer>
+                        <View
+                          style={styles.unit}
+                          onStartShouldSetResponder={() => true}
+                          key={unit.unitId}
+                        >
+                          <Text style={styles.unitName}>{unit.unitName}</Text>
+                          {unit.sensorValues.map((axle) => {
+                            return (
+                              <AxleContainer key={axle.axleId}>
+                                {axle}
+                              </AxleContainer>
+                            );
+                          })}
+                        </View>
                       );
                     })}
-                  </View>
-                );
-              })}
-            </ScrollView>
-          </View>
+                  </ScrollView>
+                </View>
+              )}
+              <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
+            </View>
+          </TouchableWithoutFeedback>
         )}
-        <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
       </View>
-    </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
+//marginTop: Platform.OS === "ios" ? StatusBar.currentHeight + 45 : 12.5,
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? StatusBar.currentHeight + 45 : 12.5,
+    marginTop: 10,
     marginLeft: 2.5,
-    marginRight: 5,
-    marginBottom: 18,
+    marginRight: 2.5,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
+  unitsView: {
+    flex: 1,
+   
+    alignItems: "center",
+    justifyContent: "center",
+  },
   unit: {
-    marginTop: Platform.OS === "ios" ? StatusBar.currentHeight + 25 : 25,
-
+    marginTop: 5,
     borderWidth: 1,
   },
   unitName: {
     textAlign: "center",
     fontWeight: "bold",
-  },
-  tyreName: {
-    flex: 1,
-    backgroundColor: colors.tyreNameGreen,
-  },
-  sensorId: {
-    backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
 

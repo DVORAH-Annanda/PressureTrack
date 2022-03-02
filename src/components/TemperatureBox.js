@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     container: props  => ({
         flex: 1, 
         width: '100%',
-        height: 25,
+        height: '100%',
         borderWidth: 1,
         borderColor: colors.lightGray,
         padding: 1.5,

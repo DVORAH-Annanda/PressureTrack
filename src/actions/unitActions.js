@@ -16,6 +16,7 @@ import {
   ADD_SELECTED_UNIT,
   REMOVE_SELECTED_UNIT,
   CLEAR_UNITS_USER_SIGNOUT,
+  CLEAR_UNIT_SENSORVALUES_SIGNOUT,
 } from "../constants/unitConstants";
 
 import { getSessionId } from "../utilities/authenticationHandler";
@@ -41,10 +42,14 @@ export const listUnits = () => async (dispatch, getState) => {
         'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_name","propValueMask":"*","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=' +
         userInfo.eId;
       const { data } = await Axios.get(fetchurl);
+      if(data){
       dispatch({
         type: UNIT_LIST_SUCCESS,
         payload: data.items,
       });
+    }else{
+      console.log(`UNSUCCESSFUL - fetch Units from Wailon API`)
+    }
     }
   } catch (error) {
     dispatch({
@@ -490,6 +495,17 @@ function wheelIdExists(wheels, wheelId) {
 export const clearStorageUnits = () => (dispatch) => {
   dispatch({
     type: CLEAR_UNITS_USER_SIGNOUT,
+    payload: {
+      unitTrailersSensorValues: [],
+      dateUpdated: "",
+      timeUpdated: "",
+    },
+  });
+};
+
+export const clearStorageSensorValues = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_UNIT_SENSORVALUES_SIGNOUT,
     payload: [],
   });
 };

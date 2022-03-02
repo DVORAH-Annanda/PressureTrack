@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   footer: {
-    flex: 1,
+    flex: 2,
     justifyContent: "flex-end",
   },
 });

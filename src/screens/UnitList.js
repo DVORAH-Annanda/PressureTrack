@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   StyleSheet,
   View,
@@ -16,33 +17,34 @@ import {
   removeSelectedUnit,
 } from "../actions/unitActions";
 
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 
 import { storeData } from "../utilities/localStoreData";
 
 const UnitList = ({ navigation }) => {
-
-  const userDetails = useSelector((state) => state.userSignIn);
-  const { userInfo } = userDetails;
+  const unitSelected = useSelector((state) => state.unitSelected);
+  const { unitIsSelected, selectedUnit } = unitSelected;
 
   const unitList = useSelector((state) => state.unitList);
   const { loading, error, units, selectedUnits } = unitList;
 
+  const userDetails = useSelector((state) => state.userSignIn);
+  const { userInfo } = userDetails;
+
   const dispatch = useDispatch();
   useFocusEffect(
-    useCallback(() => {
-         dispatch(listUnits());
+    React.useCallback(() => {
+      dispatch(listUnits());
     }, [dispatch, listUnits])
   );
 
   const addToSelectedUnits = (unit) => dispatch(addSelectedUnit(unit));
 
   const handleAddSelectedUnit = async (unit) => {
-    addToSelectedUnits(unit);
-
-    selectedUnits.push(unit);
-    dispatch(listUserUnits(selectedUnits));
+    if (!exists(unit)) addToSelectedUnits(unit);
+    //selectedUnits.push(unit);
+    //dispatch(listUserUnits(selectedUnits));
   };
 
   const removeFromSelectedUnits = (unit) => dispatch(removeSelectedUnit(unit));
@@ -72,55 +74,76 @@ const UnitList = ({ navigation }) => {
           storeData("WheelsDiagram", JSON.stringify(item));
           storeData("unitList", JSON.stringify(unitList));
           storeData("userInfo", JSON.stringify(userInfo));
+          handleRemoveSelectedUnit(item);
+          handleAddSelectedUnit(item);
           navigation.navigate("WheelsDiagram", { title: item.nm, item: item });
         }}
       >
         <View style={styles.listItem}>
-          <Text style={{ marginLeft: 10 }}>{item.nm}</Text>
-          <TouchableOpacity
-            onPress={() =>
-              exists(item)
-                ? handleRemoveSelectedUnit(item)
-                : handleAddSelectedUnit(item)
-            }
+          {exists(item) ? (
+            <Text
+              style={{
+                marginLeft: 10,
+                color: colors.primary,
+                fontWeight: "bold",
+                fontSize: 18,
+              }}
+            >
+              {item.nm}
+            </Text>
+          ) : (
+            <Text
+              style={{
+                marginLeft: 10,
+                color: colors.darkGray,
+              }}
+            >
+              {item.nm}
+            </Text>
+          )}
+          <View
             style={{
               marginRight: 10,
               padding: 1.5,
               alignItems: "center",
               justifyContent: "center",
-              height: 25,
-              width: 25,
+              height: 30,
+              width: 30,
             }}
           >
-            <MaterialIcons
+            <FontAwesome5
+              name="bus"
               color={exists(item) ? colors.primary : colors.gray}
               size={exists(item) ? 24 : 18}
-              name={exists(item) ? "person" : "person-add"}
             />
-          </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={styles.page}>
-      {loading && <Text>loading...</Text>}
-      {units && (
-        <FlatList
-          data={units}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
-    </View>
+    <SafeAreaView style={styles.page}>
+      <View style={styles.page}>
+        {loading && <Text>loading...</Text>}
+        {units && (
+          <FlatList
+            data={units}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            extraData={selectedUnit}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   page: {
     flex: 1,
+    marginTop: 2.5,
     backgroundColor: "#fff",
   },
   listItem: {

@@ -12,6 +12,7 @@ import {
   UNIT_SENSORVALUES_SUCCESS,
   UNIT_SELECTED,
   CLEAR_UNITS_USER_SIGNOUT,
+  CLEAR_UNIT_SENSORVALUES_SIGNOUT,
 } from "../constants/unitConstants";
 
 export const unitListReducer = (
@@ -19,8 +20,8 @@ export const unitListReducer = (
   action
 ) => {
   switch (action.type) {
-    //case UNIT_LIST_REQUEST:
-    //  return { ...state, loading: true };
+    case UNIT_LIST_REQUEST:
+     return { ...state, loading: true };
     case UNIT_LIST_SUCCESS:
       return { ...state, loading: false, units: action.payload };
     //case USER_UNIT_LIST_REQUEST:
@@ -37,9 +38,7 @@ export const unitListReducer = (
       return {
         ...state,
         loading: false,
-        selectedUnits: state.selectedUnits.filter(
-          (unit) => unit.id !== action.payload.id
-        ),
+        selectedUnits: state.selectedUnits.filter(unit => unit.id === action.payload.id) //Remove all units NOT the current selected unit
       };
     case UNIT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -58,7 +57,7 @@ export const unitSelectedReducer = (
 ) => {
   switch (action.type) {
     case UNIT_SELECTED:
-      return { unitIsSelected: action.payload.unitIsSelected, selectedUnit: action.payload.selectedUnit };
+      return { ...state, unitIsSelected: action.payload.unitIsSelected, selectedUnit: action.payload.selectedUnit };
     default:
       return state;
   }
@@ -75,6 +74,8 @@ export const unitSensorValuesReducer = (
       return { ...state, loading: false, unitTrailersSensorValues: action.payload.unitTrailersSensorValues, dateUpdated: action.payload.dateUpdated, timeUpdated: action.payload.timeUpdated };
     case UNIT_SENSORVALUES_FAIL:
       return { ...state, loading: false, error: action.payload };
+      case CLEAR_UNIT_SENSORVALUES_SIGNOUT:
+        return { loading: true, unitTrailersSensorValues: [], dateUpdated: "", timeUpdated: ""};
     default:
       return state;
   }

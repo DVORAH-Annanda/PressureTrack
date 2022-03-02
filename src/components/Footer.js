@@ -7,8 +7,9 @@ import colors from '../styles/colors'
 const Footer = (props) => {
     return (
         <SafeAreaView>
+            <Text style={styles.versionNumber}>version 4.0</Text>
         <View style={styles.footer}>
-            
+        
             <Text style={styles.footerTitle}>{props.title}</Text>
         </View>
         </SafeAreaView>
@@ -28,10 +29,11 @@ footerTitle: {
     padding: 5,
     fontSize: 18,
 },
-footerSubTitle: {
-    color: colors.white,
+versionNumber: {
+    width: '100%',
+    color: colors.darkGray,
     padding: 5,
-    fontSize: 12.5,
+    fontSize: 10.5,
 },
 });
 
