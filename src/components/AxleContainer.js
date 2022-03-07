@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    maxWidth: 385,
+    maxWidth: 405,
     margin: 5,
     borderColor: colors.axleBlue,
     borderRadius: 4.5,

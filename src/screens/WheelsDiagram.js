@@ -88,7 +88,7 @@ const WheelsDiagram = ({ navigation, route }) => {
                 </View>
               ) : (
                 <View style={styles.unitsView}>
-                  <ScrollView>
+                  <ScrollView showsVerticalScrollIndicator={false}>
                     {unitTrailersSensorValues.map((unit) => {
                       return (
                         <View

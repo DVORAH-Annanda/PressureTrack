@@ -7,13 +7,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "version": "4.0.0",
+    "version": "8.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/splash.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -23,18 +23,15 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "host.exp.pressuretrack",
-      "buildNumber": "4.0.0"
+      "buildNumber": "8.5.0"
     },
     "android": {
       "package": "host.exp.pressuretrack",
-      "versionCode": 4,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "versionCode": 8,
+      "icon": "./assets/splash.png"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/splash.png"
     },
     "description": ""
   }

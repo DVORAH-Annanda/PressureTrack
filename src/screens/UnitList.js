@@ -131,7 +131,7 @@ const UnitList = ({ navigation }) => {
             data={units}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            extraData={selectedUnit}
+            extraData={loading}
             showsVerticalScrollIndicator={false}
           />
         )}

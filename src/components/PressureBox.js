@@ -1,9 +1,14 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import * as Device from 'expo-device';
+
+
+
 
 import colors from "../styles/colors";
 
 const PressureBox = (props) => {
+
   return (
     <View style={styles.container(props)}>
       <Text style={styles.textValue}>{props.children.pressureValue} bar</Text>
@@ -29,6 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   }),
   textValue: {
+    fontSize: Platform.OS === "ios" ? 14 : 12,
     color: colors.white,
   },
 });

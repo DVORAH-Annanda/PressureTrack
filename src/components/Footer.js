@@ -7,7 +7,7 @@ import colors from '../styles/colors'
 const Footer = (props) => {
     return (
         <SafeAreaView>
-            <Text style={styles.versionNumber}>version 4.0</Text>
+            <Text style={styles.versionNumber}>version 8.5</Text>
         <View style={styles.footer}>
         
             <Text style={styles.footerTitle}>{props.title}</Text>

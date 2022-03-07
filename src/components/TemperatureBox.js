@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     }),
     textValue: {
+        fontSize: Platform.OS === "ios" ? 14 : 12,
     color: colors.white,
     },
     });

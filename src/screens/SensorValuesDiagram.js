@@ -62,7 +62,7 @@ const SensorValuesDiagram = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <View >
+      <View>
         {!unitIsSelected ? (
           <View>
             <Text>
@@ -84,49 +84,49 @@ const SensorValuesDiagram = ({ navigation, route }) => {
                 </View>
               ) : (
                 <View style={styles.unitsView}>
-               <ScrollView>
-                  <View>
-                    {unitTrailersSensorValues.map((unit) => {
-                      return (
-                        <View
-                          style={styles.unit}
-                          onStartShouldSetResponder={() => true}
-                          key={unit.unitId}
-                        >
-                          <Text style={styles.unitName}>{unit.unitName}</Text>
-                          {unit.sensorValues.map((axle) => {
-                            return (
-                              <SensorValuesAxleContainer
-                                style={styles.axle}
-                                key={axle.axleId}
-                              >
-                                {axle.wheels.map((wheel) => {
-                                  return (
-                                    <WheelContainer key={wheel.wheelId}>
-                                      <TextBox style={styles.tyreName}>
-                                        {wheel.wheelName}
-                                      </TextBox>
-                                      {wheel.pressureValue == null ? (
-                                        <NoSignalBox>{wheel}</NoSignalBox>
-                                      ) : (
-                                        <MetricsContainer>
-                                          <PressureBox>{wheel}</PressureBox>
-                                          <TemperatureBox>
-                                            {wheel}
-                                          </TemperatureBox>
-                                        </MetricsContainer>
-                                      )}
-                                    </WheelContainer>
-                                  );
-                                })}
-                              </SensorValuesAxleContainer>
-                            );
-                          })}
-                        </View>
-                      );
-                    })}
-                  </View>
-                </ScrollView>
+                  <ScrollView showsVerticalScrollIndicator={false}>
+                    <View>
+                      {unitTrailersSensorValues.map((unit) => {
+                        return (
+                          <View
+                            style={styles.unit}
+                            onStartShouldSetResponder={() => true}
+                            key={unit.unitId}
+                          >
+                            <Text style={styles.unitName}>{unit.unitName}</Text>
+                            {unit.sensorValues.map((axle) => {
+                              return (
+                                <SensorValuesAxleContainer
+                                  style={styles.axle}
+                                  key={axle.axleId}
+                                >
+                                  {axle.wheels.map((wheel) => {
+                                    return (
+                                      <WheelContainer key={wheel.wheelId}>
+                                        <TextBox style={styles.tyreName}>
+                                          {wheel.wheelName}
+                                        </TextBox>
+                                        {wheel.pressureValue == null ? (
+                                          <NoSignalBox>{wheel}</NoSignalBox>
+                                        ) : (
+                                          <MetricsContainer>
+                                            <PressureBox>{wheel}</PressureBox>
+                                            <TemperatureBox>
+                                              {wheel}
+                                            </TemperatureBox>
+                                          </MetricsContainer>
+                                        )}
+                                      </WheelContainer>
+                                    );
+                                  })}
+                                </SensorValuesAxleContainer>
+                              );
+                            })}
+                          </View>
+                        );
+                      })}
+                    </View>
+                  </ScrollView>
                 </View>
               )}
               <DateTimeUpdatedBox date={dateUpdated} time={timeUpdated} />
@@ -147,16 +147,13 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     marginTop: 10,
-    marginLeft: 2.5,
-    marginRight: 2.5,
+    paddingRight: 5,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-  
   unitsView: {
-    flex: 1,   
-    marginRight: 5,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -170,10 +167,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   axle: {
-    width: "100%",
-    paddingLeft: 1.5,
-    paddingRight: 1.5,
-    borderWidth: 1,
+    paddingLeft: 2.5,
+    paddingRight: 2.5,
   },
   tyreName: {
     flex: 1,
