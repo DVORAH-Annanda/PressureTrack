@@ -7,7 +7,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "version": "8.0.0",
+    "version": "9.0.0",
     "platforms": [
       "ios",
       "android"
@@ -23,11 +23,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "host.exp.pressuretrack",
-      "buildNumber": "8.5.0"
+      "buildNumber": "9.0"
     },
     "android": {
       "package": "host.exp.pressuretrack",
-      "versionCode": 8,
+      "versionCode": 9,
       "icon": "./assets/splash.png"
     },
     "web": {

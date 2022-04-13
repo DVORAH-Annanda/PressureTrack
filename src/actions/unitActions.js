@@ -212,9 +212,9 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
           ',"flags":1,"flagsMask":65281,"loadCount":1800}&sid=' +
           _userInfo.eId;
 
-        console.log(`unitActions unitSensorValues sensorsUrl ${sensorsUrl}`);
+        console.log(`unitActions unitSensorValues sensorsUrl ${sensorsUrl} unitId ${unitId}`);
         console.log(
-          `unitActions unitSensorValues sensorValuesUrl ${sensorValuesUrl}`
+          `unitActions unitSensorValues sensorValuesUrl ${sensorValuesUrl} unitId ${unitId}`
         );
 
         let endpoints = [sensorsUrl, sensorValuesUrl];
@@ -231,16 +231,13 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
               );
             }
 
-            if (sensorValuesData && !isObjectEmpty(sensorValuesData)) {
+            if (sensorValuesData && !isObjectEmpty(sensorValuesData) && sensors &&
+            !isObjectEmpty(sensors) &&
+            notifications &&
+            !isObjectEmpty(notifications)) {
               const e6SensorValues = getE6SensorValues(sensorValuesData);
-              if (
-                sensors &&
-                !isObjectEmpty(sensors) &&
-                notifications &&
-                !isObjectEmpty(notifications)
-              ) {
                 sensorValues = getWheels(
-                  getAxles(unitId, sensors, notifications),
+                  getAxles(unit.unitId, sensors, notifications),
                   sensors,
                   e6SensorValues
                 );
@@ -260,28 +257,7 @@ export const unitSensorValues = (unitId) => async (dispatch, getState) => {
                     unitTrailersSensorValues
                   )} timeUpdated ${timeUpdated}`
                 );
-              } else {
-                if (!sensors) {
-                  console.log(`NO SENSOR  DATA`);
-                }
-                if (isObjectEmpty(sensors)) {
-                  console.log(`SENSOR DATA OBJECT IS EMPTY`);
-                }
-                if (!notifications) {
-                  console.log(`NO NOTIFICATIONS`);
-                }
-                if (isObjectEmpty(notifications)) {
-                  console.log(`NOTIFICATIONS OBJECT IS EMPTY`);
-                }
-              }
-            } else {
-              if (!sensorValuesData) {
-                console.log(`NO SENSOR VALUES DATA`);
-              }
-              if (isObjectEmpty(sensorValuesData)) {
-                console.log(`SENSOR VALUES DATA OBJECT IS EMPTY`);
-              }
-            }
+            } 
           })
           .catch(function (err) {
             console.log("catch__error", err);
